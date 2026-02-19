@@ -3,169 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Match the Host</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Order Up!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
   <style>
-    :root {
-      --bg: #0a0a0f; --card: #13131a; --border: #2a2a3a;
-      --accent: #f5c518; --accent2: #ff4d6d; --green: #39d353;
-      --text: #f0f0f0; --muted: #888;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: linear-gradient(rgba(245,197,24,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,197,24,0.03) 1px, transparent 1px);
-      background-size: 50px 50px; pointer-events: none; z-index: 0;
-    }
-    .page { position: relative; z-index: 1; }
-    .hidden { display: none !important; }
+    :root{--bg:#1a0a12;--card:#2a1020;--card2:#331525;--border:#5a2040;--pink:#ff69b4;--pink2:#ff1493;--pink-light:#ffb6d9;--pink-glow:rgba(255,105,180,0.15);--green:#a8ff78;--red:#ff6b6b;--text:#ffe0f0;--muted:#c080a0;--gold:#ffd700;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(255,20,147,0.07) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(255,105,180,0.05) 0%,transparent 50%),linear-gradient(rgba(255,105,180,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,105,180,0.02) 1px,transparent 1px);background-size:100% 100%,100% 100%,44px 44px,44px 44px;}
+    .page{position:relative;z-index:1;}
+    .hidden{display:none!important;}
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 
-    #landing { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; text-align: center; }
-    .logo {
-      font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 12vw, 100px);
-      letter-spacing: 4px; line-height: 1; margin-bottom: 8px;
-      background: linear-gradient(135deg, var(--accent) 0%, #ff9f1c 50%, var(--accent2) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .tagline { color: var(--muted); font-size: 14px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 60px; }
-    .role-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-    .role-card {
-      background: var(--card); border: 2px solid var(--border); border-radius: 16px;
-      padding: 40px 50px; cursor: pointer; transition: all 0.25s ease; min-width: 200px;
-    }
-    .role-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(245,197,24,0.15); }
-    .role-card .icon { font-size: 48px; margin-bottom: 16px; }
-    .role-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; margin-bottom: 8px; }
-    .role-card p { color: var(--muted); font-size: 14px; }
-    .join-section { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .join-section label { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; }
-    .join-input-row { display: flex; gap: 8px; }
-    input[type="text"] {
-      background: var(--card); border: 2px solid var(--border); color: var(--text);
-      padding: 12px 20px; border-radius: 10px; font-size: 16px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s;
-    }
-    input[type="text"]:focus { border-color: var(--accent); }
-    .btn { padding: 12px 28px; border: none; border-radius: 10px; font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.5px; }
-    .btn-primary { background: var(--accent); color: #000; }
-    .btn-primary:hover { background: #ffd93d; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,197,24,0.3); }
-    .btn-danger { background: var(--accent2); color: #fff; }
-    .btn-danger:hover { background: #ff6b85; transform: translateY(-2px); }
-    .btn-ghost { background: transparent; border: 2px solid var(--border); color: var(--text); }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    #landing{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
+    .logo{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(60px,13vw,110px);letter-spacing:-2px;line-height:0.95;margin-bottom:10px;background:linear-gradient(135deg,#ffb6d9,var(--pink),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 28px rgba(255,105,180,0.35));}
+    .logo-sub{font-family:'Playfair Display',serif;font-size:clamp(14px,3vw,22px);color:var(--pink-light);letter-spacing:5px;text-transform:uppercase;margin-bottom:44px;opacity:0.75;}
+    .role-cards{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;}
+    .role-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:34px 44px;cursor:pointer;transition:all .22s;min-width:180px;text-align:center;position:relative;overflow:hidden;}
+    .role-card::after{content:'';position:absolute;inset:0;background:var(--pink-glow);opacity:0;transition:opacity .22s;}
+    .role-card:hover{border-color:var(--pink);transform:translateY(-5px);box-shadow:0 20px 48px rgba(255,20,147,0.18);}
+    .role-card:hover::after{opacity:1;}
+    .role-card .ico{font-size:42px;margin-bottom:12px;}
+    .role-card h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px;color:var(--pink-light);}
+    .role-card p{color:var(--muted);font-size:12px;}
+    .join-box{margin-top:28px;background:var(--card);border:2px solid var(--border);border-radius:16px;padding:22px 28px;display:flex;flex-direction:column;align-items:center;gap:12px;min-width:280px;}
+    .join-box label{color:var(--muted);font-size:11px;letter-spacing:3px;text-transform:uppercase;}
+    .join-row{display:flex;gap:8px;width:100%;}
 
-    #host-lobby { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 20px; }
-    .top-bar { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-    .badge { background: var(--accent); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; padding: 6px 14px; border-radius: 20px; }
-    .room-code-display { text-align: center; margin-bottom: 40px; }
-    .room-code-display label { display: block; color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
-    .room-code { font-family: 'Bebas Neue', sans-serif; font-size: 72px; letter-spacing: 12px; color: var(--accent); line-height: 1; }
-    .host-main { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; max-width: 900px; }
-    @media (max-width: 700px) { .host-main { grid-template-columns: 1fr; } }
-    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
-    .panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
-    #qr-code { display: flex; justify-content: center; margin-bottom: 16px; }
-    #qr-code-inner { background: #fff; padding: 12px; border-radius: 10px; display: inline-block; }
-    .join-url { word-break: break-all; font-size: 11px; color: var(--muted); text-align: center; background: #0a0a0f; padding: 8px 12px; border-radius: 6px; margin-top: 10px; }
-    .player-list { display: flex; flex-direction: column; gap: 8px; }
-    .player-item { display: flex; align-items: center; gap: 12px; background: #0f0f18; border-radius: 10px; padding: 12px 16px; animation: slideIn 0.3s ease; }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-    .player-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-    .player-name { font-weight: 600; font-size: 15px; }
-    .waiting-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-left: auto; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    .no-players { color: var(--muted); text-align: center; padding: 30px; font-size: 14px; }
+    input[type=text]{background:#100010;border:2px solid var(--border);color:var(--text);padding:11px 15px;border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+    input[type=text]:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,105,180,0.12);}
 
-    .rank-labels { display: flex; justify-content: space-between; max-width: 420px; width: 100%; padding: 0 4px; margin-bottom: 8px; }
-    .rank-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    .rank-label.top { color: var(--accent); }
-    .rank-label.bottom { color: var(--accent2); }
-    .sortable-list { list-style: none; max-width: 420px; width: 100%; }
-    .sortable-list li {
-      display: flex; align-items: center; gap: 14px; padding: 16px 20px; margin-bottom: 8px;
-      background: var(--card); border: 2px solid var(--border); border-radius: 12px;
-      cursor: grab; transition: all 0.2s ease; user-select: none; position: relative; overflow: hidden;
-    }
-    .sortable-list li:active { cursor: grabbing; }
-    .sortable-list li:hover { border-color: rgba(245,197,24,0.4); transform: translateX(4px); }
-    .sortable-list li.sortable-ghost { opacity: 0.3; }
-    .sortable-list li.sortable-chosen { border-color: var(--accent); box-shadow: 0 0 20px rgba(245,197,24,0.2); }
-    .rank-stripe { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
-    .rank-num { font-family: 'Bebas Neue', sans-serif; font-size: 22px; width: 28px; text-align: center; flex-shrink: 0; }
-    .item-emoji { font-size: 22px; flex-shrink: 0; }
-    .item-name { font-size: 17px; font-weight: 600; flex: 1; }
-    .drag-icon { color: var(--muted); font-size: 16px; margin-left: auto; }
-    .locked-banner { background: rgba(255,77,109,0.1); border: 1px solid var(--accent2); color: var(--accent2); border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 20px; }
-    .game-wrap { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 30px 20px; }
-    .game-header { text-align: center; margin-bottom: 24px; }
-    .game-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; margin-bottom: 6px; }
-    .game-header p { color: var(--muted); font-size: 14px; }
+    .btn{padding:11px 22px;border:none;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;transition:all .18s;}
+    .btn-primary{background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;box-shadow:0 4px 14px rgba(255,20,147,0.28);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,20,147,0.42);filter:brightness(1.08);}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none;}
+    .btn-ghost{background:transparent;border:2px solid var(--border);color:var(--text);}
+    .btn-ghost:hover{border-color:var(--pink);color:var(--pink);}
+    .btn-outline{background:transparent;border:2px solid var(--pink);color:var(--pink);}
+    .btn-outline:hover{background:var(--pink-glow);}
 
-    #waiting-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; text-align: center; }
-    .spinner { width: 60px; height: 60px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 30px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    #name-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
+    #name-screen h2{font-family:'Playfair Display',serif;font-size:38px;color:var(--pink-light);margin-bottom:8px;}
+    #name-screen p{color:var(--muted);margin-bottom:28px;}
+    .name-form{display:flex;flex-direction:column;gap:11px;width:100%;max-width:290px;}
+    .name-form input{text-align:center;font-size:18px;}
 
-    #results-screen { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; min-height: 100vh; }
-    .results-title {
-      font-family: 'Bebas Neue', sans-serif; font-size: 56px; letter-spacing: 4px; margin-bottom: 8px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .host-reveal { max-width: 420px; width: 100%; margin-bottom: 10px; }
-    .host-reveal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--muted); margin-bottom: 12px; text-align: center; }
-    .host-reveal .sortable-list li { cursor: default; }
-    .host-reveal .sortable-list li:hover { transform: none; }
-    .leaderboard { width: 100%; max-width: 500px; margin-top: 30px; }
-    .leaderboard h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--muted); margin-bottom: 16px; text-align: center; }
-    .leaderboard-item { display: flex; align-items: center; gap: 16px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 8px; animation: slideIn 0.4s ease both; }
-    .lb-pos { font-family: 'Bebas Neue', sans-serif; font-size: 28px; width: 40px; text-align: center; }
-    .lb-name { flex: 1; font-weight: 600; font-size: 16px; }
-    .lb-score { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--accent); }
-    .score-bar-bg { height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; width: 100%; }
-    .score-bar { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #ff9f1c); transition: width 1s ease; }
+    #host-lobby{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:28px 20px;}
+    .top-bar{width:100%;max-width:880px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+    .badge{background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 13px;border-radius:20px;}
+    .badge.player-badge{background:linear-gradient(135deg,#a855f7,#ec4899);}
+    .room-code-block{text-align:center;margin-bottom:26px;}
+    .room-code-block label{display:block;color:var(--muted);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:7px;}
+    .room-code{font-family:'Playfair Display',serif;font-size:60px;letter-spacing:10px;color:var(--pink);line-height:1;text-shadow:0 0 28px rgba(255,105,180,0.35);}
+    .lobby-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:880px;}
+    @media(max-width:640px){.lobby-grid{grid-template-columns:1fr;}}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+    .panel h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--pink-light);margin-bottom:13px;}
+    #qr-wrap{display:flex;justify-content:center;margin-bottom:11px;}
+    #qr-inner{background:#fff;padding:10px;border-radius:10px;display:inline-block;border:3px solid var(--pink);}
+    .join-url{word-break:break-all;font-size:10px;color:var(--muted);text-align:center;background:#100010;padding:7px 10px;border-radius:6px;}
+    .player-list{display:flex;flex-direction:column;gap:7px;min-height:48px;}
+    .player-item{display:flex;align-items:center;gap:10px;background:var(--card2);border-radius:9px;padding:9px 13px;animation:slideIn .28s ease;}
+    @keyframes slideIn{from{opacity:0;transform:translateX(-7px);}to{opacity:1;transform:translateX(0);}}
+    .p-avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,105,180,0.12);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:1px solid var(--border);}
+    .p-name{font-weight:600;font-size:13px;flex:1;}
+    .p-score{font-size:12px;color:var(--pink);font-weight:700;}
+    .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:pulse 1.5s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.2;}}
+    .no-players{color:var(--muted);text-align:center;padding:20px;font-size:13px;}
 
-    #name-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; text-align: center; }
-    #name-screen h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 3px; margin-bottom: 8px; }
-    #name-screen p { color: var(--muted); margin-bottom: 40px; }
-    .name-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
-    .name-form input { text-align: center; font-size: 18px; }
+    #host-pick-screen{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px 20px;}
+    .cat-search{width:100%;max-width:900px;margin-bottom:11px;}
+    .cat-search input{width:100%;}
+    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:9px;width:100%;max-width:900px;margin-bottom:18px;max-height:60vh;overflow-y:auto;padding:4px;}
+    .cat-card{background:var(--card);border:2px solid var(--border);border-radius:11px;padding:13px 16px;cursor:pointer;transition:all .17s;}
+    .cat-card:hover{border-color:var(--pink);background:var(--card2);transform:translateY(-2px);}
+    .cat-card.selected{border-color:var(--pink2);background:rgba(255,20,147,0.1);box-shadow:0 0 14px rgba(255,20,147,0.18);}
+    .cat-card.used{opacity:.3;cursor:not-allowed;pointer-events:none;}
+    .cat-type{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .cat-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--pink-light);margin-bottom:5px;}
+    .cat-items{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green); color: #000; font-weight: 700; padding: 12px 28px; border-radius: 30px; font-size: 14px; letter-spacing: 1px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1000; }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .submitted-banner { background: rgba(57,211,83,0.1); border: 1px solid var(--green); color: var(--green); border-radius: 10px; padding: 16px 24px; font-size: 15px; font-weight: 600; text-align: center; margin-top: 20px; max-width: 420px; width: 100%; }
+    .game-wrap{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px 20px;}
+    .game-head{text-align:center;margin-bottom:16px;}
+    .game-head h1{font-family:'Playfair Display',serif;font-size:28px;color:var(--pink-light);margin-bottom:3px;}
+    .game-head p{color:var(--muted);font-size:12px;}
+    .cat-label{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 16px;font-size:12px;color:var(--pink-light);letter-spacing:.5px;margin-bottom:14px;}
+    .locked-bar{background:rgba(255,20,147,0.07);border:1px solid var(--pink2);color:var(--pink-light);border-radius:9px;padding:9px 18px;font-size:12px;text-align:center;margin-bottom:14px;max-width:420px;width:100%;}
+    .rank-labels{display:flex;justify-content:space-between;max-width:420px;width:100%;margin-bottom:5px;padding:0 2px;}
+    .rl{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+    .rl.top{color:var(--pink);}
+    .rl.bot{color:var(--muted);}
+    .round-badge{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--muted);}
+
+    .slist{list-style:none;max-width:420px;width:100%;}
+    .slist li{display:flex;align-items:center;gap:11px;padding:13px 16px;margin-bottom:6px;background:var(--card);border:2px solid var(--border);border-radius:11px;cursor:grab;transition:all .15s;user-select:none;position:relative;overflow:hidden;}
+    .slist li:active{cursor:grabbing;}
+    .slist li:hover:not(.no-drag){border-color:rgba(255,105,180,.45);transform:translateX(3px);}
+    .slist li.sortable-ghost{opacity:.2;}
+    .slist li.sortable-chosen{border-color:var(--pink);box-shadow:0 0 14px rgba(255,105,180,.18);}
+    .slist li.no-drag{cursor:default;}
+    .slist li.correct{border-color:var(--green)!important;background:rgba(168,255,120,.07)!important;}
+    .slist li.wrong{border-color:var(--red)!important;background:rgba(255,107,107,.07)!important;}
+    .stripe{position:absolute;left:0;top:0;bottom:0;width:4px;}
+    .rnum{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;width:24px;text-align:center;flex-shrink:0;}
+    .iname{font-size:15px;font-weight:600;flex:1;}
+    .drag-h{color:var(--muted);font-size:15px;margin-left:auto;}
+    .res-host-pos{font-size:10px;color:var(--muted);margin-left:auto;margin-right:4px;}
+    .res-check{font-size:16px;}
+
+    #waiting-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center;}
+    .spinner{width:50px;height:50px;border:4px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin .85s linear infinite;margin-bottom:22px;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    #round-results-screen{display:flex;flex-direction:column;align-items:center;padding:32px 20px;min-height:100vh;}
+    .rr-title{font-family:'Playfair Display',serif;font-size:42px;color:var(--pink-light);margin-bottom:3px;text-align:center;}
+    .your-score-box{background:var(--card);border:2px solid var(--pink);border-radius:14px;padding:16px 32px;text-align:center;margin:14px 0;}
+    .score-num{font-family:'Playfair Display',serif;font-size:52px;color:var(--pink);line-height:1;}
+    .score-label{color:var(--muted);font-size:12px;margin-top:3px;}
+    .result-section-title{color:var(--pink-light);font-size:13px;font-weight:700;margin-bottom:8px;text-align:center;}
+    .lb{width:100%;max-width:480px;margin-top:10px;}
+    .lb h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--pink-light);margin-bottom:11px;text-align:center;}
+    .lb-item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 15px;margin-bottom:7px;animation:slideIn .4s ease both;}
+    .lb-pos{font-family:'Playfair Display',serif;font-size:22px;width:32px;text-align:center;}
+    .lb-name{flex:1;font-weight:600;font-size:13px;}
+    .lb-score{font-family:'Playfair Display',serif;font-size:20px;color:var(--pink);text-align:right;}
+    .lb-sub{font-size:10px;color:var(--muted);}
+    .bar-bg{height:4px;background:var(--border);border-radius:2px;margin-top:4px;}
+    .bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--pink),var(--pink2));transition:width 1s ease;}
+    .divider{width:100%;max-width:480px;border:none;border-top:1px solid var(--border);margin:16px 0;}
+
+    #final-results-screen{display:flex;flex-direction:column;align-items:center;padding:36px 20px;min-height:100vh;}
+    .final-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--pink-light);text-align:center;text-shadow:0 0 36px rgba(255,105,180,.35);margin-bottom:4px;}
+    .confetti-row{font-size:26px;letter-spacing:4px;margin-bottom:20px;}
+    .winner-card{background:linear-gradient(135deg,rgba(255,105,180,.13),rgba(255,20,147,.08));border:2px solid var(--pink);border-radius:18px;padding:20px 36px;text-align:center;margin-bottom:24px;}
+    .winner-card .crown{font-size:36px;}
+    .winner-name{font-family:'Playfair Display',serif;font-size:30px;color:var(--pink-light);}
+    .winner-pts{color:var(--muted);font-size:13px;margin-top:3px;}
+
+    .sub-banner{background:rgba(168,255,120,.07);border:1px solid var(--green);color:var(--green);border-radius:9px;padding:12px 20px;font-size:13px;font-weight:600;text-align:center;margin-top:14px;max-width:420px;width:100%;}
+    .pp-item{display:flex;align-items:center;gap:9px;background:var(--card2);border-radius:8px;padding:7px 13px;font-size:12px;margin-bottom:5px;}
+    .pp-submitted{color:var(--green);font-size:11px;margin-left:auto;}
+    .pp-waiting{color:var(--muted);font-size:11px;margin-left:auto;animation:pulse 2s infinite;}
+    .total-pts{font-size:12px;color:var(--pink);font-weight:700;}
+
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);font-weight:700;padding:10px 22px;border-radius:30px;font-size:13px;transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:9999;pointer-events:none;color:#fff;}
+    .toast.show{transform:translateX(-50%) translateY(0);}
+    #fb-status{position:fixed;top:0;left:0;right:0;padding:8px 20px;font-size:12px;font-weight:700;text-align:center;z-index:9998;display:none;}
+    #fb-status.err{background:#c0392b;color:#fff;display:block;}
+    #fb-status.ok{background:#27ae60;color:#fff;display:block;}
   </style>
 </head>
 <body>
-
+<div id="fb-status"></div>
 <div class="toast" id="toast"></div>
 
 <!-- LANDING -->
 <div id="landing" class="page">
-  <div class="logo">MATCH<br>THE HOST</div>
-  <p class="tagline">Rank it. Match it. Win it.</p>
+  <div class="logo">Order Up!</div>
+  <div class="logo-sub">Rank it · Match it · Win it</div>
   <div class="role-cards">
     <div class="role-card" onclick="goHost()">
-      <div class="icon">🎮</div>
-      <h2>Host</h2>
-      <p>Create a room &amp; set your ranking</p>
+      <div class="ico">🎮</div><h2>Host</h2><p>Create a room, pick categories &amp; rank</p>
     </div>
-    <div class="role-card" onclick="toggleJoin()">
-      <div class="icon">🙋</div>
-      <h2>Player</h2>
-      <p>Join a room &amp; guess the host</p>
+    <div class="role-card" onclick="toggleJoinBox()">
+      <div class="ico">🌸</div><h2>Player</h2><p>Join a room &amp; guess the host's order</p>
     </div>
   </div>
-  <div class="join-section hidden" id="join-section">
+  <div class="join-box hidden" id="join-box">
     <label>Enter Room Code</label>
-    <div class="join-input-row">
-      <input type="text" id="join-code-input" maxlength="6" placeholder="ABC123"
-        style="text-transform:uppercase;letter-spacing:4px;font-family:'Bebas Neue',sans-serif;font-size:24px;width:190px;">
-      <button class="btn btn-primary" onclick="joinRoom()">Join</button>
+    <div class="join-row">
+      <input type="text" id="join-code" maxlength="6" placeholder="ABC123"
+        style="text-transform:uppercase;letter-spacing:4px;font-family:'Playfair Display',serif;font-size:20px;"
+        onkeydown="if(event.key==='Enter')joinAndGo()">
+      <button class="btn btn-primary" onclick="joinAndGo()">Join →</button>
     </div>
   </div>
 </div>
@@ -173,9 +188,9 @@
 <!-- NAME SCREEN -->
 <div id="name-screen" class="page hidden">
   <h2>What's Your Name?</h2>
-  <p>This is how you'll appear on the leaderboard</p>
+  <p>This shows on the leaderboard 🌸</p>
   <div class="name-form">
-    <input type="text" id="player-name-input" placeholder="Your nickname" maxlength="20">
+    <input type="text" id="player-name-input" placeholder="Your nickname" maxlength="20" onkeydown="if(event.key==='Enter')confirmName()">
     <button class="btn btn-primary" onclick="confirmName()">Let's Go →</button>
   </div>
 </div>
@@ -184,344 +199,865 @@
 <div id="host-lobby" class="page hidden">
   <div class="top-bar">
     <div class="badge">HOST</div>
-    <div id="player-count-badge" style="color:var(--muted);font-size:14px;">0 players</div>
+    <div id="pcnt" style="color:var(--muted);font-size:13px;">0 players</div>
   </div>
-  <div class="room-code-display">
+  <div class="room-code-block">
     <label>Room Code — Share This!</label>
     <div class="room-code" id="room-code-display">------</div>
   </div>
-  <div class="host-main">
+  <div class="lobby-grid">
     <div class="panel">
       <h3>📱 Scan to Join</h3>
-      <div id="qr-code"><div id="qr-code-inner"></div></div>
+      <div id="qr-wrap"><div id="qr-inner"></div></div>
       <div class="join-url" id="join-url-text"></div>
     </div>
     <div class="panel">
-      <h3>👥 Players Joined</h3>
-      <div class="player-list" id="player-list">
-        <div class="no-players">Waiting for players to join…</div>
-      </div>
+      <h3>🌸 Players Joined</h3>
+      <div class="player-list" id="player-list"><div class="no-players">Waiting for players…</div></div>
     </div>
   </div>
-  <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-    <button class="btn btn-primary" onclick="goHostGame()">Set My Ranking →</button>
+  <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn btn-primary" onclick="goPickCategory()">Pick Category &amp; Start Round →</button>
   </div>
+  <div id="rounds-summary" style="margin-top:12px;color:var(--muted);font-size:12px;text-align:center;"></div>
 </div>
 
-<!-- HOST GAME SCREEN -->
+<!-- HOST CATEGORY PICK -->
+<div id="host-pick-screen" class="page hidden">
+  <div class="top-bar" style="max-width:920px;">
+    <div class="badge">HOST</div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span id="pick-round-label" style="color:var(--muted);font-size:12px;"></span>
+      <button class="btn btn-ghost" style="padding:7px 13px;font-size:12px;" onclick="showPage('host-lobby')">← Lobby</button>
+    </div>
+  </div>
+  <div class="game-head" style="margin-bottom:12px;">
+    <h1>Pick a Category</h1>
+    <p>Choose what players will rank this round</p>
+  </div>
+  <div class="cat-search">
+    <input type="text" id="cat-search-input" placeholder="🔍 Search categories…" oninput="filterCategories()">
+  </div>
+  <div class="cat-grid" id="cat-grid"></div>
+  <button class="btn btn-primary" id="start-round-btn" onclick="startRound()" disabled>Start Round →</button>
+</div>
+
+<!-- HOST GAME -->
 <div id="host-game-screen" class="page hidden">
   <div class="game-wrap">
-    <div class="top-bar" style="max-width:500px;">
+    <div class="top-bar" style="max-width:460px;">
       <div class="badge">HOST</div>
-      <div style="color:var(--muted);font-size:13px;">🔒 Hidden from players</div>
+      <span id="host-round-badge" class="round-badge"></span>
     </div>
-    <div class="game-header">
+    <div class="game-head">
       <h1>Your Secret Ranking</h1>
       <p>Drag to order — players must guess this!</p>
     </div>
-    <div class="locked-banner">🙈 Players cannot see your ranking until you reveal results</div>
+    <div id="host-cat-label" class="cat-label"></div>
+    <div class="locked-bar">🔒 Hidden from players until you reveal</div>
     <div class="rank-labels">
-      <span class="rank-label top">▲ &nbsp;FAVORITE (#1)</span>
-      <span class="rank-label bottom">LEAST FAVORITE &nbsp;▼</span>
+      <span class="rl top">⭐ FAVORITE / BEST (#1)</span>
+      <span class="rl bot">LEAST FAVORITE ▼</span>
     </div>
-    <ul class="sortable-list" id="host-sortable"></ul>
-    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <ul class="slist" id="host-sortable"></ul>
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
       <button class="btn btn-ghost" onclick="showPage('host-lobby')">← Lobby</button>
-      <button class="btn btn-primary" onclick="lockHostOrder()">🔒 Lock In My Order</button>
+      <button class="btn btn-primary" id="lock-btn" onclick="lockHostOrder()">🔒 Lock In My Order</button>
     </div>
-    <div id="reveal-wrap" class="hidden" style="margin-top:16px;">
-      <button class="btn btn-danger" onclick="revealResults()">🎉 Reveal Results!</button>
+    <div id="reveal-wrap" class="hidden" style="margin-top:12px;width:100%;max-width:420px;">
+      <div id="players-progress-host" style="margin-bottom:12px;"></div>
+      <div style="text-align:center;">
+        <button class="btn btn-outline" onclick="revealRound()">🌸 Reveal Round Results!</button>
+      </div>
     </div>
-    <div id="host-lock-msg" style="margin-top:14px;color:var(--muted);font-size:13px;"></div>
+    <div id="lock-msg" style="margin-top:9px;color:var(--muted);font-size:12px;text-align:center;"></div>
   </div>
 </div>
 
-<!-- WAITING SCREEN -->
+<!-- WAITING -->
 <div id="waiting-screen" class="page hidden">
   <div class="spinner"></div>
-  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:12px;">Waiting for Host</h2>
-  <p style="color:var(--muted);">The host will start the game soon…</p>
-  <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 30px;text-align:center;">
-    <div style="color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Room</div>
-    <div id="waiting-room-code" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);letter-spacing:8px;"></div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--pink-light);margin-bottom:7px;">Waiting for Host</h2>
+  <p style="color:var(--muted);margin-bottom:18px;">The host will start the round soon…</p>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 24px;text-align:center;">
+    <div style="color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;">Room</div>
+    <div id="wait-code" style="font-family:'Playfair Display',serif;font-size:30px;color:var(--pink);letter-spacing:7px;"></div>
   </div>
+  <div id="wait-info" style="margin-top:13px;color:var(--muted);font-size:12px;"></div>
+  <div id="wait-pts" class="total-pts" style="margin-top:6px;"></div>
 </div>
 
-<!-- PLAYER GAME SCREEN -->
+<!-- PLAYER GAME -->
 <div id="player-game-screen" class="page hidden">
   <div class="game-wrap">
-    <div class="top-bar" style="max-width:500px;">
-      <div class="badge" style="background:var(--accent2);">PLAYER</div>
-      <div id="player-display-name" style="color:var(--muted);font-size:14px;"></div>
+    <div class="top-bar" style="max-width:460px;">
+      <div class="badge player-badge">PLAYER</div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span id="player-round-badge" class="round-badge"></span>
+        <span id="player-pts-badge" class="total-pts"></span>
+      </div>
     </div>
-    <div class="game-header">
-      <h1>Guess the Host's Ranking</h1>
+    <div class="game-head">
+      <h1>Guess the Host's Order</h1>
       <p>Drag to match what you think the host chose</p>
     </div>
+    <div id="player-cat-label" class="cat-label"></div>
     <div class="rank-labels">
-      <span class="rank-label top">▲ &nbsp;HOST'S FAVORITE (#1)</span>
-      <span class="rank-label bottom">LEAST FAVORITE &nbsp;▼</span>
+      <span class="rl top">⭐ HOST'S FAVORITE (#1)</span>
+      <span class="rl bot">LEAST FAVORITE ▼</span>
     </div>
-    <ul class="sortable-list" id="player-sortable"></ul>
-    <button class="btn btn-primary" id="submit-btn" style="margin-top:20px;" onclick="submitPlayerOrder()">Submit My Guess ✓</button>
-    <div id="submitted-banner" class="hidden">
-      <div class="submitted-banner">✅ Submitted! Waiting for host to reveal results…</div>
-    </div>
+    <ul class="slist" id="player-sortable"></ul>
+    <button class="btn btn-primary" id="submit-btn" style="margin-top:15px;" onclick="submitOrder()">Submit My Guess ✓</button>
+    <div id="sub-banner" class="hidden"><div class="sub-banner">✅ Submitted! Waiting for host to reveal…</div></div>
   </div>
 </div>
 
-<!-- RESULTS SCREEN -->
-<div id="results-screen" class="page hidden">
-  <div class="results-title">RESULTS!</div>
-  <p style="color:var(--muted);margin-bottom:30px;">Here's how everyone did</p>
-  <div class="host-reveal">
-    <h3>🏆 HOST'S ACTUAL RANKING</h3>
-    <div class="rank-labels">
-      <span class="rank-label top">▲ &nbsp;FAVORITE</span>
-      <span class="rank-label bottom">LEAST FAV &nbsp;▼</span>
+<!-- ROUND RESULTS -->
+<div id="round-results-screen" class="page hidden">
+  <div class="rr-title" id="rr-title">Round Results</div>
+  <p style="color:var(--muted);margin-bottom:4px;" id="rr-cat-label"></p>
+
+  <div id="player-own-results" class="hidden" style="width:100%;max-width:420px;">
+    <div class="your-score-box">
+      <div class="score-num" id="rr-your-score">0/5</div>
+      <div class="score-label">correct placements this round</div>
     </div>
-    <ul class="sortable-list" id="results-host-list"></ul>
+    <p class="result-section-title">Your Answers vs Host's Order</p>
+    <ul class="slist" id="player-result-list"></ul>
   </div>
-  <div class="leaderboard">
-    <h3>📊 LEADERBOARD</h3>
-    <div id="leaderboard-list"></div>
+
+  <div style="width:100%;max-width:420px;">
+    <p class="result-section-title" style="margin-top:14px;">🏆 Host's Actual Ranking</p>
+    <div class="rank-labels"><span class="rl top">⭐ FAVORITE</span><span class="rl bot">LEAST FAVORITE ▼</span></div>
+    <ul class="slist" id="rr-host-list"></ul>
   </div>
-  <div style="margin-top:30px;">
-    <button class="btn btn-ghost" onclick="location.reload()">Play Again</button>
+
+  <hr class="divider">
+
+  <div class="lb">
+    <h3>📊 Round Leaderboard</h3>
+    <div id="rr-lb-list"></div>
   </div>
+
+  <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;" id="rr-buttons"></div>
+</div>
+
+<!-- FINAL RESULTS -->
+<div id="final-results-screen" class="page hidden">
+  <div class="confetti-row">🌸✨💖✨🌸</div>
+  <div class="final-title">Game Over!</div>
+  <p style="color:var(--muted);margin-bottom:20px;">Final Scores — All Rounds</p>
+  <div class="winner-card">
+    <div class="crown">👑</div>
+    <div class="winner-name" id="winner-name">-</div>
+    <div class="winner-pts" id="winner-pts">-</div>
+  </div>
+  <div class="lb" style="max-width:480px;">
+    <h3>🏆 Final Leaderboard</h3>
+    <div id="final-lb-list"></div>
+  </div>
+  <div style="margin-top:24px;"><button class="btn btn-primary" onclick="location.reload()">Play Again 🌸</button></div>
 </div>
 
 <script>
-// Firebase init (compat mode — global, no module scope issues)
 firebase.initializeApp({
-  apiKey: "AIzaSyCoRWphqnWGI3oO2WkNXL7oSLCe7Py_09w",
-  authDomain: "orderup-c928b.firebaseapp.com",
-  databaseURL: "https://orderup-c928b-default-rtdb.firebaseio.com",
-  projectId: "orderup-c928b",
-  storageBucket: "orderup-c928b.firebasestorage.app",
-  messagingSenderId: "436213481520",
-  appId: "1:436213481520:web:91e6c3e57872f90ff32df5"
+  apiKey:"AIzaSyCoRWphqnWGI3oO2WkNXL7oSLCe7Py_09w",
+  authDomain:"orderup-c928b.firebaseapp.com",
+  databaseURL:"https://orderup-c928b-default-rtdb.firebaseio.com",
+  projectId:"orderup-c928b",
+  storageBucket:"orderup-c928b.firebasestorage.app",
+  messagingSenderId:"436213481520",
+  appId:"1:436213481520:web:91e6c3e57872f90ff32df5"
 });
-const db = firebase.database();
+var db = firebase.database();
 
-// State
-let roomId = null;
-let playerId = "p_" + Math.random().toString(36).slice(2, 9);
-let playerName = "";
-let playerSubmitted = false;
+db.ref('.info/connected').on('value', function(s) {
+  var b = document.getElementById('fb-status');
+  if (s.val()) {
+    b.textContent = '✅ Connected!';
+    b.className = 'ok';
+    setTimeout(function(){ b.style.display='none'; }, 2200);
+  } else {
+    b.textContent = '⚠️ Not connected — fix Firebase rules at console.firebase.google.com';
+    b.className = 'err';
+  }
+});
 
-const ITEMS = [
-  { name: "Pizza",   emoji: "🍕" },
-  { name: "Burgers", emoji: "🍔" },
-  { name: "Tacos",   emoji: "🌮" },
-  { name: "Sushi",   emoji: "🍣" },
-  { name: "Pasta",   emoji: "🍝" },
+// ── CATEGORIES ──────────────────────────────────────────────────
+var CATEGORIES = [
+  // ── MOVIES ──────────────────────────────────────────────────────
+  {type:'Movies',name:'Hunger Games Films',items:['The Hunger Games','Catching Fire','Mockingjay Part 1','Mockingjay Part 2','Ballad of Songbirds & Snakes']},
+  {type:'Movies',name:'Harry Potter Films',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
+  {type:'Movies',name:'Scream Films',items:['Scream','Scream 2','Scream 3','Scream 4','Scream 5']},
+  {type:'Movies',name:'Halloween Films',items:['Halloween (1978)','Halloween II','Halloween H20','Halloween (2018)','Halloween Ends']},
+  {type:'Movies',name:'Friday the 13th Films',items:['Friday the 13th','Part 2','Part 3','The Final Chapter','Jason Lives']},
+  {type:'Movies',name:'Girl Movies',items:['Mean Girls','Clueless','Heathers','Easy A','Legally Blonde']},
+  {type:'Movies',name:'Twilight Films',items:['Twilight','New Moon','Eclipse','Breaking Dawn Part 1','Breaking Dawn Part 2']},
+  {type:'Movies',name:'YA Dystopia Films',items:['The Maze Runner','The Scorch Trials','The Death Cure','Divergent','Insurgent']},
+  {type:'Movies',name:'Disney Animated (Modern)',items:['Frozen','Frozen II','Tangled','Moana','Raya and the Last Dragon']},
+  {type:'Movies',name:'Disney Animated (Classic)',items:['The Little Mermaid','Beauty and the Beast','Aladdin','Cinderella','Snow White']},
+  {type:'Movies',name:'Pixar Films',items:['The Incredibles','Up','Inside Out','Coco','Soul']},
+  {type:'Movies',name:'Pixar Sequels',items:['Toy Story 2','Toy Story 3','Finding Dory','Incredibles 2','Inside Out 2']},
+  {type:'Movies',name:'Marvel Avengers Films',items:['The Avengers','Age of Ultron','Infinity War','Endgame','Civil War']},
+  {type:'Movies',name:'Marvel Phase 1 Films',items:['Iron Man','The Incredible Hulk','Iron Man 2','Thor','Captain America: The First Avenger']},
+  {type:'Movies',name:'Spider-Man Films',items:['Spider-Man (2002)','Into the Spider-Verse','Homecoming','No Way Home','Across the Spider-Verse']},
+  {type:'Movies',name:'DC Films',items:['The Dark Knight','Wonder Woman','Aquaman','Shazam!','The Suicide Squad']},
+  {type:'Movies',name:'Batman Films',items:['Batman (1989)','Batman Returns','The Dark Knight','Batman v Superman','The Batman (2022)']},
+  {type:'Movies',name:'Rom-Coms',items:['10 Things I Hate About You','Bridget Jones Diary','How to Lose a Guy in 10 Days','Crazy Rich Asians','To All the Boys I\'ve Loved Before']},
+  {type:'Movies',name:'90s Animated Films',items:['The Lion King','Mulan','Hercules','Tarzan','The Hunchback of Notre Dame']},
+  {type:'Movies',name:'2000s Teen Movies',items:['Bring It On','13 Going on 30','A Cinderella Story','Freaky Friday','The Princess Diaries']},
+  {type:'Movies',name:'Animated Sequels',items:['Shrek 2','Kung Fu Panda 2','How to Train Your Dragon 2','Despicable Me 2','Puss in Boots: The Last Wish']},
+  {type:'Movies',name:'Horror Franchises',items:['A Nightmare on Elm Street','Halloween','Friday the 13th','Scream','The Texas Chain Saw Massacre']},
+  {type:'Movies',name:'Psychological Thrillers',items:['Get Out','Hereditary','Midsommar','The Witch','Us']},
+  {type:'Movies',name:'Fantasy Adventure Films',items:['The Princess Bride','Labyrinth','The NeverEnding Story','Willow','Stardust']},
+  {type:'Movies',name:'Animated Villains\' Origin Movies',items:['Maleficent','Cruella','Joker','Venom','Megamind']},
+
+  // ── TV ──────────────────────────────────────────────────────────
+  {type:'TV',name:'Crime Procedurals',items:['Criminal Minds','Bones','NCIS','Law & Order SVU','Mindhunter']},
+  {type:'TV',name:'Supernatural Teen Dramas',items:['Supernatural','The Vampire Diaries','Teen Wolf','The Originals','Buffy the Vampire Slayer']},
+  {type:'TV',name:'British Dramas',items:['Sherlock','Doctor Who','Black Mirror','Broadchurch','Luther']},
+  {type:'TV',name:'Cult Sci-Fi & Mystery',items:['Stranger Things','The Umbrella Academy','Dark','Yellowjackets','Lost']},
+  {type:'TV',name:'Teen Dramas',items:['Glee','Riverdale','Pretty Little Liars','Gossip Girl','The OC']},
+  {type:'TV',name:'Reality Competition Shows',items:['RuPaul\'s Drag Race','Survivor','The Amazing Race','Big Brother','The Voice']},
+  {type:'TV',name:'Animated Adult Shows',items:['Bob\'s Burgers','Archer','BoJack Horseman','Futurama','Rick and Morty']},
+  {type:'TV',name:'Sitcoms',items:['The Office','Parks and Recreation','Brooklyn Nine-Nine','New Girl','Schitt\'s Creek']},
+  {type:'TV',name:'Fantasy & Sci-Fi Dramas',items:['Game of Thrones','The Witcher','Wheel of Time','Shadow and Bone','House of the Dragon']},
+  {type:'TV',name:'Netflix Originals',items:['Squid Game','Bridgerton','Outer Banks','Emily in Paris','Wednesday']},
+  {type:'TV',name:'Animated Kids Shows (2000s)',items:['Kim Possible','The Fairly OddParents','Danny Phantom','My Life as a Teenage Robot','Lizzie McGuire']},
+  {type:'TV',name:'Cartoon Network Classics',items:['The Powerpuff Girls','Dexter\'s Laboratory','Ed Edd n Eddy','Courage the Cowardly Dog','Johnny Bravo']},
+  {type:'TV',name:'Nickelodeon Classics',items:['SpongeBob SquarePants','Rugrats','Hey Arnold!','Invader Zim','The Fairly OddParents']},
+  {type:'TV',name:'Anime Series',items:['Attack on Titan','Demon Slayer','Fullmetal Alchemist: Brotherhood','My Hero Academia','Death Note']},
+  {type:'TV',name:'Shojo Anime',items:['Sailor Moon','Fruits Basket','Ouran High School Host Club','Cardcaptor Sakura','Kimi ni Todoke']},
+  {type:'TV',name:'Isekai Anime',items:['Sword Art Online','Re:Zero','That Time I Got Reincarnated as a Slime','No Game No Life','Overlord']},
+  {type:'TV',name:'Medical Dramas',items:['Grey\'s Anatomy','House MD','ER','Scrubs','The Good Doctor']},
+  {type:'TV',name:'True Crime Shows',items:['Making a Murderer','The Jinx','Tiger King','Conversations with a Killer','The Staircase']},
+  {type:'TV',name:'Late Night Hosts',items:['Jimmy Fallon','Stephen Colbert','Jimmy Kimmel','Conan O\'Brien','Seth Meyers']},
+  {type:'TV',name:'Competition Cooking Shows',items:['Top Chef','MasterChef','The Great British Bake Off','Chopped','Hell\'s Kitchen']},
+
+  // ── GAMES ───────────────────────────────────────────────────────
+  {type:'Games',name:'Cozy & Sandbox Games',items:['Minecraft','Stardew Valley','Terraria','Animal Crossing','The Sims 4']},
+  {type:'Games',name:'Multiplayer Party Games',items:['Among Us','Fall Guys','Fortnite','Roblox','Valorant']},
+  {type:'Games',name:'Indie Story Games',items:['Undertale','Deltarune','Omori','Celeste','Hollow Knight']},
+  {type:'Games',name:'Horror Games',items:["Five Nights at Freddy's",'Poppy Playtime','Bendy and the Ink Machine','Little Nightmares','Hello Neighbor']},
+  {type:'Games',name:'Pokemon Games',items:['Pokemon Red','Pokemon Gold','Pokemon Emerald','Pokemon Platinum','Pokemon Sword']},
+  {type:'Games',name:'Mario Games',items:['Mario Kart 8','Super Smash Bros Ultimate','Mario Odyssey','Mario Party','Mario Kart Wii']},
+  {type:'Games',name:'Legend of Zelda Games',items:['Ocarina of Time','Breath of the Wild','Majora\'s Mask','Tears of the Kingdom','Wind Waker']},
+  {type:'Games',name:'RPG Games',items:['Skyrim','Witcher 3','Baldur\'s Gate 3','Final Fantasy VII','Elden Ring']},
+  {type:'Games',name:'Platformer Games',items:['Super Mario Bros','Crash Bandicoot','Banjo-Kazooie','Spyro the Dragon','Rayman']},
+  {type:'Games',name:'Survival Horror Games',items:['Resident Evil 2','Silent Hill 2','Outlast','Amnesia: The Dark Descent','Alien: Isolation']},
+  {type:'Games',name:'Visual Novels / Story Games',items:['Doki Doki Literature Club','Life is Strange','Disco Elysium','80 Days','Hades']},
+  {type:'Games',name:'Nintendo Switch Games',items:['Breath of the Wild','Mario Kart 8 Deluxe','Splatoon 3','Pokemon Scarlet/Violet','Kirby and the Forgotten Land']},
+  {type:'Games',name:'PS4/PS5 Exclusives',items:['The Last of Us','God of War','Ghost of Tsushima','Horizon Zero Dawn','Spider-Man (PS4)']},
+  {type:'Games',name:'Rhythm Games',items:['Just Dance','Guitar Hero','Beat Saber','Friday Night Funkin\'','Thumper']},
+  {type:'Games',name:'Battle Royale Games',items:['Fortnite','Apex Legends','PUBG','Warzone','Fall Guys']},
+  {type:'Games',name:'Life Sim Games',items:['The Sims 4','Animal Crossing: New Horizons','Stardew Valley','Story of Seasons','Coral Island']},
+  {type:'Games',name:'Pokemon Generations',items:['Gen 1 (Kanto)','Gen 2 (Johto)','Gen 3 (Hoenn)','Gen 4 (Sinnoh)','Gen 5 (Unova)']},
+  {type:'Games',name:'Super Smash Bros Fighters',items:['Kirby','Pikachu','Link','Samus','Marth']},
+
+  // ── CHARACTERS ──────────────────────────────────────────────────
+  {type:'Characters',name:'Hunger Games Characters',items:['Katniss Everdeen','Peeta Mellark','Gale Hawthorne','Lucy Gray Baird','Coriolanus Snow']},
+  {type:'Characters',name:'Harry Potter Characters',items:['Harry Potter','Hermione Granger','Ron Weasley','Draco Malfoy','Luna Lovegood']},
+  {type:'Characters',name:'Supernatural Characters',items:['Dean Winchester','Sam Winchester','Castiel','Crowley','Bobby Singer']},
+  {type:'Characters',name:'Vampire Diaries Characters',items:['Damon Salvatore','Stefan Salvatore','Elena Gilbert','Klaus Mikaelson','Caroline Forbes']},
+  {type:'Characters',name:'Teen Wolf Characters',items:['Stiles Stilinski','Scott McCall','Lydia Martin','Derek Hale','Allison Argent']},
+  {type:'Characters',name:'Wednesday Characters',items:['Wednesday Addams','Morticia Addams','Gomez Addams','Enid Sinclair','Uncle Fester']},
+  {type:'Characters',name:'Superheroes',items:['Batman','Spider-Man','Iron Man','Captain America','Thor']},
+  {type:'Characters',name:'Villains',items:['The Joker','Harley Quinn','Poison Ivy','Catwoman','Riddler']},
+  {type:'Characters',name:'Frozen Characters',items:['Elsa','Anna','Olaf','Kristoff','Hans']},
+  {type:'Characters',name:'Tangled Characters',items:['Rapunzel','Flynn Rider','Mother Gothel','Maximus','Pascal']},
+  {type:'Characters',name:'Avatar: The Last Airbender',items:['Aang','Katara','Sokka','Zuko','Toph']},
+  {type:'Characters',name:'Steven Universe Characters',items:['Steven Universe','Garnet','Amethyst','Pearl','Peridot']},
+  {type:'Characters',name:'Winx Club Characters',items:['Bloom','Stella','Flora','Musa','Tecna']},
+  {type:'Characters',name:'Monster High Characters',items:['Draculaura','Frankie Stein','Clawdeen Wolf','Lagoona Blue','Cleo de Nile']},
+  {type:'Characters',name:'Slasher Icons',items:['Ghostface','Michael Myers','Jason Voorhees','Freddy Krueger','Leatherface']},
+  {type:'Characters',name:'Horror Villains',items:['Chucky','Annabelle','Pennywise','The Nun','Sam from Trick r Treat']},
+  {type:'Characters',name:'Marvel Avengers',items:['Iron Man','Captain America','Thor','Black Widow','Hulk']},
+  {type:'Characters',name:'Marvel X-Men',items:['Wolverine','Storm','Cyclops','Jean Grey','Rogue']},
+  {type:'Characters',name:'DC Justice League',items:['Batman','Superman','Wonder Woman','The Flash','Aquaman']},
+  {type:'Characters',name:'DC Villains',items:['The Joker','Lex Luthor','Harley Quinn','Brainiac','Darkseid']},
+  {type:'Characters',name:'Stranger Things Characters',items:['Eleven','Mike Wheeler','Dustin Henderson','Max Mayfield','Steve Harrington']},
+  {type:'Characters',name:'Bridgerton Characters',items:['Daphne Bridgerton','Simon Basset','Anthony Bridgerton','Kate Sharma','Benedict Bridgerton']},
+  {type:'Characters',name:'Encanto Characters',items:['Mirabel Madrigal','Luisa Madrigal','Isabela Madrigal','Camilo Madrigal','Bruno Madrigal']},
+  {type:'Characters',name:'Moana Characters',items:['Moana','Maui','Tamatoa','Gramma Tala','Te Fiti']},
+  {type:'Characters',name:'MHA Heroes',items:['Deku','Bakugo','Todoroki','Uraraka','All Might']},
+  {type:'Characters',name:'MHA Villains',items:['Shigaraki','Dabi','Toga','All For One','Twice']},
+  {type:'Characters',name:'Demon Slayer Characters',items:['Tanjiro','Nezuko','Zenitsu','Inosuke','Rengoku']},
+  {type:'Characters',name:'Attack on Titan Characters',items:['Eren Yeager','Mikasa Ackerman','Armin Arlert','Levi Ackerman','Hange Zoe']},
+  {type:'Characters',name:'Sailor Moon Senshi',items:['Sailor Moon','Sailor Mercury','Sailor Mars','Sailor Jupiter','Sailor Venus']},
+  {type:'Characters',name:'MLP Mane 6',items:['Twilight Sparkle','Rainbow Dash','Fluttershy','Rarity','Applejack']},
+  {type:'Characters',name:'MLP Supporting Cast',items:['Princess Celestia','Princess Luna','Spike','Discord','Starlight Glimmer']},
+  {type:'Characters',name:'MLP Villains',items:['Discord','Queen Chrysalis','Nightmare Moon','King Sombra','Tirek']},
+  {type:'Characters',name:'Pixar Characters',items:['Woody','Buzz Lightyear','WALL-E','Nemo','Merida']},
+  {type:'Characters',name:'Disney Princesses',items:['Cinderella','Ariel','Belle','Jasmine','Mulan']},
+  {type:'Characters',name:'Disney Villains',items:['Maleficent','Ursula','Gaston','Jafar','Hades']},
+
+  // ── MUSIC ───────────────────────────────────────────────────────
+  {type:'Music',name:'Taylor Swift Albums',items:['Fearless','1989','Reputation','Folklore','Midnights']},
+  {type:'Music',name:'Taylor Swift Eras',items:['Country Era','Pop Era','Reputation Era','Folklorian Era','Eras Tour Era']},
+  {type:'Music',name:'Beyoncé Albums',items:['Lemonade','Dangerously in Love','4','Beyoncé (Self-Titled)','Renaissance']},
+  {type:'Music',name:'Olivia Rodrigo Songs',items:['drivers license','good 4 u','brutal','happier','vampire']},
+  {type:'Music',name:'Billie Eilish Albums',items:['When We All Fall Asleep...','Happier Than Ever','Hit Me Hard and Soft','Don\'t Smile at Me EP','Guitar Songs EP']},
+  {type:'Music',name:'Ariana Grande Albums',items:['Thank U Next','Sweetener','Positions','Yours Truly','My Everything']},
+  {type:'Music',name:'Doja Cat Albums',items:['Hot Pink','Planet Her','Scarlet','Amala','Candy']},
+  {type:'Music',name:'SZA Albums',items:['Ctrl','SOS','Good Days EP','Z EP','Hit Different']},
+  {type:'Music',name:'Pop Divas',items:['Beyoncé','Taylor Swift','Ariana Grande','Rihanna','Lady Gaga']},
+  {type:'Music',name:'Pop Punk Bands',items:['Paramore','My Chemical Romance','Fall Out Boy','Panic! at the Disco','Green Day']},
+  {type:'Music',name:'K-Pop Groups',items:['BTS','BLACKPINK','TWICE','Stray Kids','aespa']},
+  {type:'Music',name:'K-Pop Girl Groups',items:['BLACKPINK','TWICE','aespa','IVE','NewJeans']},
+  {type:'Music',name:'K-Pop Boy Groups',items:['BTS','Stray Kids','EXO','NCT 127','ATEEZ']},
+  {type:'Music',name:'90s Pop Stars',items:['Britney Spears','Christina Aguilera','Backstreet Boys','NSYNC','Spice Girls']},
+  {type:'Music',name:'2000s Bops Era',items:['Fergalicious','Hollaback Girl','Since U Been Gone','My Humps','Beautiful']},
+  {type:'Music',name:'Iconic Music Videos',items:['Thriller','Single Ladies','Bad Romance','Wrecking Ball','This Is America']},
+  {type:'Music',name:'Alternative Artists',items:['Lorde','Lana Del Rey','Florence + The Machine','Halsey','Mitski']},
+  {type:'Music',name:'Lana Del Rey Albums',items:['Born to Die','Ultraviolence','Lust for Life','Norman Fucking Rockwell','Did You Know There\'s a Tunnel Under Ocean Blvd']},
+  {type:'Music',name:'Harry Styles Albums',items:['Harry Styles','Fine Line','Harry\'s House','One Direction Era','As It Was Single']},
+  {type:'Music',name:'Sabrina Carpenter Songs',items:['Espresso','Please Please Please','Feather','Nonsense','Skin']},
+  {type:'Music',name:'Chappell Roan Songs',items:['Good Luck Babe!','Red Wine Supernova','HOT TO GO!','Casual','Pink Pony Club']},
+  {type:'Music',name:'Rap/Hip-Hop Artists',items:['Kendrick Lamar','Drake','Nicki Minaj','Cardi B','Travis Scott']},
+  {type:'Music',name:'Iconic Albums of All Time',items:['Thriller','Purple Rain','Rumours','Born to Run','Abbey Road']},
+  {type:'Music',name:'Musical Genres',items:['Pop','Hip-Hop','R&B','Rock','Country']},
+  {type:'Music',name:'Iconic Girl Bands',items:['Spice Girls','Destiny\'s Child','Little Mix','Fifth Harmony','TLC']},
+  {type:'Music',name:'Coachella Headliners (2019-2024)',items:['Beyoncé','Billie Eilish','Bad Bunny','Frank Ocean','Lana Del Rey']},
+
+  // ── BOOKS & FANDOMS ─────────────────────────────────────────────
+  {type:'Books',name:'Harry Potter Books',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
+  {type:'Books',name:'Hunger Games Books',items:['The Hunger Games','Catching Fire','Mockingjay','Ballad of Songbirds & Snakes','The Unofficial Guide']},
+  {type:'Books',name:'Twilight Saga Books',items:['Twilight','New Moon','Eclipse','Breaking Dawn','Midnight Sun']},
+  {type:'Books',name:'Percy Jackson Books',items:['The Lightning Thief','Sea of Monsters','Titan\'s Curse','Battle of the Labyrinth','The Last Olympian']},
+  {type:'Books',name:'A Court of Thorns & Roses',items:['A Court of Thorns and Roses','A Court of Mist and Fury','A Court of Wings and Ruin','A Court of Frost and Starlight','A Court of Silver Flames']},
+  {type:'Books',name:'Six of Crows Duology',items:['Six of Crows','Crooked Kingdom','Shadow and Bone','Siege and Storm','Ruin and Rising']},
+  {type:'Books',name:'Divergent Series',items:['Divergent','Insurgent','Allegiant','Four','The Transfer']},
+  {type:'Books',name:'Maze Runner Series',items:['The Maze Runner','The Scorch Trials','The Death Cure','The Kill Order','The Fever Code']},
+  {type:'Books',name:'Sarah J. Maas Series',items:['ACOTAR','Throne of Glass','Crescent City','A Court of Mist and Fury','A Court of Silver Flames']},
+  {type:'Books',name:'Colleen Hoover Books',items:['Verity','It Ends with Us','Ugly Love','Confess','November 9']},
+  {type:'Books',name:'Classic YA Books',items:['The Outsiders','The Perks of Being a Wallflower','Looking for Alaska','The Fault in Our Stars','Thirteen Reasons Why']},
+  {type:'Books',name:'Fantasy Series',items:['Lord of the Rings','Game of Thrones','Wheel of Time','Name of the Wind','Stormlight Archive']},
+  {type:'Books',name:'Warrior Cats Arcs',items:['The Prophecies Begin','The New Prophecy','Power of Three','Omen of the Stars','A Vision of Shadows']},
+  {type:'Books',name:'Graphic Novel Series',items:['Saga','Maus','Watchmen','Persepolis','Fun Home']},
+  {type:'Books',name:'Manga Series',items:['Attack on Titan','My Hero Academia','Demon Slayer','Naruto','One Piece']},
+
+  // ── MLP (GEN 4 ONLY) ────────────────────────────────────────────
+  {type:'MLP',name:'MLP Seasons',items:['Season 1','Season 2','Season 3','Season 4','Season 5']},
+  {type:'MLP',name:'MLP Episodes (S1)',items:['Friendship is Magic','Applebuck Season','Bridle Gossip','Suited for Success','The Best Night Ever']},
+  {type:'MLP',name:'MLP Movies & Specials',items:['Equestria Girls','Rainbow Rocks','Friendship Games','Legend of Everfree','The MLP Movie (2017)']},
+  {type:'MLP',name:'MLP Cutie Mark Crusaders',items:['Apple Bloom','Sweetie Belle','Scootaloo','Babs Seed','Diamond Tiara (reformed)']},
+  {type:'MLP',name:'MLP Alicorn Princesses',items:['Princess Celestia','Princess Luna','Princess Cadance','Princess Twilight Sparkle','Princess Flurry Heart']},
+  {type:'MLP',name:'MLP Ships',items:['Twilight x Flash','Rarity x Spike','Rainbow x Applejack','Fluttershy x Discord','Pinkie x Cheese Sandwich']},
+  {type:'MLP',name:'MLP Songs',items:['My Little Pony Theme','Winter Wrap Up','This Day Aria','You\'ll Play Your Part','Open Up Your Eyes']},
+  {type:'MLP',name:'MLP Background Ponies',items:['Derpy Hooves','Doctor Whooves','Lyra Heartstrings','Bon Bon','Octavia Melody']},
+  {type:'MLP',name:'MLP Student Six',items:['Sandbar','Gallus','Silverstream','Smolder','Ocellus']},
+  {type:'MLP',name:'MLP Elements of Harmony',items:['Magic (Twilight)','Loyalty (Rainbow)','Kindness (Fluttershy)','Generosity (Rarity)','Laughter (Pinkie)']},
+
+  // ── FOOD & DRINKS ────────────────────────────────────────────────
+  {type:'Food',name:'Fast Food Chains',items:["McDonald's","Chick-fil-A","Taco Bell","Wendy's","Burger King"]},
+  {type:'Food',name:'Pizza Toppings',items:['Pepperoni','Mushrooms','Extra Cheese','Sausage','Black Olives']},
+  {type:'Food',name:'Ice Cream Flavors',items:['Chocolate','Vanilla','Strawberry','Cookies & Cream','Mint Chip']},
+  {type:'Food',name:'Halloween Candies',items:["Reese's","Kit Kat","Twix","Snickers","Candy Corn"]},
+  {type:'Food',name:'Starbucks Drinks',items:['Pumpkin Spice Latte','Iced Brown Sugar Oat Latte','Caramel Macchiato','Pink Drink','Matcha Latte']},
+  {type:'Food',name:'Starbucks Secret Menu',items:['Butterbeer Latte','Ombre Pink Drink','Skittles Refresher','TikTok Lemonade','Cotton Candy Frappuccino']},
+  {type:'Food',name:'Boba / Bubble Tea Flavors',items:['Taro','Matcha','Brown Sugar Milk Tea','Mango','Strawberry']},
+  {type:'Food',name:'Comfort Foods',items:['Mac and Cheese','Grilled Cheese','Ramen','Chicken Soup','Mashed Potatoes']},
+  {type:'Food',name:'Desserts',items:['Chocolate Cake','Cheesecake','Brownies','Cinnamon Rolls','Tiramisu']},
+  {type:'Food',name:'Breakfast Foods',items:['Pancakes','Waffles','Avocado Toast','Eggs Benedict','Açaí Bowl']},
+  {type:'Food',name:'Chip Flavors',items:['Original','Sour Cream & Onion','BBQ','Salt & Vinegar','Flamin\' Hot']},
+  {type:'Food',name:'Soda Brands',items:['Coca-Cola','Pepsi','Dr. Pepper','Sprite','Mountain Dew']},
+  {type:'Food',name:'Cookie Types',items:['Chocolate Chip','Sugar Cookie','Snickerdoodle','Peanut Butter','Oatmeal Raisin']},
+  {type:'Food',name:'Brunch Dishes',items:['French Toast','Eggs Benedict','Avocado Toast','Mimosa','Smashed Potatoes']},
+  {type:'Food',name:'Candy Bars',items:["Reese's",'Snickers','Kit Kat','Twix','Milky Way']},
+  {type:'Food',name:'Coffee Orders',items:['Iced Latte','Cappuccino','Cold Brew','Flat White','Americano']},
+  {type:'Food',name:'International Cuisines',items:['Italian','Mexican','Japanese','Indian','Thai']},
+  {type:'Food',name:'Pasta Dishes',items:['Spaghetti Bolognese','Carbonara','Alfredo','Pesto Pasta','Lasagna']},
+  {type:'Food',name:'Fruit Tier List',items:['Strawberry','Mango','Watermelon','Peach','Pineapple']},
+  {type:'Food',name:'Thanksgiving Dishes',items:['Turkey','Stuffing','Mashed Potatoes','Cranberry Sauce','Pumpkin Pie']},
+
+  // ── OTHER / BONUS ────────────────────────────────────────────────
+  {type:'Other',name:'Streaming Services',items:['Netflix','Hulu','Disney+','Max','Prime Video']},
+  {type:'Other',name:'Music Platforms',items:['Spotify','Apple Music','YouTube Music','SoundCloud','Physical CDs']},
+  {type:'Other',name:'Social Media',items:['TikTok','Instagram','Twitter/X','Tumblr','YouTube']},
+  {type:'Other',name:'Childhood TV Channels',items:['Early 2000s Disney Channel','Nickelodeon','Cartoon Network','PBS Kids','Fox Kids']},
+  {type:'Other',name:'Romance Tropes',items:['Enemies to Lovers','Friends to Lovers','Fake Dating','Slow Burn','Second Chance']},
+  {type:'Other',name:'Decades',items:['1980s','1990s','2000s','2010s','2020s']},
+  {type:'Other',name:'Aesthetic Vibes',items:['Cottagecore','Dark Academia','Y2K','Barbiecore','Goblincore']},
+  {type:'Other',name:'Halloween Costumes',items:['Witch','Vampire','Ghost','Zombie','Fairy']},
+  {type:'Other',name:'Holiday Movies',items:['Home Alone','Elf','A Christmas Story','The Holiday','How the Grinch Stole Christmas']},
+  {type:'Other',name:'School Subjects',items:['English','Math','Art','History','Science']},
+  {type:'Other',name:'Love Languages',items:['Words of Affirmation','Quality Time','Physical Touch','Acts of Service','Gift Giving']},
+  {type:'Other',name:'Myers-Briggs Types (most popular)',items:['INFP','INFJ','ENFP','INTJ','ISFJ']},
+  {type:'Other',name:'Hogwarts Houses',items:['Gryffindor','Hufflepuff','Ravenclaw','Slytherin','Sorting Hat']},
+  {type:'Other',name:'Greek Gods',items:['Zeus','Athena','Apollo','Artemis','Poseidon']},
+  {type:'Other',name:'Zodiac Signs',items:['Aries','Scorpio','Leo','Gemini','Pisces']},
+  {type:'Other',name:'Fashion Eras',items:['70s Boho','80s Power Shoulders','90s Grunge','2000s Bratz Doll','2010s Hipster']},
+  {type:'Other',name:'Types of Bags',items:['Tote Bag','Crossbody','Backpack','Clutch','Mini Bag']},
+  {type:'Other',name:'Disney Parks Rides',items:['Haunted Mansion','Space Mountain','Pirates of the Caribbean','Splash Mountain','Matterhorn']},
+  {type:'Other',name:'Types of Pets',items:['Dog','Cat','Rabbit','Bird','Fish']},
+  {type:'Other',name:'Vacation Types',items:['Beach','City Break','Mountain Hiking','Road Trip','All-Inclusive Resort']},
+  {type:'Other',name:'Superpowers',items:['Flight','Invisibility','Time Travel','Telepathy','Super Strength']},
+  {type:'Other',name:'Fictional Worlds to Live In',items:['Hogwarts','Middle-Earth','Narnia','Panem','Equestria']},
 ];
-const AVATARS = ["🦊","🐯","🐻","🦁","🐸","🦄","🐺","🦝","🐧","🦋"];
-const TROPHIES = ["🥇","🥈","🥉"];
 
-// Helpers
+var TYPE_EMOJI = {Movies:'🎬',TV:'📺',Games:'🎮',Characters:'✨',Music:'🎵',Books:'📚',Food:'🍕',MLP:'🦄',Other:'🌟',Bonus:'🌸'};
+var RANK_COLORS = ['#ff1493','#ff4da6','#ff69b4','#e0709a','#b06080'];
+var AVATARS = ['🦊','🐯','🐻','🦁','🐸','🦄','🐺','🦝','🐧','🦋','🌸','🦩'];
+var TROPHIES = ['🥇','🥈','🥉'];
+var BASE_URL = 'https://acostenbader4-del.github.io/orderupalie/';
+
+// ── STATE ────────────────────────────────────────────────────────
+var roomId = null;
+var isHost = false;
+var playerId = 'p_' + Math.random().toString(36).slice(2,9);
+var playerName = '';
+var playerSubmitted = false;
+var playerTotalScore = 0;
+var currentRound = 0;
+var currentCategoryIndex = null;
+var usedCatIndexes = [];
+var selectedCatIndex = null;
+
+// ── HELPERS ──────────────────────────────────────────────────────
 function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.add('hidden'); });
   document.getElementById(id).classList.remove('hidden');
+  window.scrollTo(0,0);
 }
 
-function showToast(msg, isError) {
-  const t = document.getElementById('toast');
+function showToast(msg, isErr) {
+  var t = document.getElementById('toast');
   t.textContent = msg;
-  t.style.background = isError ? '#ff4d6d' : '#39d353';
-  t.style.color = isError ? '#fff' : '#000';
+  t.style.background = isErr ? '#c0392b' : '#ff69b4';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(function(){ t.classList.remove('show'); }, 2800);
 }
 
-function rankColor(i, total) {
-  const r = i / Math.max(total - 1, 1);
-  return `rgb(${Math.round(245 + 10*r)},${Math.round(197 - 197*r)},${Math.round(24 - 24*r)})`;
+function rc(i) {
+  return RANK_COLORS[Math.min(i, RANK_COLORS.length-1)];
 }
 
 function buildList(ulId, items, draggable) {
-  const ul = document.getElementById(ulId);
+  var ul = document.getElementById(ulId);
   ul.innerHTML = '';
-  items.forEach((item, i) => {
-    const li = document.createElement('li');
-    if (!draggable) li.style.cursor = 'default';
-    li.dataset.name = item.name;
-    const c = rankColor(i, items.length);
-    li.innerHTML = `
-      <div class="rank-stripe" style="background:${c}"></div>
-      <span class="rank-num" style="color:${c}">${i+1}</span>
-      <span class="item-emoji">${item.emoji}</span>
-      <span class="item-name">${item.name}</span>
-      ${draggable ? '<span class="drag-icon">⠿</span>' : ''}
-    `;
+  items.forEach(function(item, i) {
+    var li = document.createElement('li');
+    li.dataset.name = item;
+    if (!draggable) li.classList.add('no-drag');
+    var c = rc(i);
+    li.innerHTML = '<div class="stripe" style="background:'+c+'"></div>'
+      + '<span class="rnum" style="color:'+c+'">'+(i+1)+'</span>'
+      + '<span class="iname">'+item+'</span>'
+      + (draggable ? '<span class="drag-h">⠿</span>' : '');
     ul.appendChild(li);
   });
   if (draggable) {
     new Sortable(ul, {
-      animation: 180, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
-      onEnd: () => {
-        [...ul.querySelectorAll('li')].forEach((li, i) => {
-          const c = rankColor(i, items.length);
-          li.querySelector('.rank-stripe').style.background = c;
-          li.querySelector('.rank-num').textContent = i+1;
-          li.querySelector('.rank-num').style.color = c;
+      animation:180, ghostClass:'sortable-ghost', chosenClass:'sortable-chosen',
+      onEnd: function() {
+        var lis = ul.querySelectorAll('li');
+        lis.forEach(function(li,i){
+          var c = rc(i);
+          li.querySelector('.stripe').style.background = c;
+          li.querySelector('.rnum').textContent = i+1;
+          li.querySelector('.rnum').style.color = c;
         });
       }
     });
   }
 }
 
-function getOrder(ulId) {
-  return [...document.querySelectorAll(`#${ulId} li`)].map(li => li.dataset.name);
+function buildResultList(ulId, playerOrder, hostOrder) {
+  var ul = document.getElementById(ulId);
+  ul.innerHTML = '';
+  playerOrder.forEach(function(item, i) {
+    var li = document.createElement('li');
+    var correct = item === hostOrder[i];
+    li.classList.add(correct ? 'correct' : 'wrong');
+    var hostPos = hostOrder.indexOf(item) + 1;
+    var c = rc(i);
+    li.innerHTML = '<div class="stripe" style="background:'+c+'"></div>'
+      + '<span class="rnum" style="color:'+c+'">'+(i+1)+'</span>'
+      + '<span class="iname">'+item+'</span>'
+      + (correct ? '' : '<span class="res-host-pos">Host: #'+hostPos+'</span>')
+      + '<span class="res-check">'+(correct ? '✅' : '❌')+'</span>';
+    ul.appendChild(li);
+  });
 }
 
-// ===== HOST =====
+function getOrder(ulId) {
+  return Array.from(document.querySelectorAll('#'+ulId+' li')).map(function(li){ return li.dataset.name; });
+}
+
+function buildLeaderboard(containerId, scored, maxScore, showRoundScore) {
+  var lb = document.getElementById(containerId);
+  lb.innerHTML = '';
+  scored.forEach(function(p, i) {
+    var pct = maxScore > 0 ? (showRoundScore ? p.score/5 : p.total/maxScore)*100 : 0;
+    var isMe = p.id === playerId;
+    var div = document.createElement('div');
+    div.className = 'lb-item';
+    div.style.animationDelay = (i*0.1)+'s';
+    if (i===0) div.style.borderColor='#ffd700';
+    else if (i===1) div.style.borderColor='#c0c0c0';
+    else if (i===2) div.style.borderColor='#cd7f32';
+    if (isMe) div.style.borderColor='var(--pink)';
+    var scoreDisplay = showRoundScore
+      ? '<div class="lb-score">'+p.score+'/5</div><div class="lb-sub">total: '+p.total+'</div>'
+      : '<div class="lb-score">'+p.total+'</div>';
+    div.innerHTML = '<div class="lb-pos">'+(i<3?TROPHIES[i]:i+1)+'</div>'
+      + '<div style="flex:1"><div class="lb-name">'+p.name+(isMe?' <span style="color:var(--pink);font-size:10px;">(you)</span>':'')+'</div>'
+      + '<div class="bar-bg"><div class="bar" style="width:0" data-pct="'+pct+'"></div></div></div>'
+      + '<div style="text-align:right;">'+scoreDisplay+'</div>';
+    lb.appendChild(div);
+  });
+  setTimeout(function(){
+    document.querySelectorAll('.bar').forEach(function(b){ b.style.width=b.dataset.pct+'%'; });
+  }, 300);
+}
+
+// ── LANDING ──────────────────────────────────────────────────────
+function toggleJoinBox() {
+  var box = document.getElementById('join-box');
+  box.classList.toggle('hidden');
+  if (!box.classList.contains('hidden')) {
+    setTimeout(function(){ document.getElementById('join-code').focus(); }, 50);
+  }
+}
+
+function joinAndGo() {
+  var code = document.getElementById('join-code').value.replace(/\s/g,'').toUpperCase();
+  if (!code) { showToast('Enter a room code!', true); return; }
+  roomId = code;
+  showPage('name-screen');
+  setTimeout(function(){ document.getElementById('player-name-input').focus(); }, 50);
+}
+
+// ── HOST ─────────────────────────────────────────────────────────
 function goHost() {
-  roomId = Math.random().toString(36).slice(2, 8).toUpperCase();
-  db.ref('rooms/' + roomId).set({ status: 'lobby', hostOrder: null, revealed: false });
-  setupHostLobby();
+  isHost = true;
+  roomId = Math.random().toString(36).slice(2,8).toUpperCase();
+  db.ref('rooms/'+roomId).set({
+    status:'lobby', currentRound:0, hostOrder:null,
+    revealed:false, categoryIndex:null, usedCats:[], finalResults:false
+  }).then(function(){
+    setupHostLobby();
+  }).catch(function(e){ showToast('Firebase error: '+e.message, true); });
 }
 
 function setupHostLobby() {
   showPage('host-lobby');
   document.getElementById('room-code-display').textContent = roomId;
-
-  const joinUrl = 'https://acostenbader4-del.github.io/orderupalie/?join=' + roomId;
+  var joinUrl = BASE_URL + '?join=' + roomId;
   document.getElementById('join-url-text').textContent = joinUrl;
-  document.getElementById('qr-code-inner').innerHTML = '';
-  new QRCode(document.getElementById('qr-code-inner'), {
-    text: joinUrl, width: 180, height: 180, colorDark: '#000000', colorLight: '#ffffff'
-  });
+  document.getElementById('qr-inner').innerHTML = '';
+  new QRCode(document.getElementById('qr-inner'),{text:joinUrl,width:170,height:170,colorDark:'#000',colorLight:'#fff'});
 
-  db.ref('rooms/' + roomId + '/players').on('value', snap => {
-    const players = snap.val() || {};
-    const entries = Object.entries(players);
-    document.getElementById('player-count-badge').textContent = entries.length + ' player' + (entries.length !== 1 ? 's' : '');
-    const list = document.getElementById('player-list');
-    if (!entries.length) { list.innerHTML = '<div class="no-players">Waiting for players to join…</div>'; return; }
-    list.innerHTML = '';
-    entries.forEach(([id, p], i) => {
-      const div = document.createElement('div');
-      div.className = 'player-item';
-      div.innerHTML = '<div class="player-avatar" style="background:rgba(245,197,24,0.1)">' + AVATARS[i % AVATARS.length] + '</div>'
-        + '<span class="player-name">' + (p.name || id) + '</span><div class="waiting-dot"></div>';
+  db.ref('rooms/'+roomId+'/players').on('value', function(snap){
+    var players = snap.val() || {};
+    var entries = Object.entries(players);
+    document.getElementById('pcnt').textContent = entries.length+' player'+(entries.length!==1?'s':'');
+    var list = document.getElementById('player-list');
+    if (!entries.length) { list.innerHTML='<div class="no-players">Waiting for players…</div>'; return; }
+    list.innerHTML='';
+    entries.forEach(function(e,i){
+      var div=document.createElement('div'); div.className='player-item';
+      div.innerHTML='<div class="p-avatar">'+AVATARS[i%AVATARS.length]+'</div>'
+        +'<span class="p-name">'+(e[1].name||e[0])+'</span>'
+        +'<span class="p-score">'+(e[1].totalScore||0)+' pts</span>'
+        +'<div class="pulse-dot"></div>';
       list.appendChild(div);
     });
+    var r = currentRound;
+    document.getElementById('rounds-summary').textContent = r > 0 ? 'Completed '+r+' round'+(r!==1?'s':'')+' so far' : '';
   });
-
-  db.ref('rooms/' + roomId + '/revealed').on('value', snap => { if (snap.val() === true) showResults(); });
 }
 
-function goHostGame() {
-  showPage('host-game-screen');
-  db.ref('rooms/' + roomId).update({ status: 'playing' });
-  buildList('host-sortable', ITEMS, true);
+function goPickCategory() {
+  db.ref('rooms/'+roomId+'/usedCats').once('value').then(function(snap){
+    usedCatIndexes = snap.val() || [];
+    selectedCatIndex = null;
+    document.getElementById('start-round-btn').disabled = true;
+    document.getElementById('cat-search-input').value = '';
+    document.getElementById('pick-round-label').textContent = 'Round '+(currentRound+1);
+    buildCategoryGrid('');
+    showPage('host-pick-screen');
+  });
+}
+
+function buildCategoryGrid(filter) {
+  var grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  var f = filter.toLowerCase();
+  CATEGORIES.forEach(function(cat,idx){
+    var searchStr = (cat.type+' '+cat.name+' '+cat.items.join(' ')).toLowerCase();
+    if (f && searchStr.indexOf(f)===-1) return;
+    var used = usedCatIndexes.indexOf(idx) !== -1;
+    var div = document.createElement('div');
+    div.className = 'cat-card' + (used?' used':'') + (selectedCatIndex===idx?' selected':'');
+    div.innerHTML = '<div class="cat-type">'+(TYPE_EMOJI[cat.type]||'🌸')+' '+cat.type+'</div>'
+      +'<div class="cat-name">'+cat.name+'</div>'
+      +'<div class="cat-items">'+cat.items.join(' · ')+'</div>';
+    if (!used) {
+      div.onclick = function(){
+        selectedCatIndex = idx;
+        document.querySelectorAll('.cat-card').forEach(function(c){ c.classList.remove('selected'); });
+        div.classList.add('selected');
+        document.getElementById('start-round-btn').disabled = false;
+      };
+    }
+    grid.appendChild(div);
+  });
+}
+
+function filterCategories() {
+  buildCategoryGrid(document.getElementById('cat-search-input').value);
+}
+
+function startRound() {
+  if (selectedCatIndex === null) return;
+  currentCategoryIndex = selectedCatIndex;
+  currentRound = currentRound + 1;
+  var newUsed = usedCatIndexes.concat([selectedCatIndex]);
+  var cat = CATEGORIES[currentCategoryIndex];
+
+  // Reset all player orders for new round
+  db.ref('rooms/'+roomId+'/players').once('value').then(function(snap){
+    var players = snap.val() || {};
+    var updates = {};
+    Object.keys(players).forEach(function(pid){
+      updates['rooms/'+roomId+'/players/'+pid+'/order'] = null;
+    });
+    updates['rooms/'+roomId+'/status'] = 'playing';
+    updates['rooms/'+roomId+'/currentRound'] = currentRound;
+    updates['rooms/'+roomId+'/categoryIndex'] = currentCategoryIndex;
+    updates['rooms/'+roomId+'/hostOrder'] = null;
+    updates['rooms/'+roomId+'/revealed'] = false;
+    updates['rooms/'+roomId+'/finalResults'] = false;
+    updates['rooms/'+roomId+'/usedCats'] = newUsed;
+    db.ref().update(updates).then(function(){
+      showPage('host-game-screen');
+      document.getElementById('host-round-badge').textContent = 'Round '+currentRound;
+      document.getElementById('host-cat-label').textContent = (TYPE_EMOJI[cat.type]||'🌸')+' '+cat.name;
+      document.getElementById('lock-btn').disabled = false;
+      document.getElementById('lock-msg').textContent = '';
+      document.getElementById('reveal-wrap').classList.add('hidden');
+      buildList('host-sortable', cat.items.slice(), true);
+    }).catch(function(e){ showToast('Error: '+e.message,true); });
+  });
 }
 
 function lockHostOrder() {
-  db.ref('rooms/' + roomId + '/hostOrder').set(getOrder('host-sortable'));
-  document.getElementById('host-lock-msg').textContent = '✅ Order locked! Players are submitting…';
-  document.getElementById('reveal-wrap').classList.remove('hidden');
-  showToast('Order locked! 🔒');
+  var order = getOrder('host-sortable');
+  db.ref('rooms/'+roomId+'/hostOrder').set(order).then(function(){
+    document.getElementById('lock-btn').disabled = true;
+    document.getElementById('lock-msg').textContent = '✅ Locked! Waiting for players to submit…';
+    document.getElementById('reveal-wrap').classList.remove('hidden');
+    showToast('Order locked! 🔒');
+    // Watch submissions
+    db.ref('rooms/'+roomId+'/players').on('value', function(snap){
+      var players = snap.val() || {};
+      var entries = Object.entries(players);
+      var prog = document.getElementById('players-progress-host');
+      prog.innerHTML = '';
+      entries.forEach(function(e){
+        var div=document.createElement('div'); div.className='pp-item';
+        var submitted = e[1].order && e[1].order.length > 0;
+        div.innerHTML='<span>'+AVATARS[0]+'</span><span>'+(e[1].name||e[0])+'</span>'
+          +(submitted?'<span class="pp-submitted">✅ Submitted</span>':'<span class="pp-waiting">⏳ Ranking…</span>');
+        prog.appendChild(div);
+      });
+    });
+  }).catch(function(e){ showToast('Error: '+e.message,true); });
 }
 
-function revealResults() {
-  db.ref('rooms/' + roomId).update({ revealed: true });
-}
-
-// ===== PLAYER =====
-function toggleJoin() {
-  document.getElementById('join-section').classList.toggle('hidden');
-}
-
-function joinRoom() {
-  const code = document.getElementById('join-code-input').value.toUpperCase().trim();
-  if (!code) { showToast('Enter a room code!', true); return; }
-  roomId = code;
-  db.ref('rooms/' + roomId).once('value').then(snap => {
-    if (!snap.exists()) { showToast('Room not found!', true); return; }
-    showPage('name-screen');
+function revealRound() {
+  db.ref('rooms/'+roomId).update({revealed: true, status: 'roundEnd'}).then(function(){
+    showRoundResults();
   });
 }
 
+// ── PLAYER ───────────────────────────────────────────────────────
 function confirmName() {
-  const n = document.getElementById('player-name-input').value.trim();
+  var n = document.getElementById('player-name-input').value.trim();
   if (!n) { showToast('Enter a nickname!', true); return; }
   playerName = n;
-  db.ref('rooms/' + roomId + '/players/' + playerId).set({ name: playerName, order: null });
-  document.getElementById('waiting-room-code').textContent = roomId;
-  showPage('waiting-screen');
-
-  db.ref('rooms/' + roomId + '/status').on('value', snap => { if (snap.val() === 'playing') showPlayerGame(); });
-  db.ref('rooms/' + roomId + '/revealed').on('value', snap => { if (snap.val() === true) showResults(); });
+  db.ref('rooms/'+roomId+'/players/'+playerId).set({
+    name:playerName, order:null, totalScore:0
+  }).then(function(){
+    document.getElementById('wait-code').textContent = roomId;
+    showPage('waiting-screen');
+    setupPlayerListeners();
+  }).catch(function(e){ showToast('Could not join: '+e.message+' — fix Firebase rules!', true); });
 }
 
-function showPlayerGame() {
-  document.getElementById('player-display-name').textContent = '👤 ' + playerName;
-  showPage('player-game-screen');
-  buildList('player-sortable', [...ITEMS].sort(() => Math.random() - 0.5), true);
-}
-
-function submitPlayerOrder() {
-  if (playerSubmitted) { showToast('Already submitted!'); return; }
-  db.ref('rooms/' + roomId + '/players/' + playerId + '/order').set(getOrder('player-sortable'));
-  playerSubmitted = true;
-  document.getElementById('submit-btn').classList.add('hidden');
-  document.getElementById('submitted-banner').classList.remove('hidden');
-  showToast('Answer submitted! 🎉');
-}
-
-// ===== RESULTS =====
-function showResults() {
-  db.ref('rooms/' + roomId).once('value').then(snap => {
-    const data = snap.val();
-    if (!data || !data.hostOrder) return;
-    const hostOrder = data.hostOrder;
-    const players = data.players || {};
-
-    showPage('results-screen');
-    buildList('results-host-list', hostOrder.map(n => ITEMS.find(it => it.name === n)), false);
-
-    const scored = Object.entries(players).map(([id, p]) => {
-      let score = 0;
-      if (p.order) p.order.forEach((item, i) => { if (item === hostOrder[i]) score++; });
-      return { name: p.name || id, score, id };
-    }).sort((a, b) => b.score - a.score);
-
-    const lb = document.getElementById('leaderboard-list');
-    lb.innerHTML = '';
-    scored.forEach((p, i) => {
-      const div = document.createElement('div');
-      div.className = 'leaderboard-item';
-      div.style.animationDelay = (i * 0.1) + 's';
-      if (i === 0) div.style.borderColor = '#ffd700';
-      else if (i === 1) div.style.borderColor = '#c0c0c0';
-      else if (i === 2) div.style.borderColor = '#cd7f32';
-      if (p.id === playerId) div.style.borderColor = 'var(--accent)';
-      div.innerHTML = '<div class="lb-pos">' + (i < 3 ? TROPHIES[i] : i+1) + '</div>'
-        + '<div style="flex:1"><div class="lb-name">' + p.name + (p.id === playerId ? ' <span style="color:var(--accent);font-size:12px;">(you)</span>' : '') + '</div>'
-        + '<div class="score-bar-bg"><div class="score-bar" style="width:0%" data-pct="' + (p.score/ITEMS.length*100) + '"></div></div></div>'
-        + '<div class="lb-score">' + p.score + '/' + ITEMS.length + '</div>';
-      lb.appendChild(div);
-    });
-    setTimeout(() => { document.querySelectorAll('.score-bar').forEach(b => b.style.width = b.dataset.pct + '%'); }, 200);
-  });
-}
-
-// URL auto-join — QR code scan goes straight to name screen
-const urlCode = new URLSearchParams(location.search).get('join');
-if (urlCode) {
-  roomId = urlCode.toUpperCase();
-  db.ref('rooms/' + roomId).once('value').then(snap => {
-    if (snap.exists()) {
-      showPage('name-screen');
-    } else {
-      document.getElementById('join-code-input').value = roomId;
-      document.getElementById('join-section').classList.remove('hidden');
-      showToast('Room not found — check the code', true);
+function setupPlayerListeners() {
+  db.ref('rooms/'+roomId+'/status').on('value', function(snap){
+    var status = snap.val();
+    if (status === 'playing') {
+      playerSubmitted = false;
+      db.ref('rooms/'+roomId).once('value').then(function(rsnap){
+        var data = rsnap.val();
+        if (!data) return;
+        currentRound = data.currentRound || 1;
+        currentCategoryIndex = data.categoryIndex;
+        // Always show the game when status changes to 'playing'
+        showPlayerGame(data);
+      });
+    }
+    if (status === 'roundEnd') {
+      // Make sure results are shown (revealed listener may have already done this)
+      var curPage = document.querySelector('.page:not(.hidden)');
+      if (!curPage || curPage.id !== 'round-results-screen') {
+        showRoundResults();
+      }
+    }
+    if (status === 'lobby') {
+      document.getElementById('wait-info').textContent = 'Waiting for next round…';
+      document.getElementById('wait-pts').textContent = playerTotalScore > 0 ? '⭐ Your total: '+playerTotalScore+' pts' : '';
+      showPage('waiting-screen');
     }
   });
+
+  db.ref('rooms/'+roomId+'/revealed').on('value', function(snap){
+    if (snap.val() === true) {
+      showRoundResults();
+    }
+  });
+
+  db.ref('rooms/'+roomId+'/finalResults').on('value', function(snap){
+    if (snap.val() === true) {
+      showFinalResults();
+    }
+  });
+}
+
+function showPlayerGame(data) {
+  var cat = CATEGORIES[data.categoryIndex];
+  if (!cat) return;
+  document.getElementById('player-round-badge').textContent = 'Round '+(data.currentRound||1);
+  document.getElementById('player-pts-badge').textContent = playerTotalScore > 0 ? playerTotalScore+' pts' : '';
+  document.getElementById('player-cat-label').textContent = (TYPE_EMOJI[cat.type]||'🌸')+' '+cat.name;
+  showPage('player-game-screen');
+  var shuffled = cat.items.slice().sort(function(){ return Math.random()-0.5; });
+  buildList('player-sortable', shuffled, true);
+  document.getElementById('submit-btn').classList.remove('hidden');
+  document.getElementById('sub-banner').classList.add('hidden');
+}
+
+function submitOrder() {
+  if (playerSubmitted) { showToast('Already submitted!'); return; }
+  var order = getOrder('player-sortable');
+  db.ref('rooms/'+roomId+'/players/'+playerId+'/order').set(order).then(function(){
+    playerSubmitted = true;
+    document.getElementById('submit-btn').classList.add('hidden');
+    document.getElementById('sub-banner').classList.remove('hidden');
+    showToast('Submitted! 🌸');
+  }).catch(function(e){ showToast('Submit failed: '+e.message,true); });
+}
+
+// ── ROUND RESULTS ────────────────────────────────────────────────
+function showRoundResults() {
+  db.ref('rooms/'+roomId).once('value').then(function(snap){
+    var data = snap.val();
+    if (!data || !data.hostOrder) return;
+    var hostOrder = data.hostOrder;
+    var players = data.players || {};
+    var cat = CATEGORIES[data.categoryIndex] || {};
+    currentRound = data.currentRound || currentRound;
+
+    // Score everyone
+    var scored = Object.entries(players).map(function(e){
+      var id=e[0], p=e[1];
+      var score=0;
+      if (p.order) p.order.forEach(function(item,i){ if(item===hostOrder[i]) score++; });
+      return {id:id, name:p.name||id, score:score, total:(p.totalScore||0)+score};
+    }).sort(function(a,b){ return b.score-a.score; });
+
+    // Write updated total scores
+    var updates = {};
+    scored.forEach(function(p){
+      updates['rooms/'+roomId+'/players/'+p.id+'/totalScore'] = p.total;
+    });
+    db.ref().update(updates);
+
+    // Update local total for this player
+    var myEntry = scored.find(function(s){ return s.id===playerId; });
+    if (myEntry) playerTotalScore = myEntry.total;
+
+    showPage('round-results-screen');
+    document.getElementById('rr-title').textContent = 'Round '+currentRound+' Results';
+    document.getElementById('rr-cat-label').textContent = (TYPE_EMOJI[cat.type]||'🌸')+' '+(cat.name||'');
+
+    // Host's ranking
+    buildList('rr-host-list', hostOrder, false);
+
+    // Player's personal breakdown
+    var myPlayerEntry = players[playerId];
+    if (myPlayerEntry && myPlayerEntry.order && !isHost) {
+      document.getElementById('player-own-results').classList.remove('hidden');
+      document.getElementById('rr-your-score').textContent = (myEntry?myEntry.score:0)+'/5';
+      buildResultList('player-result-list', myPlayerEntry.order, hostOrder);
+    } else {
+      document.getElementById('player-own-results').classList.add('hidden');
+    }
+
+    // Leaderboard
+    var maxScore = 5;
+    buildLeaderboard('rr-lb-list', scored, maxScore, true);
+
+    // Buttons
+    var btns = document.getElementById('rr-buttons');
+    btns.innerHTML = '';
+    if (isHost) {
+      var nextBtn = document.createElement('button');
+      nextBtn.className = 'btn btn-primary';
+      nextBtn.textContent = 'Next Round →';
+      nextBtn.onclick = function(){
+        goPickCategory();
+      };
+      btns.appendChild(nextBtn);
+
+      var endBtn = document.createElement('button');
+      endBtn.className = 'btn btn-outline';
+      endBtn.textContent = 'End Game & See Final Results';
+      endBtn.onclick = function(){
+        db.ref('rooms/'+roomId+'/finalResults').set(true).then(function(){
+          showFinalResults();
+        });
+      };
+      btns.appendChild(endBtn);
+    } else {
+      var p = document.createElement('p');
+      p.style.cssText = 'color:var(--muted);font-size:12px;';
+      p.textContent = '⏳ Waiting for host to start next round…';
+      btns.appendChild(p);
+    }
+  });
+}
+
+// ── FINAL RESULTS ────────────────────────────────────────────────
+function showFinalResults() {
+  db.ref('rooms/'+roomId+'/players').once('value').then(function(snap){
+    var players = snap.val() || {};
+    var scored = Object.entries(players).map(function(e){
+      return {id:e[0], name:e[1].name||e[0], total:e[1].totalScore||0};
+    }).sort(function(a,b){ return b.total-a.total; });
+
+    showPage('final-results-screen');
+    if (scored.length > 0) {
+      document.getElementById('winner-name').textContent = scored[0].name;
+      document.getElementById('winner-pts').textContent = scored[0].total+' total points across '+currentRound+' round'+(currentRound!==1?'s':'');
+    }
+
+    var maxTotal = scored.length > 0 ? scored[0].total : 1;
+    buildLeaderboard('final-lb-list', scored, maxTotal, false);
+  });
+}
+
+// ── URL AUTO-JOIN ────────────────────────────────────────────────
+var urlCode = new URLSearchParams(location.search).get('join');
+if (urlCode) {
+  roomId = urlCode.toUpperCase();
+  document.getElementById('join-code').value = roomId;
+  document.getElementById('join-box').classList.remove('hidden');
+  showPage('name-screen');
+  setTimeout(function(){ document.getElementById('player-name-input').focus(); }, 50);
 }
 </script>
 </body>
