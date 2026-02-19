@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match the Host</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --card: #13131a; --border: #2a2a3a;
+      --accent: #f5c518; --accent2: #ff4d6d; --green: #39d353;
+      --text: #f0f0f0; --muted: #888;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(245,197,24,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,197,24,0.03) 1px, transparent 1px);
+      background-size: 50px 50px; pointer-events: none; z-index: 0;
+    }
+    .page { position: relative; z-index: 1; }
+    .hidden { display: none !important; }
+
+    #landing { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; text-align: center; }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 12vw, 100px);
+      letter-spacing: 4px; line-height: 1; margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--accent) 0%, #ff9f1c 50%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .tagline { color: var(--muted); font-size: 14px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 60px; }
+    .role-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .role-card {
+      background: var(--card); border: 2px solid var(--border); border-radius: 16px;
+      padding: 40px 50px; cursor: pointer; transition: all 0.25s ease; min-width: 200px;
+    }
+    .role-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(245,197,24,0.15); }
+    .role-card .icon { font-size: 48px; margin-bottom: 16px; }
+    .role-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; margin-bottom: 8px; }
+    .role-card p { color: var(--muted); font-size: 14px; }
+    .join-section { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .join-section label { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; }
+    .join-input-row { display: flex; gap: 8px; }
+    input[type="text"] {
+      background: var(--card); border: 2px solid var(--border); color: var(--text);
+      padding: 12px 20px; border-radius: 10px; font-size: 16px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s;
+    }
+    input[type="text"]:focus { border-color: var(--accent); }
+    .btn { padding: 12px 28px; border: none; border-radius: 10px; font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.5px; }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover { background: #ffd93d; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,197,24,0.3); }
+    .btn-danger { background: var(--accent2); color: #fff; }
+    .btn-danger:hover { background: #ff6b85; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; border: 2px solid var(--border); color: var(--text); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    #host-lobby { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 20px; }
+    .top-bar { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+    .badge { background: var(--accent); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; padding: 6px 14px; border-radius: 20px; }
+    .room-code-display { text-align: center; margin-bottom: 40px; }
+    .room-code-display label { display: block; color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+    .room-code { font-family: 'Bebas Neue', sans-serif; font-size: 72px; letter-spacing: 12px; color: var(--accent); line-height: 1; }
+    .host-main { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; max-width: 900px; }
+    @media (max-width: 700px) { .host-main { grid-template-columns: 1fr; } }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+    .panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
+    #qr-code { display: flex; justify-content: center; margin-bottom: 16px; }
+    #qr-code canvas, #qr-code img { border-radius: 8px; border: 3px solid var(--accent); }
+    .join-url { word-break: break-all; font-size: 11px; color: var(--muted); text-align: center; background: #0a0a0f; padding: 8px 12px; border-radius: 6px; margin-top: 10px; }
+    .player-list { display: flex; flex-direction: column; gap: 8px; }
+    .player-item { display: flex; align-items: center; gap: 12px; background: #0f0f18; border-radius: 10px; padding: 12px 16px; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+    .player-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .player-name { font-weight: 600; font-size: 15px; }
+    .waiting-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-left: auto; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .no-players { color: var(--muted); text-align: center; padding: 30px; font-size: 14px; }
+
+    .rank-labels { display: flex; justify-content: space-between; max-width: 420px; width: 100%; padding: 0 4px; margin-bottom: 8px; }
+    .rank-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .rank-label.top { color: var(--accent); }
+    .rank-label.bottom { color: var(--accent2); }
+    .sortable-list { list-style: none; max-width: 420px; width: 100%; }
+    .sortable-list li {
+      display: flex; align-items: center; gap: 14px; padding: 16px 20px; margin-bottom: 8px;
+      background: var(--card); border: 2px solid var(--border); border-radius: 12px;
+      cursor: grab; transition: all 0.2s ease; user-select: none; position: relative; overflow: hidden;
+    }
+    .sortable-list li:active { cursor: grabbing; }
+    .sortable-list li:hover { border-color: rgba(245,197,24,0.4); transform: translateX(4px); }
+    .sortable-list li.sortable-ghost { opacity: 0.3; }
+    .sortable-list li.sortable-chosen { border-color: var(--accent); box-shadow: 0 0 20px rgba(245,197,24,0.2); }
+    .rank-stripe { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
+    .rank-num { font-family: 'Bebas Neue', sans-serif; font-size: 22px; width: 28px; text-align: center; flex-shrink: 0; }
+    .item-emoji { font-size: 22px; flex-shrink: 0; }
+    .item-name { font-size: 17px; font-weight: 600; flex: 1; }
+    .drag-icon { color: var(--muted); font-size: 16px; margin-left: auto; }
+    .locked-banner { background: rgba(255,77,109,0.1); border: 1px solid var(--accent2); color: var(--accent2); border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 20px; }
+    .game-wrap { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 30px 20px; }
+    .game-header { text-align: center; margin-bottom: 24px; }
+    .game-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; margin-bottom: 6px; }
+    .game-header p { color: var(--muted); font-size: 14px; }
+
+    #waiting-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; text-align: center; }
+    .spinner { width: 60px; height: 60px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 30px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #results-screen { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; min-height: 100vh; }
+    .results-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 56px; letter-spacing: 4px; margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .host-reveal { max-width: 420px; width: 100%; margin-bottom: 10px; }
+    .host-reveal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--muted); margin-bottom: 12px; text-align: center; }
+    .host-reveal .sortable-list li { cursor: default; }
+    .host-reveal .sortable-list li:hover { transform: none; }
+    .leaderboard { width: 100%; max-width: 500px; margin-top: 30px; }
+    .leaderboard h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--muted); margin-bottom: 16px; text-align: center; }
+    .leaderboard-item { display: flex; align-items: center; gap: 16px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 8px; animation: slideIn 0.4s ease both; }
+    .lb-pos { font-family: 'Bebas Neue', sans-serif; font-size: 28px; width: 40px; text-align: center; }
+    .lb-name { flex: 1; font-weight: 600; font-size: 16px; }
+    .lb-score { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--accent); }
+    .score-bar-bg { height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; width: 100%; }
+    .score-bar { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #ff9f1c); transition: width 1s ease; }
+
+    #name-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 20px; text-align: center; }
+    #name-screen h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 3px; margin-bottom: 8px; }
+    #name-screen p { color: var(--muted); margin-bottom: 40px; }
+    .name-form { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
+    .name-form input { text-align: center; font-size: 18px; }
+
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green); color: #000; font-weight: 700; padding: 12px 28px; border-radius: 30px; font-size: 14px; letter-spacing: 1px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1000; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .submitted-banner { background: rgba(57,211,83,0.1); border: 1px solid var(--green); color: var(--green); border-radius: 10px; padding: 16px 24px; font-size: 15px; font-weight: 600; text-align: center; margin-top: 20px; max-width: 420px; width: 100%; }
+  </style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LANDING -->
+<div id="landing" class="page">
+  <div class="logo">MATCH<br>THE HOST</div>
+  <p class="tagline">Rank it. Match it. Win it.</p>
+  <div class="role-cards">
+    <div class="role-card" onclick="goHost()">
+      <div class="icon">🎮</div>
+      <h2>Host</h2>
+      <p>Create a room &amp; set your ranking</p>
+    </div>
+    <div class="role-card" onclick="toggleJoin()">
+      <div class="icon">🙋</div>
+      <h2>Player</h2>
+      <p>Join a room &amp; guess the host</p>
+    </div>
+  </div>
+  <div class="join-section hidden" id="join-section">
+    <label>Enter Room Code</label>
+    <div class="join-input-row">
+      <input type="text" id="join-code-input" maxlength="6" placeholder="ABC123"
+        style="text-transform:uppercase;letter-spacing:4px;font-family:'Bebas Neue',sans-serif;font-size:24px;width:190px;">
+      <button class="btn btn-primary" onclick="joinRoom()">Join</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAME SCREEN -->
+<div id="name-screen" class="page hidden">
+  <h2>What's Your Name?</h2>
+  <p>This is how you'll appear on the leaderboard</p>
+  <div class="name-form">
+    <input type="text" id="player-name-input" placeholder="Your nickname" maxlength="20">
+    <button class="btn btn-primary" onclick="confirmName()">Let's Go →</button>
+  </div>
+</div>
+
+<!-- HOST LOBBY -->
+<div id="host-lobby" class="page hidden">
+  <div class="top-bar">
+    <div class="badge">HOST</div>
+    <div id="player-count-badge" style="color:var(--muted);font-size:14px;">0 players</div>
+  </div>
+  <div class="room-code-display">
+    <label>Room Code — Share This!</label>
+    <div class="room-code" id="room-code-display">------</div>
+  </div>
+  <div class="host-main">
+    <div class="panel">
+      <h3>📱 Scan to Join</h3>
+      <div id="qr-code"></div>
+      <div class="join-url" id="join-url-text"></div>
+    </div>
+    <div class="panel">
+      <h3>👥 Players Joined</h3>
+      <div class="player-list" id="player-list">
+        <div class="no-players">Waiting for players to join…</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn btn-primary" onclick="goHostGame()">Set My Ranking →</button>
+  </div>
+</div>
+
+<!-- HOST GAME SCREEN -->
+<div id="host-game-screen" class="page hidden">
+  <div class="game-wrap">
+    <div class="top-bar" style="max-width:500px;">
+      <div class="badge">HOST</div>
+      <div style="color:var(--muted);font-size:13px;">🔒 Hidden from players</div>
+    </div>
+    <div class="game-header">
+      <h1>Your Secret Ranking</h1>
+      <p>Drag to order — players must guess this!</p>
+    </div>
+    <div class="locked-banner">🙈 Players cannot see your ranking until you reveal results</div>
+    <div class="rank-labels">
+      <span class="rank-label top">▲ &nbsp;FAVORITE (#1)</span>
+      <span class="rank-label bottom">LEAST FAVORITE &nbsp;▼</span>
+    </div>
+    <ul class="sortable-list" id="host-sortable"></ul>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <button class="btn btn-ghost" onclick="showPage('host-lobby')">← Lobby</button>
+      <button class="btn btn-primary" onclick="lockHostOrder()">🔒 Lock In My Order</button>
+    </div>
+    <div id="reveal-wrap" class="hidden" style="margin-top:16px;">
+      <button class="btn btn-danger" onclick="revealResults()">🎉 Reveal Results!</button>
+    </div>
+    <div id="host-lock-msg" style="margin-top:14px;color:var(--muted);font-size:13px;"></div>
+  </div>
+</div>
+
+<!-- WAITING SCREEN -->
+<div id="waiting-screen" class="page hidden">
+  <div class="spinner"></div>
+  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:12px;">Waiting for Host</h2>
+  <p style="color:var(--muted);">The host will start the game soon…</p>
+  <div style="margin-top:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 30px;text-align:center;">
+    <div style="color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">Room</div>
+    <div id="waiting-room-code" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent);letter-spacing:8px;"></div>
+  </div>
+</div>
+
+<!-- PLAYER GAME SCREEN -->
+<div id="player-game-screen" class="page hidden">
+  <div class="game-wrap">
+    <div class="top-bar" style="max-width:500px;">
+      <div class="badge" style="background:var(--accent2);">PLAYER</div>
+      <div id="player-display-name" style="color:var(--muted);font-size:14px;"></div>
+    </div>
+    <div class="game-header">
+      <h1>Guess the Host's Ranking</h1>
+      <p>Drag to match what you think the host chose</p>
+    </div>
+    <div class="rank-labels">
+      <span class="rank-label top">▲ &nbsp;HOST'S FAVORITE (#1)</span>
+      <span class="rank-label bottom">LEAST FAVORITE &nbsp;▼</span>
+    </div>
+    <ul class="sortable-list" id="player-sortable"></ul>
+    <button class="btn btn-primary" id="submit-btn" style="margin-top:20px;" onclick="submitPlayerOrder()">Submit My Guess ✓</button>
+    <div id="submitted-banner" class="hidden">
+      <div class="submitted-banner">✅ Submitted! Waiting for host to reveal results…</div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="results-screen" class="page hidden">
+  <div class="results-title">RESULTS!</div>
+  <p style="color:var(--muted);margin-bottom:30px;">Here's how everyone did</p>
+  <div class="host-reveal">
+    <h3>🏆 HOST'S ACTUAL RANKING</h3>
+    <div class="rank-labels">
+      <span class="rank-label top">▲ &nbsp;FAVORITE</span>
+      <span class="rank-label bottom">LEAST FAV &nbsp;▼</span>
+    </div>
+    <ul class="sortable-list" id="results-host-list"></ul>
+  </div>
+  <div class="leaderboard">
+    <h3>📊 LEADERBOARD</h3>
+    <div id="leaderboard-list"></div>
+  </div>
+  <div style="margin-top:30px;">
+    <button class="btn btn-ghost" onclick="location.reload()">Play Again</button>
+  </div>
+</div>
+
+<script>
+// Firebase init (compat mode — global, no module scope issues)
+firebase.initializeApp({
+  apiKey: "AIzaSyCoRWphqnWGI3oO2WkNXL7oSLCe7Py_09w",
+  authDomain: "orderup-c928b.firebaseapp.com",
+  databaseURL: "https://orderup-c928b-default-rtdb.firebaseio.com",
+  projectId: "orderup-c928b",
+  storageBucket: "orderup-c928b.firebasestorage.app",
+  messagingSenderId: "436213481520",
+  appId: "1:436213481520:web:91e6c3e57872f90ff32df5"
+});
+const db = firebase.database();
+
+// State
+let roomId = null;
+let playerId = "p_" + Math.random().toString(36).slice(2, 9);
+let playerName = "";
+let playerSubmitted = false;
+
+const ITEMS = [
+  { name: "Pizza",   emoji: "🍕" },
+  { name: "Burgers", emoji: "🍔" },
+  { name: "Tacos",   emoji: "🌮" },
+  { name: "Sushi",   emoji: "🍣" },
+  { name: "Pasta",   emoji: "🍝" },
+];
+const AVATARS = ["🦊","🐯","🐻","🦁","🐸","🦄","🐺","🦝","🐧","🦋"];
+const TROPHIES = ["🥇","🥈","🥉"];
+
+// Helpers
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#ff4d6d' : '#39d353';
+  t.style.color = isError ? '#fff' : '#000';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function rankColor(i, total) {
+  const r = i / Math.max(total - 1, 1);
+  return `rgb(${Math.round(245 + 10*r)},${Math.round(197 - 197*r)},${Math.round(24 - 24*r)})`;
+}
+
+function buildList(ulId, items, draggable) {
+  const ul = document.getElementById(ulId);
+  ul.innerHTML = '';
+  items.forEach((item, i) => {
+    const li = document.createElement('li');
+    if (!draggable) li.style.cursor = 'default';
+    li.dataset.name = item.name;
+    const c = rankColor(i, items.length);
+    li.innerHTML = `
+      <div class="rank-stripe" style="background:${c}"></div>
+      <span class="rank-num" style="color:${c}">${i+1}</span>
+      <span class="item-emoji">${item.emoji}</span>
+      <span class="item-name">${item.name}</span>
+      ${draggable ? '<span class="drag-icon">⠿</span>' : ''}
+    `;
+    ul.appendChild(li);
+  });
+  if (draggable) {
+    new Sortable(ul, {
+      animation: 180, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
+      onEnd: () => {
+        [...ul.querySelectorAll('li')].forEach((li, i) => {
+          const c = rankColor(i, items.length);
+          li.querySelector('.rank-stripe').style.background = c;
+          li.querySelector('.rank-num').textContent = i+1;
+          li.querySelector('.rank-num').style.color = c;
+        });
+      }
+    });
+  }
+}
+
+function getOrder(ulId) {
+  return [...document.querySelectorAll(`#${ulId} li`)].map(li => li.dataset.name);
+}
+
+// ===== HOST =====
+function goHost() {
+  roomId = Math.random().toString(36).slice(2, 8).toUpperCase();
+  db.ref('rooms/' + roomId).set({ status: 'lobby', hostOrder: null, revealed: false });
+  setupHostLobby();
+}
+
+function setupHostLobby() {
+  showPage('host-lobby');
+  document.getElementById('room-code-display').textContent = roomId;
+
+  const joinUrl = location.href.split('?')[0] + '?join=' + roomId;
+  document.getElementById('join-url-text').textContent = joinUrl;
+  document.getElementById('qr-code').innerHTML = '';
+  new QRCode(document.getElementById('qr-code'), {
+    text: joinUrl, width: 160, height: 160, colorDark: '#f5c518', colorLight: '#13131a'
+  });
+
+  db.ref('rooms/' + roomId + '/players').on('value', snap => {
+    const players = snap.val() || {};
+    const entries = Object.entries(players);
+    document.getElementById('player-count-badge').textContent = entries.length + ' player' + (entries.length !== 1 ? 's' : '');
+    const list = document.getElementById('player-list');
+    if (!entries.length) { list.innerHTML = '<div class="no-players">Waiting for players to join…</div>'; return; }
+    list.innerHTML = '';
+    entries.forEach(([id, p], i) => {
+      const div = document.createElement('div');
+      div.className = 'player-item';
+      div.innerHTML = '<div class="player-avatar" style="background:rgba(245,197,24,0.1)">' + AVATARS[i % AVATARS.length] + '</div>'
+        + '<span class="player-name">' + (p.name || id) + '</span><div class="waiting-dot"></div>';
+      list.appendChild(div);
+    });
+  });
+
+  db.ref('rooms/' + roomId + '/revealed').on('value', snap => { if (snap.val() === true) showResults(); });
+}
+
+function goHostGame() {
+  showPage('host-game-screen');
+  db.ref('rooms/' + roomId).update({ status: 'playing' });
+  buildList('host-sortable', ITEMS, true);
+}
+
+function lockHostOrder() {
+  db.ref('rooms/' + roomId + '/hostOrder').set(getOrder('host-sortable'));
+  document.getElementById('host-lock-msg').textContent = '✅ Order locked! Players are submitting…';
+  document.getElementById('reveal-wrap').classList.remove('hidden');
+  showToast('Order locked! 🔒');
+}
+
+function revealResults() {
+  db.ref('rooms/' + roomId).update({ revealed: true });
+}
+
+// ===== PLAYER =====
+function toggleJoin() {
+  document.getElementById('join-section').classList.toggle('hidden');
+}
+
+function joinRoom() {
+  const code = document.getElementById('join-code-input').value.toUpperCase().trim();
+  if (!code) { showToast('Enter a room code!', true); return; }
+  roomId = code;
+  db.ref('rooms/' + roomId).once('value').then(snap => {
+    if (!snap.exists()) { showToast('Room not found!', true); return; }
+    showPage('name-screen');
+  });
+}
+
+function confirmName() {
+  const n = document.getElementById('player-name-input').value.trim();
+  if (!n) { showToast('Enter a nickname!', true); return; }
+  playerName = n;
+  db.ref('rooms/' + roomId + '/players/' + playerId).set({ name: playerName, order: null });
+  document.getElementById('waiting-room-code').textContent = roomId;
+  showPage('waiting-screen');
+
+  db.ref('rooms/' + roomId + '/status').on('value', snap => { if (snap.val() === 'playing') showPlayerGame(); });
+  db.ref('rooms/' + roomId + '/revealed').on('value', snap => { if (snap.val() === true) showResults(); });
+}
+
+function showPlayerGame() {
+  document.getElementById('player-display-name').textContent = '👤 ' + playerName;
+  showPage('player-game-screen');
+  buildList('player-sortable', [...ITEMS].sort(() => Math.random() - 0.5), true);
+}
+
+function submitPlayerOrder() {
+  if (playerSubmitted) { showToast('Already submitted!'); return; }
+  db.ref('rooms/' + roomId + '/players/' + playerId + '/order').set(getOrder('player-sortable'));
+  playerSubmitted = true;
+  document.getElementById('submit-btn').classList.add('hidden');
+  document.getElementById('submitted-banner').classList.remove('hidden');
+  showToast('Answer submitted! 🎉');
+}
+
+// ===== RESULTS =====
+function showResults() {
+  db.ref('rooms/' + roomId).once('value').then(snap => {
+    const data = snap.val();
+    if (!data || !data.hostOrder) return;
+    const hostOrder = data.hostOrder;
+    const players = data.players || {};
+
+    showPage('results-screen');
+    buildList('results-host-list', hostOrder.map(n => ITEMS.find(it => it.name === n)), false);
+
+    const scored = Object.entries(players).map(([id, p]) => {
+      let score = 0;
+      if (p.order) p.order.forEach((item, i) => { if (item === hostOrder[i]) score++; });
+      return { name: p.name || id, score, id };
+    }).sort((a, b) => b.score - a.score);
+
+    const lb = document.getElementById('leaderboard-list');
+    lb.innerHTML = '';
+    scored.forEach((p, i) => {
+      const div = document.createElement('div');
+      div.className = 'leaderboard-item';
+      div.style.animationDelay = (i * 0.1) + 's';
+      if (i === 0) div.style.borderColor = '#ffd700';
+      else if (i === 1) div.style.borderColor = '#c0c0c0';
+      else if (i === 2) div.style.borderColor = '#cd7f32';
+      if (p.id === playerId) div.style.borderColor = 'var(--accent)';
+      div.innerHTML = '<div class="lb-pos">' + (i < 3 ? TROPHIES[i] : i+1) + '</div>'
+        + '<div style="flex:1"><div class="lb-name">' + p.name + (p.id === playerId ? ' <span style="color:var(--accent);font-size:12px;">(you)</span>' : '') + '</div>'
+        + '<div class="score-bar-bg"><div class="score-bar" style="width:0%" data-pct="' + (p.score/ITEMS.length*100) + '"></div></div></div>'
+        + '<div class="lb-score">' + p.score + '/' + ITEMS.length + '</div>';
+      lb.appendChild(div);
+    });
+    setTimeout(() => { document.querySelectorAll('.score-bar').forEach(b => b.style.width = b.dataset.pct + '%'); }, 200);
+  });
+}
+
+// URL auto-join
+const urlCode = new URLSearchParams(location.search).get('join');
+if (urlCode) {
+  roomId = urlCode.toUpperCase();
+  document.getElementById('join-code-input').value = roomId;
+  document.getElementById('join-section').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
