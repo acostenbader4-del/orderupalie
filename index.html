@@ -101,7 +101,7 @@
     .round-badge{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--muted);}
 
     .slist{list-style:none;max-width:420px;width:100%;}
-    .slist li{display:flex;align-items:center;gap:11px;padding:13px 16px;margin-bottom:6px;background:var(--card);border:2px solid var(--border);border-radius:11px;cursor:grab;transition:all .15s;user-select:none;position:relative;overflow:hidden;}
+    .slist li{display:flex;align-items:center;gap:11px;padding:13px 16px;margin-bottom:6px;background:var(--card);border:2px solid var(--border);border-radius:11px;cursor:grab;transition:all .15s;user-select:none;position:relative;overflow:hidden;touch-action:none;}
     .slist li:active{cursor:grabbing;}
     .slist li:hover:not(.no-drag){border-color:rgba(255,105,180,.45);transform:translateX(3px);}
     .slist li.sortable-ghost{opacity:.2;}
@@ -648,7 +648,14 @@ function buildList(ulId, items, draggable) {
   });
   if (draggable) {
     new Sortable(ul, {
-      animation:180, ghostClass:'sortable-ghost', chosenClass:'sortable-chosen',
+      animation: 180,
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      forceFallback: true,
+      fallbackTolerance: 3,
+      touchStartThreshold: 3,
+      delay: 150,
+      delayOnTouchOnly: true,
       onEnd: function() {
         var lis = ul.querySelectorAll('li');
         lis.forEach(function(li,i){
@@ -816,7 +823,6 @@ function startRound() {
   var newUsed = usedCatIndexes.concat([selectedCatIndex]);
   var cat = CATEGORIES[currentCategoryIndex];
 
-  // Reset all player orders for new round
   db.ref('rooms/'+roomId+'/players').once('value').then(function(snap){
     var players = snap.val() || {};
     var updates = {};
@@ -849,7 +855,6 @@ function lockHostOrder() {
     document.getElementById('lock-msg').textContent = '✅ Locked! Waiting for players to submit…';
     document.getElementById('reveal-wrap').classList.remove('hidden');
     showToast('Order locked! 🔒');
-    // Watch submissions
     db.ref('rooms/'+roomId+'/players').on('value', function(snap){
       var players = snap.val() || {};
       var entries = Object.entries(players);
@@ -896,12 +901,10 @@ function setupPlayerListeners() {
         if (!data) return;
         currentRound = data.currentRound || 1;
         currentCategoryIndex = data.categoryIndex;
-        // Always show the game when status changes to 'playing'
         showPlayerGame(data);
       });
     }
     if (status === 'roundEnd') {
-      // Make sure results are shown (revealed listener may have already done this)
       var curPage = document.querySelector('.page:not(.hidden)');
       if (!curPage || curPage.id !== 'round-results-screen') {
         showRoundResults();
@@ -961,7 +964,6 @@ function showRoundResults() {
     var cat = CATEGORIES[data.categoryIndex] || {};
     currentRound = data.currentRound || currentRound;
 
-    // Score everyone
     var scored = Object.entries(players).map(function(e){
       var id=e[0], p=e[1];
       var score=0;
@@ -969,14 +971,12 @@ function showRoundResults() {
       return {id:id, name:p.name||id, score:score, total:(p.totalScore||0)+score};
     }).sort(function(a,b){ return b.score-a.score; });
 
-    // Write updated total scores
     var updates = {};
     scored.forEach(function(p){
       updates['rooms/'+roomId+'/players/'+p.id+'/totalScore'] = p.total;
     });
     db.ref().update(updates);
 
-    // Update local total for this player
     var myEntry = scored.find(function(s){ return s.id===playerId; });
     if (myEntry) playerTotalScore = myEntry.total;
 
@@ -984,10 +984,8 @@ function showRoundResults() {
     document.getElementById('rr-title').textContent = 'Round '+currentRound+' Results';
     document.getElementById('rr-cat-label').textContent = (TYPE_EMOJI[cat.type]||'🌸')+' '+(cat.name||'');
 
-    // Host's ranking
     buildList('rr-host-list', hostOrder, false);
 
-    // Player's personal breakdown
     var myPlayerEntry = players[playerId];
     if (myPlayerEntry && myPlayerEntry.order && !isHost) {
       document.getElementById('player-own-results').classList.remove('hidden');
@@ -997,29 +995,23 @@ function showRoundResults() {
       document.getElementById('player-own-results').classList.add('hidden');
     }
 
-    // Leaderboard
     var maxScore = 5;
     buildLeaderboard('rr-lb-list', scored, maxScore, true);
 
-    // Buttons
     var btns = document.getElementById('rr-buttons');
     btns.innerHTML = '';
     if (isHost) {
       var nextBtn = document.createElement('button');
       nextBtn.className = 'btn btn-primary';
       nextBtn.textContent = 'Next Round →';
-      nextBtn.onclick = function(){
-        goPickCategory();
-      };
+      nextBtn.onclick = function(){ goPickCategory(); };
       btns.appendChild(nextBtn);
 
       var endBtn = document.createElement('button');
       endBtn.className = 'btn btn-outline';
       endBtn.textContent = 'End Game & See Final Results';
       endBtn.onclick = function(){
-        db.ref('rooms/'+roomId+'/finalResults').set(true).then(function(){
-          showFinalResults();
-        });
+        db.ref('rooms/'+roomId+'/finalResults').set(true).then(function(){ showFinalResults(); });
       };
       btns.appendChild(endBtn);
     } else {
