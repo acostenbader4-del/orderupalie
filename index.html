@@ -6,8 +6,6 @@
   <title>Order Up!</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <style>
     :root{--bg:#1a0a12;--card:#2a1020;--card2:#331525;--border:#5a2040;--pink:#ff69b4;--pink2:#ff1493;--pink-light:#ffb6d9;--pink-glow:rgba(255,105,180,0.15);--green:#a8ff78;--red:#ff6b6b;--text:#ffe0f0;--muted:#c080a0;}
     *{box-sizing:border-box;margin:0;padding:0;}
@@ -425,6 +423,8 @@
   <div style="margin-top:24px;"><button class="btn btn-primary" onclick="location.reload()">Play Again 🌸</button></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
 // ── VERSION BANNER ───────────────────────────────────────────────
 function dismissBanner(){
@@ -435,6 +435,10 @@ function dismissBanner(){
 setTimeout(dismissBanner, 7000);
 
 // ── FIREBASE ─────────────────────────────────────────────────────
+if(typeof firebase === 'undefined'){
+  document.getElementById('fb-status').textContent='⚠️ Firebase failed to load — check your internet connection';
+  document.getElementById('fb-status').className='err';
+}
 firebase.initializeApp({
   apiKey:"AIzaSyCoRWphqnWGI3oO2WkNXL7oSLCe7Py_09w",
   authDomain:"orderup-c928b.firebaseapp.com",
@@ -444,12 +448,18 @@ firebase.initializeApp({
   messagingSenderId:"436213481520",
   appId:"1:436213481520:web:91e6c3e57872f90ff32df5"
 });
-var db=firebase.database();
-db.ref('.info/connected').on('value',function(s){
-  var b=document.getElementById('fb-status');
-  if(s.val()){b.textContent='✅ Connected!';b.className='ok';setTimeout(function(){b.style.display='none';},2200);}
-  else{b.textContent='⚠️ Not connected — fix Firebase rules at console.firebase.google.com';b.className='err';}
-});
+var db;
+try{
+  db=firebase.database();
+  db.ref('.info/connected').on('value',function(s){
+    var b=document.getElementById('fb-status');
+    if(s.val()){b.textContent='✅ Connected!';b.className='ok';setTimeout(function(){b.style.display='none';},2200);}
+    else{b.textContent='⚠️ Not connected — fix Firebase rules at console.firebase.google.com';b.className='err';}
+  });
+}catch(e){
+  document.getElementById('fb-status').textContent='⚠️ Firebase error: '+e.message;
+  document.getElementById('fb-status').className='err';
+}
 
 // ── CATEGORIES ───────────────────────────────────────────────────
 var CATEGORIES=[
@@ -1149,7 +1159,7 @@ function showFinalResults(){
 
 // ── SKIP ROUND ───────────────────────────────────────────────────
 function skipRound(){
-  if(!confirm('Skip this round? Players will go back to waiting and you'll pick a new category.'))return;
+  if(!confirm('Skip this round? Players will go back to waiting and you\'ll pick a new category.'))return;
   // Mark category as NOT used since we're skipping it
   currentRound=Math.max(0,currentRound-1);
   db.ref('rooms/'+roomId).update({
