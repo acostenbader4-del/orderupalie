@@ -70,7 +70,7 @@
     .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
     .panel h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
     #qr-code { display: flex; justify-content: center; margin-bottom: 16px; }
-    #qr-code canvas, #qr-code img { border-radius: 8px; border: 3px solid var(--accent); }
+    #qr-code-inner { background: #fff; padding: 12px; border-radius: 10px; display: inline-block; }
     .join-url { word-break: break-all; font-size: 11px; color: var(--muted); text-align: center; background: #0a0a0f; padding: 8px 12px; border-radius: 6px; margin-top: 10px; }
     .player-list { display: flex; flex-direction: column; gap: 8px; }
     .player-item { display: flex; align-items: center; gap: 12px; background: #0f0f18; border-radius: 10px; padding: 12px 16px; animation: slideIn 0.3s ease; }
@@ -193,7 +193,7 @@
   <div class="host-main">
     <div class="panel">
       <h3>📱 Scan to Join</h3>
-      <div id="qr-code"></div>
+      <div id="qr-code"><div id="qr-code-inner"></div></div>
       <div class="join-url" id="join-url-text"></div>
     </div>
     <div class="panel">
@@ -387,11 +387,11 @@ function setupHostLobby() {
   showPage('host-lobby');
   document.getElementById('room-code-display').textContent = roomId;
 
-  const joinUrl = location.href.split('?')[0] + '?join=' + roomId;
+  const joinUrl = 'https://acostenbader4-del.github.io/orderupalie/?join=' + roomId;
   document.getElementById('join-url-text').textContent = joinUrl;
-  document.getElementById('qr-code').innerHTML = '';
-  new QRCode(document.getElementById('qr-code'), {
-    text: joinUrl, width: 160, height: 160, colorDark: '#f5c518', colorLight: '#13131a'
+  document.getElementById('qr-code-inner').innerHTML = '';
+  new QRCode(document.getElementById('qr-code-inner'), {
+    text: joinUrl, width: 180, height: 180, colorDark: '#000000', colorLight: '#ffffff'
   });
 
   db.ref('rooms/' + roomId + '/players').on('value', snap => {
@@ -509,12 +509,19 @@ function showResults() {
   });
 }
 
-// URL auto-join
+// URL auto-join — QR code scan goes straight to name screen
 const urlCode = new URLSearchParams(location.search).get('join');
 if (urlCode) {
   roomId = urlCode.toUpperCase();
-  document.getElementById('join-code-input').value = roomId;
-  document.getElementById('join-section').classList.remove('hidden');
+  db.ref('rooms/' + roomId).once('value').then(snap => {
+    if (snap.exists()) {
+      showPage('name-screen');
+    } else {
+      document.getElementById('join-code-input').value = roomId;
+      document.getElementById('join-section').classList.remove('hidden');
+      showToast('Room not found — check the code', true);
+    }
+  });
 }
 </script>
 </body>
