@@ -859,13 +859,18 @@ function goHostClassic(){
   }).then(setupHostLobby).catch(function(e){showToast('Firebase error: '+e.message,true);});
 }
 function goHostRotating(){
+  // In rotating mode the room creator is also a player — go through name screen first
   isHost=true;isRotatingMode=true;
   roomId=Math.random().toString(36).slice(2,8).toUpperCase();
   db.ref('rooms/'+roomId).set({
     status:'lobby',currentRound:0,hostOrder:null,revealed:false,
     categoryIndex:null,usedCats:[],finalResults:false,
     rotatingMode:true,rotationOrder:null,currentHostIndex:0,roomHostId:playerId
-  }).then(setupHostLobby).catch(function(e){showToast('Firebase error: '+e.message,true);});
+  }).then(function(){
+    // Go to name screen so room creator registers as a player too
+    showPage('name-screen');
+    setTimeout(function(){document.getElementById('player-name-input').focus();},50);
+  }).catch(function(e){showToast('Firebase error: '+e.message,true);});
 }
 
 function buildRotationOrderFromPlayers(players,roomHostPlayerId){
@@ -1236,6 +1241,18 @@ function confirmName(){
       return db.ref('rooms/'+roomId+'/players/'+playerId).set({name:playerName,order:null,totalScore:0});
     }
   }).then(function(){
+    // Classic host: skip waiting screen, go straight to lobby
+    if(isHost && !isRotatingMode){
+      setupHostLobby();
+      return;
+    }
+    // Rotating host: go to lobby AND set up player listeners (they play too)
+    if(isHost && isRotatingMode){
+      setupHostLobby();
+      setupPlayerListeners();
+      return;
+    }
+    // Regular joining player
     document.getElementById('wait-code').textContent=roomId;
     db.ref('rooms/'+roomId).once('value').then(function(snap){
       var data=snap.val()||{};
@@ -1257,9 +1274,14 @@ function confirmName(){
   }).catch(function(e){showToast('Could not join: '+e.message+' — fix Firebase rules!',true);});
 }
 function setupPlayerListeners(){
+  var _statusFirstFire=true;
   db.ref('rooms/'+roomId+'/status').on('value',function(snap){
+    // Skip the immediate initial fire — we already handled current state before attaching
+    if(_statusFirstFire){_statusFirstFire=false;return;}
     var status=snap.val();
     if(status==='playing'){
+      // Classic host never needs this — they started the round themselves
+      if(isHost&&!isRotatingMode) return;
       playerSubmitted=false;
       db.ref('rooms/'+roomId).once('value').then(function(rs){
         var data=rs.val();if(!data)return;
@@ -1287,6 +1309,7 @@ function setupPlayerListeners(){
 
 function handleIncomingRoundData(data){
   if(!isRotatingMode){
+    // Classic mode: host never gets this path; players always rank
     showPlayerGame(data);
     return;
   }
@@ -1295,6 +1318,11 @@ function handleIncomingRoundData(data){
   amCurrentRoundHost=(roundHostId===playerId);
 
   if(amCurrentRoundHost){
+    // If we're already on the host game screen (room creator just called startRound),
+    // don't show the splash again — we're already hosting
+    var activePage=document.querySelector('.page:not(.hidden)');
+    if(activePage&&activePage.id==='host-game-screen') return;
+
     var cat=CATEGORIES[data.categoryIndex]||data.customCat;
     if(data.customCat&&!CATEGORIES[data.categoryIndex])CATEGORIES[data.categoryIndex]=data.customCat;
     pendingRoundData=data;
@@ -1325,7 +1353,11 @@ function showWatchHostScreen(data){
   }
   showPage('watch-host-screen');
 
+  // Only switch to player game once host LOCKS (hostOrder set after round starts)
+  // Guard: if hostOrder already set when we attach, it's stale — ignore until new value
+  var _watchFirstFire=true;
   db.ref('rooms/'+roomId+'/hostOrder').on('value',function(snap){
+    if(_watchFirstFire){_watchFirstFire=false;return;}
     if(snap.val()&&snap.val().length){
       db.ref('rooms/'+roomId+'/hostOrder').off('value');
       db.ref('rooms/'+roomId).once('value').then(function(rs){
@@ -1433,7 +1465,7 @@ function showRoundResults(){
       var nextHostId=rotationOrder.length?rotationOrder[nextHostIdx].id:null;
       var iAmNextHost=(nextHostId===playerId);
 
-      if(iAmRoundHost||isHost){
+      if(iAmRoundHost){
         var nb=document.createElement('button');nb.className='btn btn-primary';
         nb.textContent='Next Round → ('+rotationOrder[nextHostIdx].name+' hosts)';
         nb.onclick=function(){
@@ -1519,6 +1551,9 @@ function skipRound(){
 }
 
 function handleLobbyStatus(data){
+  // Never redirect someone who's already on the host lobby — they'll navigate themselves
+  var activePage=document.querySelector('.page:not(.hidden)');
+  if(activePage&&activePage.id==='host-lobby') return;
   if(!isRotatingMode){
     showPage('waiting-screen');
     document.getElementById('wait-info').textContent='Waiting for next round…';
@@ -1528,7 +1563,7 @@ function handleLobbyStatus(data){
   rotationOrder=data.rotationOrder||rotationOrder||[];
   currentHostIndex=data.currentHostIndex||0;
   var nextHostId=rotationOrder.length?rotationOrder[currentHostIndex%rotationOrder.length].id:null;
-  if(nextHostId===playerId&&!isHost){
+  if(nextHostId===playerId){
     goPickCategory();
   } else {
     showPage('waiting-screen');
