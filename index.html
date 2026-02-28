@@ -85,7 +85,7 @@
     #host-pick-screen{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px 20px;}
     .pick-controls{display:flex;gap:9px;width:100%;max-width:900px;margin-bottom:11px;flex-wrap:wrap;align-items:center;}
     .pick-controls input{flex:1;min-width:200px;}
-    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:9px;width:100%;max-width:900px;margin-bottom:18px;max-height:60vh;overflow-y:auto;padding:4px;}
+    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:9px;width:100%;max-width:900px;margin-bottom:18px;max-height:54vh;overflow-y:auto;padding:4px;}
     .cat-card{background:var(--card);border:2px solid var(--border);border-radius:11px;padding:13px 16px;cursor:pointer;transition:all .17s;}
     .cat-card:hover{border-color:var(--pink);background:var(--card2);transform:translateY(-2px);}
     .cat-card.selected{border-color:var(--pink2);background:rgba(255,20,147,0.1);box-shadow:0 0 14px rgba(255,20,147,0.18);}
@@ -96,10 +96,16 @@
     .cat-card.flash{animation:catFlash .35s ease;}
     @keyframes catFlash{0%{transform:scale(1);}50%{transform:scale(1.04);box-shadow:0 0 24px rgba(255,20,147,0.5);}100%{transform:scale(1);}}
 
-    .type-tabs{display:flex;gap:6px;flex-wrap:wrap;width:100%;max-width:900px;margin-bottom:10px;}
-    .type-tab{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:5px 13px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--muted);letter-spacing:.5px;}
+    /* ── Two-level filter UI ── */
+    .filter-section{width:100%;max-width:900px;margin-bottom:10px;}
+    .top-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+    .sub-tabs{display:flex;gap:5px;flex-wrap:wrap;min-height:32px;}
+    .type-tab{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--muted);letter-spacing:.3px;}
     .type-tab:hover{border-color:var(--pink);color:var(--pink-light);}
     .type-tab.active{background:rgba(255,20,147,0.12);border-color:var(--pink);color:var(--pink-light);}
+    .sub-tab{background:var(--card2);border:1.5px solid var(--border);border-radius:14px;padding:4px 11px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--muted);}
+    .sub-tab:hover{border-color:var(--pink);color:var(--pink-light);}
+    .sub-tab.active{background:rgba(255,20,147,0.1);border-color:var(--pink);color:var(--pink-light);}
 
     .game-wrap{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px 20px;}
     .game-head{text-align:center;margin-bottom:14px;}
@@ -126,7 +132,6 @@
     .slot-empty{font-size:11px;color:var(--muted);flex:1;font-style:italic;}
     .slot-remove{font-size:12px;color:var(--muted);cursor:pointer;padding:3px 5px;border-radius:4px;flex-shrink:0;transition:color .15s;}
     .slot-remove:hover{color:var(--red);}
-
     .item-pool{display:flex;flex-direction:column;gap:5px;width:130px;flex-shrink:0;}
     @media(max-width:400px){.item-pool{width:110px;}}
     .pool-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:3px;}
@@ -182,7 +187,6 @@
     #fb-status{position:fixed;top:0;left:0;right:0;padding:8px 20px;font-size:12px;font-weight:700;text-align:center;z-index:9998;display:none;}
     #fb-status.err{background:#c0392b;color:#fff;display:block;}
     #fb-status.ok{background:#27ae60;color:#fff;display:block;}
-
     .cat-count-badge{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--muted);margin-left:auto;}
 
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
@@ -205,7 +209,6 @@
     .rotation-item{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:9px;font-size:13px;font-weight:600;background:var(--card2);border:1px solid var(--border);}
     .rotation-item.current-host{border-color:var(--pink);background:rgba(255,20,147,0.1);}
     .rotation-item.done-host{opacity:0.4;}
-    .rotation-item.upcoming{opacity:0.7;}
     .rot-num{font-family:'Playfair Display',serif;font-size:15px;width:20px;text-align:center;flex-shrink:0;color:var(--muted);}
     .rot-name{flex:1;}
     .rot-status{font-size:10px;letter-spacing:1px;text-transform:uppercase;}
@@ -213,7 +216,6 @@
     .rot-status.done{color:var(--muted);}
     .rot-status.up-next{color:#a855f7;}
     .mode-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));border:1px solid #a855f7;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;color:#c084fc;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
-
     .btn-purple{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;box-shadow:0 4px 14px rgba(168,85,247,0.35);}
     .btn-purple:hover{transform:translateY(-2px);filter:brightness(1.1);}
     .btn-danger{background:transparent;border:2px solid var(--red);color:var(--red);}
@@ -226,10 +228,7 @@
   <div class="modal-box">
     <h2>✏️ Create Custom Category</h2>
     <p>Make your own category for this round! Give it a name and add 5 items to rank.</p>
-    <div class="modal-field">
-      <label>Category Name</label>
-      <input type="text" id="custom-cat-name" placeholder="e.g. Best Family Vacations" maxlength="40">
-    </div>
+    <div class="modal-field"><label>Category Name</label><input type="text" id="custom-cat-name" placeholder="e.g. Best Family Vacations" maxlength="40"></div>
     <div class="modal-field">
       <label>5 Items to Rank</label>
       <div class="item-inputs">
@@ -249,7 +248,7 @@
 
 <div id="version-banner" onclick="dismissBanner()">
   <div class="vb-dot"></div>
-  ✨ v5.0 — Rotating Tables Mode · 550+ Categories!
+  ✨ v6.0 — Subcategories · Rotating Tables · 600+ Categories!
   <span class="vb-x">✕</span>
 </div>
 
@@ -260,7 +259,7 @@
 <div id="landing" class="page">
   <div class="logo">Order Up!</div>
   <div class="logo-sub">Rank it · Match it · Win it</div>
-  <div style="font-family:'Playfair Display',serif;font-size:clamp(11px,2vw,14px);color:var(--pink);letter-spacing:3px;text-transform:uppercase;margin-bottom:36px;opacity:0.9;animation:vbIn 1s ease both;animation-delay:.3s;">✨ Rotating Tables Update ✨</div>
+  <div style="font-family:'Playfair Display',serif;font-size:clamp(11px,2vw,14px);color:var(--pink);letter-spacing:3px;text-transform:uppercase;margin-bottom:36px;opacity:0.9;animation:vbIn 1s ease both;animation-delay:.3s;">✨ Now with Subcategories! ✨</div>
   <div class="role-cards">
     <div class="role-card" onclick="goHostClassic()"><div class="ico">🎮</div><h2>Host</h2><p>Classic mode — you stay host all game</p></div>
     <div class="role-card" onclick="goHostRotating()" style="position:relative;"><div style="position:absolute;top:-10px;right:-10px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:1px;box-shadow:0 3px 12px rgba(168,85,247,0.5);">NEW</div><div class="ico">🔄</div><h2>Rotating Tables</h2><p>Everyone takes turns being host!</p></div>
@@ -269,9 +268,7 @@
   <div class="join-box hidden" id="join-box">
     <label>Enter Room Code</label>
     <div class="join-row">
-      <input type="text" id="join-code" maxlength="6" placeholder="ABC123"
-        style="text-transform:uppercase;letter-spacing:4px;font-family:'Playfair Display',serif;font-size:20px;"
-        onkeydown="if(event.key==='Enter')joinAndGo()">
+      <input type="text" id="join-code" maxlength="6" placeholder="ABC123" style="text-transform:uppercase;letter-spacing:4px;font-family:'Playfair Display',serif;font-size:20px;" onkeydown="if(event.key==='Enter')joinAndGo()">
       <button class="btn btn-primary" onclick="joinAndGo()">Join →</button>
     </div>
   </div>
@@ -290,13 +287,8 @@
 <!-- HOST LOBBY -->
 <div id="host-lobby" class="page hidden">
   <div class="top-bar"><div class="badge" id="host-lobby-badge">HOST</div><div id="pcnt" style="color:var(--muted);font-size:13px;">0 players</div></div>
-  <div id="rotating-mode-banner" class="hidden" style="text-align:center;">
-    <div class="mode-badge">🔄 Rotating Tables Mode</div>
-  </div>
-  <div class="room-code-block">
-    <label>Room Code — Share This!</label>
-    <div class="room-code" id="room-code-display">------</div>
-  </div>
+  <div id="rotating-mode-banner" class="hidden" style="text-align:center;"><div class="mode-badge">🔄 Rotating Tables Mode</div></div>
+  <div class="room-code-block"><label>Room Code — Share This!</label><div class="room-code" id="room-code-display">------</div></div>
   <div class="lobby-grid">
     <div class="panel"><h3>📱 Scan to Join</h3><div id="qr-wrap"><div id="qr-inner"></div></div><div class="join-url" id="join-url-text"></div></div>
     <div class="panel"><h3>🌸 Players Joined</h3><div class="player-list" id="player-list"><div class="no-players">Waiting for players…</div></div></div>
@@ -323,12 +315,13 @@
     </div>
   </div>
   <div class="game-head" style="margin-bottom:10px;"><h1>Pick a Category</h1><p>Choose what players will rank this round</p></div>
-  <div class="type-tabs" id="type-tabs"></div>
+  <div class="filter-section">
+    <div class="top-tabs" id="top-tabs"></div>
+    <div class="sub-tabs" id="sub-tabs"></div>
+  </div>
   <div class="pick-controls">
     <input type="text" id="cat-search-input" placeholder="🔍 Search categories…" oninput="filterCategories()">
-    <button class="btn btn-random" id="random-btn" onclick="pickRandomCategory()">
-      <span class="dice">🎲</span> Random!
-    </button>
+    <button class="btn btn-random" id="random-btn" onclick="pickRandomCategory()"><span class="dice">🎲</span> Random!</button>
     <button class="btn btn-purple" onclick="openCustomModal()">✏️ Custom</button>
   </div>
   <div class="cat-grid" id="cat-grid"></div>
@@ -344,13 +337,10 @@
     <div id="host-cat-label" class="cat-label"></div>
     <div class="locked-bar">🔒 Hidden from players until you reveal</div>
     <div class="rank-labels"><span class="rl top">⭐ FAVORITE / BEST (#1)</span><span class="rl bot">LEAST FAVORITE ▼</span></div>
-    <div class="tap-hint" id="host-tap-hint">👆 <b>Tap an item</b> on the right → then <b>tap a slot</b> to place it</div>
+    <div class="tap-hint">👆 <b>Tap an item</b> on the right → then <b>tap a slot</b> to place it</div>
     <div class="rank-arena">
       <div class="rank-slots" id="host-slots"></div>
-      <div class="item-pool" id="host-pool-wrap">
-        <div class="pool-label">Tap to pick</div>
-        <div id="host-pool"></div>
-      </div>
+      <div class="item-pool" id="host-pool-wrap"><div class="pool-label">Tap to pick</div><div id="host-pool"></div></div>
     </div>
     <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
       <button class="btn btn-ghost" onclick="showPage('host-lobby')">← Lobby</button>
@@ -418,13 +408,10 @@
     <div class="game-head"><h1>Guess the Host's Order</h1><p>Tap an item, then tap a slot to place it!</p></div>
     <div id="player-cat-label" class="cat-label"></div>
     <div class="rank-labels"><span class="rl top">⭐ HOST'S FAVORITE (#1)</span><span class="rl bot">LEAST FAVORITE ▼</span></div>
-    <div class="tap-hint" id="player-tap-hint">👆 <b>Tap an item</b> on the right → then <b>tap a slot</b> to place it</div>
+    <div class="tap-hint">👆 <b>Tap an item</b> on the right → then <b>tap a slot</b> to place it</div>
     <div class="rank-arena">
       <div class="rank-slots" id="player-slots"></div>
-      <div class="item-pool" id="player-pool-wrap">
-        <div class="pool-label">Tap to pick</div>
-        <div id="player-pool"></div>
-      </div>
+      <div class="item-pool" id="player-pool-wrap"><div class="pool-label">Tap to pick</div><div id="player-pool"></div></div>
     </div>
     <button class="btn btn-primary" id="submit-btn" style="margin-top:15px;" onclick="submitOrder()">Submit My Guess ✓</button>
     <div id="sub-banner" class="hidden"><div class="sub-banner">✅ Submitted! Waiting for host to reveal…</div></div>
@@ -463,416 +450,464 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-function dismissBanner(){
-  var b=document.getElementById('version-banner');
-  b.classList.add('gone');
-  setTimeout(function(){b.style.display='none';},400);
-}
-setTimeout(dismissBanner, 7000);
+function dismissBanner(){var b=document.getElementById('version-banner');b.classList.add('gone');setTimeout(function(){b.style.display='none';},400);}
+setTimeout(dismissBanner,7000);
 
-if(typeof firebase === 'undefined'){
-  document.getElementById('fb-status').textContent='⚠️ Firebase failed to load — check your internet connection';
-  document.getElementById('fb-status').className='err';
-}
-firebase.initializeApp({
-  apiKey:"AIzaSyCoRWphqnWGI3oO2WkNXL7oSLCe7Py_09w",
-  authDomain:"orderup-c928b.firebaseapp.com",
-  databaseURL:"https://orderup-c928b-default-rtdb.firebaseio.com",
-  projectId:"orderup-c928b",
-  storageBucket:"orderup-c928b.firebasestorage.app",
-  messagingSenderId:"436213481520",
-  appId:"1:436213481520:web:91e6c3e57872f90ff32df5"
-});
+firebase.initializeApp({apiKey:"AIzaSyCoRWphqnWGI3oO2WkNXL7oSLCe7Py_09w",authDomain:"orderup-c928b.firebaseapp.com",databaseURL:"https://orderup-c928b-default-rtdb.firebaseio.com",projectId:"orderup-c928b",storageBucket:"orderup-c928b.firebasestorage.app",messagingSenderId:"436213481520",appId:"1:436213481520:web:91e6c3e57872f90ff32df5"});
 var db;
 try{
   db=firebase.database();
-  db.ref('.info/connected').on('value',function(s){
-    var b=document.getElementById('fb-status');
-    if(s.val()){b.textContent='✅ Connected!';b.className='ok';setTimeout(function(){b.style.display='none';},2200);}
-    else{b.textContent='⚠️ Not connected — fix Firebase rules at console.firebase.google.com';b.className='err';}
-  });
-}catch(e){
-  document.getElementById('fb-status').textContent='⚠️ Firebase error: '+e.message;
-  document.getElementById('fb-status').className='err';
-}
+  db.ref('.info/connected').on('value',function(s){var b=document.getElementById('fb-status');if(s.val()){b.textContent='✅ Connected!';b.className='ok';setTimeout(function(){b.style.display='none';},2200);}else{b.textContent='⚠️ Not connected — fix Firebase rules';b.className='err';}});
+}catch(e){document.getElementById('fb-status').textContent='⚠️ Firebase error: '+e.message;document.getElementById('fb-status').className='err';}
 
-// ── CATEGORIES ───────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────
+// CATEGORIES
+// Each category has: type (big tab), subtype (sub tab), name, items
+// ─────────────────────────────────────────────────────────────────
 var CATEGORIES=[
-
-  // ══════════════════════════════════════════════
-  // HARRY POTTER (Movies)
-  // ══════════════════════════════════════════════
-  {type:'Harry Potter',name:'HP Films Ranked',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
-  {type:'Harry Potter',name:'HP Films Part 2',items:["Half-Blood Prince","Deathly Hallows Part 1","Deathly Hallows Part 2","Fantastic Beasts 1","Fantastic Beasts 2"]},
-  {type:'Harry Potter',name:'Hogwarts Houses',items:['Gryffindor','Slytherin','Ravenclaw','Hufflepuff','Beauxbatons']},
-  {type:'Harry Potter',name:'HP Main Characters',items:['Harry Potter','Hermione Granger','Ron Weasley','Draco Malfoy','Luna Lovegood']},
-  {type:'Harry Potter',name:'HP Professors',items:['Dumbledore','Snape','McGonagall','Lupin','Umbridge']},
-  {type:'Harry Potter',name:'HP Villains & Antagonists',items:['Voldemort','Dolores Umbridge','Bellatrix Lestrange','Draco Malfoy','Peter Pettigrew']},
-  {type:'Harry Potter',name:'HP Magical Creatures',items:['Hippogriff','Basilisk','Thestral','Hungarian Horntail','Dobby the House Elf']},
-  {type:'Harry Potter',name:'HP Spells',items:['Expecto Patronum','Avada Kedavra','Expelliarmus','Lumos','Wingardium Leviosa']},
-  {type:'Harry Potter',name:'HP Weasley Family Members',items:['Fred Weasley','George Weasley','Ginny Weasley','Percy Weasley','Molly Weasley']},
-  {type:'Harry Potter',name:'HP Iconic Movie Moments',items:['Diagon Alley reveal','The Sorting Hat','The Triwizard Tournament','The Battle of Hogwarts','Snape\'s memories in the Pensieve']},
-  {type:'Harry Potter',name:'HP Quidditch Positions',items:['Seeker','Keeper','Beater','Chaser','Team Captain']},
-  {type:'Harry Potter',name:'Marauders',items:['Sirius Black','Remus Lupin','James Potter','Peter Pettigrew','Lily Evans']},
-  {type:'Harry Potter',name:'HP Magical Objects',items:['The Invisibility Cloak','The Elder Wand','The Marauder\'s Map','The Sorting Hat','The Horcrux Locket']},
-  {type:'Harry Potter',name:'Fantastic Beasts Characters',items:['Newt Scamander','Tina Goldstein','Jacob Kowalski','Queenie Goldstein','Gellert Grindelwald']},
-  {type:'Harry Potter',name:'HP Death Eaters',items:['Bellatrix Lestrange','Lucius Malfoy','Peter Pettigrew','Fenrir Greyback','Dolores Umbridge']},
-  {type:'Sherlock',name:'Sherlock Episodes Ranked',items:['A Study in Pink','The Great Game','A Scandal in Belgravia','The Hounds of Baskerville','The Reichenbach Fall']},
-  {type:'Sherlock',name:'Sherlock Series Ranked',items:['Series 1','Series 2','Series 3','Series 4','The Abominable Bride Special']},
-  {type:'Sherlock',name:'Sherlock Characters',items:['Sherlock Holmes','John Watson','Irene Adler','Jim Moriarty','Mycroft Holmes']},
-  {type:'Sherlock',name:'Sherlock Supporting Cast',items:['Mrs. Hudson','Greg Lestrade','Molly Hooper','Mary Morstan','Anderson']},
-  {type:'Sherlock',name:'Sherlock Iconic Moments',items:['I am Sherlock Holmes','The Fall from St. Bart\'s','The Empty Hearse reveal','Irene Adler\'s entrance','Moriarty on the roof']},
-  {type:'Sherlock',name:'Sherlock Holmes Traits',items:['Deductive reasoning','Violin playing','Drug use history','Sociopathy claim','Memory palace']},
-  {type:'Sherlock',name:'Sherlock Villains',items:['Jim Moriarty','Irene Adler (sort of)','Charles Magnussen','Eurus Holmes','Mary Morstan (season 3)']},
-  {type:'Hannibal',name:'Hannibal Seasons',items:['Season 1 (Apéritif)','Season 2 (Kaiseki)','Season 3 Part 1 (Italy)','Season 3 Part 2 (Red Dragon)','Silence of the Lambs film']},
-  {type:'Hannibal',name:'Hannibal Characters',items:['Hannibal Lecter','Will Graham','Alana Bloom','Jack Crawford','Frederick Chilton']},
-  {type:'Hannibal',name:'Hannibal Supporting Characters',items:['Abigail Hobbs','Beverly Katz','Bedelia du Maurier','Mason Verger','Francis Dolarhyde']},
-  {type:'Hannibal',name:'Hannibal Iconic Episodes',items:['Apéritif (S1E1)','Mizumono (S2 finale)','Digestivo (S3)','The Wrath of the Lamb (finale)','Relevés (S1)']},
-  {type:'Hannibal',name:'Hannibal Killers / Antagonists',items:['Hannibal Lecter','Garret Jacob Hobbs','Francis Dolarhyde','Mason Verger','Randall Tier']},
-  {type:'Hannibal',name:'Hannibal Relationship Dynamics',items:['Hannibal & Will (Hannigram)','Will & Alana','Hannibal & Bedelia','Alana & Margot','Jack & Bella']},
-  {type:'Good Omens',name:'Good Omens Characters',items:['Aziraphale','Crowley','Adam Young','Anathema Device','Newton Pulsifer']},
-  {type:'Good Omens',name:'Good Omens Season 1 Episodes',items:['In the Beginning','The Book','Hard Times','Saturday Morning Funtime','The Doomsday Option']},
-  {type:'Good Omens',name:'Good Omens Celestial Beings',items:['Aziraphale','Gabriel','Michael','Sandalphon','Beelzebub']},
-  {type:'Good Omens',name:'Good Omens Iconic Moments',items:['Arrangement under the apple tree','Bentley & Queen on the motorway','The Ritz lunch','Crowley threatens heaven','Book shop destruction']},
-  {type:'Good Omens',name:'Good Omens Season 2 Storylines',items:['Job minisode','Edinburgh minisode','Gabriel\'s amnesia','Maggie & Nina romance','Final bookshop scene']},
-  {type:'Good Omens',name:'Crowley\'s Best Lines',items:['"I\'m an Angel!"','The plants speech','The Job argument','The Arrangement proposal','The Metatron confrontation']},
-  {type:'Supernatural',name:'Supernatural Seasons',items:['Season 1','Season 2','Season 4','Season 5','Season 8']},
-  {type:'Supernatural',name:'Supernatural Characters',items:['Dean Winchester','Sam Winchester','Castiel','Bobby Singer','Crowley']},
-  {type:'Supernatural',name:'Supernatural Supporting Cast',items:['Ellen Harvelle','Jo Harvelle','Charlie Bradbury','Benny Lafitte','Kevin Tran']},
-  {type:'Supernatural',name:'Supernatural Angels',items:['Castiel','Gabriel','Balthazar','Metatron','Lucifer']},
-  {type:'Supernatural',name:'Supernatural Villains',items:['Yellow Eyes (Azazel)','Lilith','Lucifer','Dick Roman','The Darkness (Amara)']},
-  {type:'Supernatural',name:'Supernatural Monsters of the Week',items:['Wendigo','Shapeshifter','Djinn','Rugaru','Leviathan']},
-  {type:'Supernatural',name:'Supernatural Iconic Episodes',items:['Pilot','In My Time of Dying','Mystery Spot','The French Mistake','Swan Song']},
-  {type:'Supernatural',name:'Supernatural Road Trip Essentials',items:['Baby (the Impala)','Classic rock cassettes','Pie','Dean\'s leather jacket','The Colt']},
-  {type:'Supernatural',name:'Best Dean Winchester Moments',items:['Baby driving scenes','Pie eating','"Carry On Wayward Son"','Purgatory scenes','The final episode speech']},
-  {type:'Disney',name:'Disney Renaissance Films',items:['The Little Mermaid','Beauty and the Beast','Aladdin','The Lion King','Mulan']},
-  {type:'Disney',name:'Disney Revival Films',items:['Tangled','Brave','Frozen','Moana','Encanto']},
-  {type:'Disney',name:'Disney Animated Films (2000s)',items:['Lilo & Stitch','Treasure Planet','Brother Bear','Home on the Range','Chicken Little']},
-  {type:'Disney',name:'Disney Sidekicks',items:['Timon & Pumbaa','Genie','Mushu','Pascal & Maximus','Olaf']},
-  {type:'Disney',name:'Disney Princess Romances',items:['Ariel & Eric','Belle & Beast','Jasmine & Aladdin','Cinderella & Prince Charming','Rapunzel & Flynn']},
-  {type:'Disney',name:'Disney Villains Ranked',items:['Ursula','Maleficent','Hades','Gaston','The Evil Queen']},
-  {type:'Disney',name:'Disney Songs (Classic)',items:['Part of Your World','Be Our Guest','A Whole New World','Hakuna Matata','Under the Sea']},
-  {type:'Disney',name:'Disney Songs (Modern)',items:['Let It Go','How Far I\'ll Go','Into the Unknown','What Was I Missing','Surface Pressure']},
-  {type:'Disney',name:'Disney Channel Original Movies',items:['High School Musical','Zenon: Girl of the 21st Century','Hocus Pocus','Twitches','Cheetah Girls']},
-  {type:'Disney',name:'Disney Channel Shows (2000s)',items:['Lizzie McGuire','Even Stevens','That\'s So Raven','Kim Possible','Pepper Ann']},
-  {type:'Disney',name:'Disney Channel Shows (2010s)',items:['Good Luck Charlie','Shake It Up','ANT Farm','Jessie','Girl Meets World']},
-  {type:'Disney',name:'Disney Parks Rides',items:['Haunted Mansion','Space Mountain','Pirates of the Caribbean','Splash Mountain','It\'s a Small World']},
-  {type:'Disney',name:'Disney Pixar Originals',items:['Toy Story','Finding Nemo','The Incredibles','WALL-E','Up']},
-  {type:'Disney',name:'Disney Franchise Characters',items:['Mickey Mouse','Minnie Mouse','Donald Duck','Goofy','Pluto']},
-  {type:'Disney',name:'Disney Live Action Remakes',items:['The Lion King (2019)','Beauty and the Beast (2017)','Cinderella (2015)','Aladdin (2019)','The Little Mermaid (2023)']},
-  {type:'Disney',name:'Disney Princesses (All Time)',items:['Cinderella','Ariel','Belle','Jasmine','Moana']},
-  {type:'Disney',name:'Disney Animals',items:['Simba','Bambi','Dumbo','Lady (Lady & the Tramp)','Copper (Fox & the Hound)']},
-  {type:'Disney',name:'Disney Underrated Films',items:['Treasure Planet','Atlantis','The Emperor\'s New Groove','Hunchback of Notre Dame','Tarzan']},
-  {type:'Marvel',name:'Avengers Films',items:['The Avengers','Age of Ultron','Infinity War','Endgame','Civil War']},
-  {type:'Marvel',name:'MCU Phase 1',items:['Iron Man','The Incredible Hulk','Iron Man 2','Thor','Captain America: The First Avenger']},
-  {type:'Marvel',name:'MCU Phase 2',items:['Iron Man 3','Thor: The Dark World','Captain America: The Winter Soldier','Guardians of the Galaxy','Avengers: Age of Ultron']},
-  {type:'Marvel',name:'MCU Phase 3',items:['Captain America: Civil War','Doctor Strange','Spider-Man: Homecoming','Thor: Ragnarok','Black Panther']},
-  {type:'Marvel',name:'MCU Phase 4 Films',items:['Black Widow','Shang-Chi','Eternals','Spider-Man: No Way Home','Doctor Strange in the Multiverse of Madness']},
-  {type:'Marvel',name:'MCU Phase 5 Films',items:['Ant-Man and the Wasp: Quantumania','Guardians Vol. 3','The Marvels','Deadpool & Wolverine','Captain America: Brave New World']},
-  {type:'Marvel',name:'Marvel Heroes',items:['Iron Man','Captain America','Thor','Black Widow','Hulk']},
-  {type:'Marvel',name:'Marvel Villains',items:['Thanos','Loki','Ultron','Killmonger','Hela']},
-  {type:'Marvel',name:'Spider-Man Films',items:['Spider-Man (2002)','Spider-Man 2','The Amazing Spider-Man','Homecoming','No Way Home']},
-  {type:'Marvel',name:'Iron Man Films',items:['Iron Man','Iron Man 2','Iron Man 3','Civil War (Tony\'s arc)','Endgame (Tony\'s arc)']},
-  {type:'Marvel',name:'Thor Films',items:['Thor','The Dark World','Ragnarok','Infinity War (Thor)','Love and Thunder']},
-  {type:'Marvel',name:'Marvel Female Heroes',items:['Black Widow','Scarlet Witch','Gamora','Valkyrie','Captain Marvel']},
-  {type:'Marvel',name:'Guardians of the Galaxy Characters',items:['Star-Lord','Gamora','Drax','Rocket','Groot']},
-  {type:'South Park',name:'South Park Main Boys',items:['Eric Cartman','Stan Marsh','Kyle Broflovski','Kenny McCormick','Butters Stotch']},
-  {type:'South Park',name:'South Park Side Characters',items:['Randy Marsh','Mr. Garrison','Chef','PC Principal','Tweek & Craig']},
-  {type:'South Park',name:'Best South Park Seasons',items:['Season 5','Season 8','Season 12','Season 19','Season 23']},
-  {type:'South Park',name:'Iconic South Park Episodes',items:['Scott Tenorman Must Die','Make Love Not Warcraft','Imaginationland','Trapped in the Closet','The Return of Chef']},
-  {type:'Emo Music',name:'Emo Bands Ranked',items:['My Chemical Romance','Fall Out Boy','Panic! at the Disco','Paramore','Hawthorne Heights']},
-  {type:'Emo Music',name:'More Emo Bands',items:['Taking Back Sunday','Dashboard Confessional','Brand New','The Used','Thursday']},
-  {type:'Emo Music',name:'MCR Albums',items:['I Brought You My Bullets','Three Cheers for Sweet Revenge','The Black Parade','Danger Days','The Black Parade (reissue)']},
-  {type:'Emo Music',name:'Fall Out Boy Albums',items:['From Under the Cork Tree','Infinity on High','Folie à Deux','Save Rock and Roll','American Beauty/American Psycho']},
-  {type:'Emo Music',name:'Panic! at the Disco Albums',items:['A Fever You Can\'t Sweat Out','Pretty. Odd.','Vices & Virtues','Too Weird to Live','Death of a Bachelor']},
-  {type:'Emo Music',name:'Paramore Albums',items:['All We Know Is Falling','Riot!','Brand New Eyes','Paramore (self-titled)','After Laughter']},
-  {type:'Emo Music',name:'Iconic Emo Songs',items:['"Welcome to the Black Parade"','"Sugar We\'re Goin Down"','"I Write Sins Not Tragedies"','"Misery Business"','"Ohio is for Lovers"']},
-  {type:'Emo Music',name:'Emo Adjacent Bands',items:['Linkin Park','Evanescence','Simple Plan','Good Charlotte','Sum 41']},
-  {type:'Emo Music',name:'Emo Era Aesthetic Elements',items:['Side-swept bangs','Studded belts','Black skinny jeans','Band tees','Heavy eyeliner']},
-  {type:'Pop Music',name:'Pop Divas All Time',items:['Beyoncé','Mariah Carey','Whitney Houston','Madonna','Celine Dion']},
-  {type:'Pop Music',name:'2000s Pop Queens',items:['Britney Spears','Christina Aguilera','Shakira','Avril Lavigne','Nelly Furtado']},
-  {type:'Pop Music',name:'2010s Pop Queens',items:['Taylor Swift','Katy Perry','Lady Gaga','Rihanna','Ariana Grande']},
-  {type:'Pop Music',name:'2020s Pop Girls',items:['Olivia Rodrigo','Dua Lipa','Sabrina Carpenter','Chappell Roan','Billie Eilish']},
-  {type:'Pop Music',name:'Pop Boy Bands',items:['Backstreet Boys','NSYNC','One Direction','Jonas Brothers','New Kids on the Block']},
-  {type:'Pop Music',name:'Bops That Defined Summers',items:['Call Me Maybe','Blurred Lines','Happy','Uptown Funk','Old Town Road']},
-  {type:'80s Movies',name:'80s Teen Comedies',items:['Ferris Bueller\'s Day Off','The Breakfast Club','Sixteen Candles','Pretty in Pink','Fast Times at Ridgemont High']},
-  {type:'80s Movies',name:'80s Action Films',items:['Die Hard','The Terminator','RoboCop','Lethal Weapon','Predator']},
-  {type:'80s Movies',name:'80s Sci-Fi Films',items:['E.T.','Back to the Future','Blade Runner','The Thing','Aliens']},
-  {type:'80s Movies',name:'80s Horror Films',items:['A Nightmare on Elm Street','Friday the 13th','The Shining','Poltergeist','Hellraiser']},
-  {type:'80s Movies',name:'80s Fantasy & Adventure',items:['The NeverEnding Story','Labyrinth','The Princess Bride','Willow','The Dark Crystal']},
-  {type:'80s Movies',name:'80s Comedies',items:['Ghostbusters','Beetlejuice','Trading Places','Beverly Hills Cop','Planes Trains and Automobiles']},
-  {type:'80s Movies',name:'John Hughes Films',items:['The Breakfast Club','Ferris Bueller\'s Day Off','Sixteen Candles','Pretty in Pink','Home Alone']},
-  {type:'80s Movies',name:'80s Blockbusters',items:['Raiders of the Lost Ark','Return of the Jedi','E.T.','Beverly Hills Cop','Top Gun']},
-  {type:'2000s Movies',name:'2000s Teen Films',items:['Mean Girls','Bring It On','13 Going on 30','A Cinderella Story','The Princess Diaries']},
-  {type:'2000s Movies',name:'2000s Blockbusters',items:['Spider-Man','Pirates of the Caribbean','Shrek','Lord of the Rings: Fellowship','Harry Potter 1']},
-  {type:'2000s Movies',name:'2000s Horror Films',items:['The Ring','Saw','The Grudge','Final Destination','Insidious']},
-  {type:'2000s Movies',name:'2000s Animated Films',items:['Shrek','Finding Nemo','The Incredibles','Ice Age','Kung Fu Panda']},
-  {type:'2000s Movies',name:'2000s Rom-Coms',items:['How to Lose a Guy in 10 Days','Hitch','50 First Dates','The Wedding Planner','Legally Blonde 2']},
-  {type:'2000s Movies',name:'2000s Chick Flicks',items:['Legally Blonde','Mamma Mia','The Devil Wears Prada','27 Dresses','Bride Wars']},
-  {type:'2000s Movies',name:'2000s Comedy Films',items:['Superbad','Knocked Up','Blades of Glory','Wedding Crashers','Step Brothers']},
-  {type:'Kids Shows',name:'Nickelodeon 2000s',items:['SpongeBob SquarePants','Fairly OddParents','Danny Phantom','Avatar: The Last Airbender','Invader Zim']},
-  {type:'Kids Shows',name:'Nickelodeon 2010s',items:['iCarly','Victorious','Big Time Rush','Bucket & Skinner','The Thundermans']},
-  {type:'Kids Shows',name:'Cartoon Network 2000s',items:['Dexter\'s Lab','The Powerpuff Girls','Ed Edd n Eddy','Courage the Cowardly Dog','Kids Next Door']},
-  {type:'Kids Shows',name:'Cartoon Network 2010s',items:['Adventure Time','Regular Show','The Amazing World of Gumball','Steven Universe','Gravity Falls']},
-  {type:'Kids Shows',name:'Disney Channel 2000s',items:['Lizzie McGuire','Even Stevens','That\'s So Raven','Kim Possible','Proud Family']},
-  {type:'Kids Shows',name:'Disney Channel 2010s',items:['Good Luck Charlie','Shake It Up','ANT Farm','Austin & Ally','Girl Meets World']},
-  {type:'Kids Shows',name:'Live Action Kids Shows',items:['iCarly','Drake & Josh','Zoey 101','Lizzie McGuire','Phil of the Future']},
-  {type:'Kids Shows',name:'Best Avatar: The Last Airbender Episodes',items:['The Storm','Zuko Alone','The Cave of Two Lovers','Ember Island Players','Sozin\'s Comet finale']},
-  {type:'2000s Nostalgia',name:'2000s Tech We Loved',items:['iPod','Motorola RAZR','Flip phones','MySpace','AIM Instant Messenger']},
-  {type:'2000s Nostalgia',name:'2000s Fashion Trends',items:['Von Dutch hats','Juicy Couture tracksuits','Low-rise jeans','Frosted tips','Platform flip flops']},
-  {type:'2000s Nostalgia',name:'2000s Toys & Games',items:['Tamagotchi','Beyblades','Bratz Dolls','Yu-Gi-Oh cards','GameBoy Advance']},
-  {type:'2000s Nostalgia',name:'2000s Reality TV',items:['American Idol','The Simple Life','Newlyweds: Nick & Jessica','The Osbournes','America\'s Next Top Model']},
-  {type:'2000s Nostalgia',name:'Things From 2000-2010 We Miss',items:['Blockbuster Video','Saturday morning cartoons','AOL Instant Messenger','Going to the mall','Buying ringtones']},
-  {type:'2000s Nostalgia',name:'2000s School Lunchbox Staples',items:['Lunchables','Capri Sun','Gushers','Dunkaroos','Fruit Roll-Ups']},
-  {type:'2000s Nostalgia',name:'2000s Video Games',items:['Guitar Hero','Halo 2','The Sims 2','Kingdom Hearts','Grand Theft Auto: San Andreas']},
-  {type:'Movies',name:'Hunger Games Films',items:['The Hunger Games','Catching Fire','Mockingjay Part 1','Mockingjay Part 2','Ballad of Songbirds & Snakes']},
-  {type:'Movies',name:'Harry Potter Films',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
-  {type:'Movies',name:'Scream Films',items:['Scream','Scream 2','Scream 3','Scream 4','Scream 5']},
-  {type:'Movies',name:'Halloween Films',items:['Halloween (1978)','Halloween II','Halloween H20','Halloween (2018)','Halloween Ends']},
-  {type:'Movies',name:'Girl Movies',items:['Mean Girls','Clueless','Heathers','Easy A','Legally Blonde']},
-  {type:'Movies',name:'Twilight Films',items:['Twilight','New Moon','Eclipse','Breaking Dawn Part 1','Breaking Dawn Part 2']},
-  {type:'Movies',name:'YA Dystopia Films',items:['The Maze Runner','The Scorch Trials','The Death Cure','Divergent','Insurgent']},
-  {type:'Movies',name:'Disney Animated (Modern)',items:['Frozen','Frozen II','Tangled','Moana','Raya and the Last Dragon']},
-  {type:'Movies',name:'Disney Animated (Classic)',items:['The Little Mermaid','Beauty and the Beast','Aladdin','Cinderella','Snow White']},
-  {type:'Movies',name:'Pixar Films',items:['The Incredibles','Up','Inside Out','Coco','Soul']},
-  {type:'Movies',name:'Pixar Sequels',items:['Toy Story 2','Toy Story 3','Finding Dory','Incredibles 2','Inside Out 2']},
-  {type:'Movies',name:'Marvel Avengers Films',items:['The Avengers','Age of Ultron','Infinity War','Endgame','Civil War']},
-  {type:'Movies',name:'Spider-Man Films',items:['Spider-Man (2002)','Into the Spider-Verse','Homecoming','No Way Home','Across the Spider-Verse']},
-  {type:'Movies',name:'DC Films',items:['The Dark Knight','Wonder Woman','Aquaman','Shazam!','The Suicide Squad']},
-  {type:'Movies',name:'Batman Films',items:['Batman (1989)','Batman Returns','The Dark Knight','Batman v Superman','The Batman (2022)']},
-  {type:'Movies',name:'Rom-Coms',items:['10 Things I Hate About You','Bridget Jones Diary','How to Lose a Guy in 10 Days','Crazy Rich Asians',"To All the Boys I've Loved Before"]},
-  {type:'Movies',name:'90s Animated Films',items:['The Lion King','Mulan','Hercules','Tarzan','The Hunchback of Notre Dame']},
-  {type:'Movies',name:'Horror Franchises',items:['A Nightmare on Elm Street','Halloween','Friday the 13th','Scream','The Texas Chain Saw Massacre']},
-  {type:'Movies',name:'Psychological Thrillers',items:['Get Out','Hereditary','Midsommar','The Witch','Us']},
-  {type:'Movies',name:'Fantasy Adventure Films',items:['The Princess Bride','Labyrinth','The NeverEnding Story','Willow','Stardust']},
-  {type:'Movies',name:'Romantic Movies (2000s)',items:['The Notebook','A Walk to Remember','P.S. I Love You','Dear John','The Vow']},
-  {type:'Movies',name:'Chick Flicks (2000s)',items:['Mamma Mia','27 Dresses','The Devil Wears Prada','Bride Wars','Sex and the City: The Movie']},
-  {type:'Movies',name:'Action Blockbusters',items:['Gladiator','The Dark Knight','Inception','Mad Max: Fury Road','Top Gun: Maverick']},
-  {type:'Movies',name:'Animated Dreamworks Films',items:['Shrek','Kung Fu Panda','Madagascar','How to Train Your Dragon','The Prince of Egypt']},
-  {type:'Movies',name:'Epic Fantasy',items:['Lord of the Rings: Fellowship','Lord of the Rings: Two Towers','Lord of the Rings: Return of the King','Narnia','Eragon']},
-  {type:'TV',name:'Crime Procedurals',items:['Criminal Minds','Bones','NCIS','Law & Order SVU','Mindhunter']},
-  {type:'TV',name:'Supernatural Teen Dramas',items:['Supernatural','The Vampire Diaries','Teen Wolf','The Originals','Buffy the Vampire Slayer']},
-  {type:'TV',name:'British Dramas',items:['Sherlock','Doctor Who','Black Mirror','Broadchurch','Luther']},
-  {type:'TV',name:'Cult Sci-Fi & Mystery',items:['Stranger Things','The Umbrella Academy','Dark','Yellowjackets','Lost']},
-  {type:'TV',name:'Teen Dramas',items:['Glee','Riverdale','Pretty Little Liars','Gossip Girl','The OC']},
-  {type:'TV',name:'Reality Competition Shows',items:["RuPaul's Drag Race",'Survivor','The Amazing Race','Big Brother','The Voice']},
-  {type:'TV',name:'Animated Adult Shows',items:["Bob's Burgers",'Archer','BoJack Horseman','Futurama','Rick and Morty']},
-  {type:'TV',name:'Sitcoms',items:['The Office','Parks and Recreation','Brooklyn Nine-Nine','New Girl',"Schitt's Creek"]},
-  {type:'TV',name:'Fantasy & Sci-Fi Dramas',items:['Game of Thrones','The Witcher','Wheel of Time','Shadow and Bone','House of the Dragon']},
-  {type:'TV',name:'Netflix Originals',items:['Squid Game','Bridgerton','Outer Banks','Emily in Paris','Wednesday']},
-  {type:'TV',name:'Cartoon Network Classics',items:['The Powerpuff Girls',"Dexter's Laboratory",'Ed Edd n Eddy','Courage the Cowardly Dog','Johnny Bravo']},
-  {type:'TV',name:'Nickelodeon Classics',items:['SpongeBob SquarePants','Rugrats','Hey Arnold!','Invader Zim','The Fairly OddParents']},
-  {type:'TV',name:'Anime Series',items:['Attack on Titan','Demon Slayer','Fullmetal Alchemist: Brotherhood','My Hero Academia','Death Note']},
-  {type:'TV',name:'Shojo Anime',items:['Sailor Moon','Fruits Basket','Ouran High School Host Club','Cardcaptor Sakura','Kimi ni Todoke']},
-  {type:'TV',name:'Medical Dramas',items:["Grey's Anatomy",'House MD','ER','Scrubs','The Good Doctor']},
-  {type:'TV',name:'2010s Dramas',items:['Breaking Bad','Downton Abbey','Scandal','Homeland','The Americans']},
-  {type:'TV',name:'HBO Dramas',items:['The Sopranos','Sex and the City','Six Feet Under','The Wire','Big Love']},
-  {type:'TV',name:'Binge-Worthy Dramas',items:['This Is Us','Big Little Lies','Sharp Objects','Ozark','Mare of Easttown']},
-  {type:'TV',name:'Reality TV Classics',items:['American Idol','The Bachelor','America\'s Next Top Model','Project Runway','Dancing with the Stars']},
-  {type:'TV',name:'Game Shows',items:['Wheel of Fortune','Jeopardy!','Deal or No Deal','Who Wants to Be a Millionaire','The Price Is Right']},
-  {type:'Music',name:'Taylor Swift Albums',items:['Fearless','1989','Reputation','Folklore','Midnights']},
-  {type:'Music',name:'Beyoncé Albums',items:['Lemonade','Dangerously in Love','4','Beyoncé (Self-Titled)','Renaissance']},
-  {type:'Music',name:'Olivia Rodrigo Songs',items:['drivers license','good 4 u','brutal','happier','vampire']},
-  {type:'Music',name:'Billie Eilish Albums',items:['When We All Fall Asleep...','Happier Than Ever','Hit Me Hard and Soft',"Don't Smile at Me EP",'Guitar Songs EP']},
-  {type:'Music',name:'Ariana Grande Albums',items:['Thank U Next','Sweetener','Positions','Yours Truly','My Everything']},
-  {type:'Music',name:'Pop Punk Bands',items:['Paramore','My Chemical Romance','Fall Out Boy','Panic! at the Disco','Green Day']},
-  {type:'Music',name:'K-Pop Groups',items:['BTS','BLACKPINK','TWICE','Stray Kids','aespa']},
-  {type:'Music',name:'90s Pop Stars',items:['Britney Spears','Christina Aguilera','Backstreet Boys','NSYNC','Spice Girls']},
-  {type:'Music',name:'Iconic Music Videos',items:['Thriller','Single Ladies','Bad Romance','Wrecking Ball','This Is America']},
-  {type:'Music',name:'Alternative Artists',items:['Lorde','Lana Del Rey','Florence + The Machine','Halsey','Mitski']},
-  {type:'Music',name:'Sabrina Carpenter Songs',items:['Espresso','Please Please Please','Feather','Nonsense','Skin']},
-  {type:'Music',name:'Chappell Roan Songs',items:['Good Luck Babe!','Red Wine Supernova','HOT TO GO!','Casual','Pink Pony Club']},
-  {type:'Music',name:'Iconic Girl Bands',items:['Spice Girls',"Destiny's Child",'Little Mix','Fifth Harmony','TLC']},
-  {type:'Music',name:'Boy Bands',items:['Backstreet Boys','NSYNC','New Kids on the Block','One Direction','Jonas Brothers']},
-  {type:'Music',name:'Adele Songs',items:['Rolling in the Deep','Someone Like You','Hello','Skyfall','Easy On Me']},
-  {type:'Music',name:'Katy Perry Songs',items:['Roar','Firework','Dark Horse','California Gurls','Teenage Dream']},
-  {type:'Music',name:'Karaoke Night Classics',items:['Total Eclipse of the Heart','Don\'t Stop Believin\'','I Will Survive','Bohemian Rhapsody','Sweet Caroline']},
-  {type:'Games',name:'Cozy & Sandbox Games',items:['Minecraft','Stardew Valley','Terraria','Animal Crossing','The Sims 4']},
-  {type:'Games',name:'Multiplayer Party Games',items:['Among Us','Fall Guys','Fortnite','Roblox','Valorant']},
-  {type:'Games',name:'Indie Story Games',items:['Undertale','Deltarune','Omori','Celeste','Hollow Knight']},
-  {type:'Games',name:'Pokemon Games',items:['Pokemon Red','Pokemon Gold','Pokemon Emerald','Pokemon Platinum','Pokemon Sword']},
-  {type:'Games',name:'Mario Games',items:['Mario Kart 8','Super Smash Bros Ultimate','Mario Odyssey','Mario Party','Mario Kart Wii']},
-  {type:'Games',name:'Legend of Zelda Games',items:['Ocarina of Time','Breath of the Wild',"Majora's Mask",'Tears of the Kingdom','Wind Waker']},
-  {type:'Games',name:'Pokemon Generations',items:['Gen 1 (Kanto)','Gen 2 (Johto)','Gen 3 (Hoenn)','Gen 4 (Sinnoh)','Gen 5 (Unova)']},
-  {type:'Characters',name:'Hunger Games Characters',items:['Katniss Everdeen','Peeta Mellark','Gale Hawthorne','Lucy Gray Baird','Coriolanus Snow']},
-  {type:'Characters',name:'Harry Potter Characters',items:['Harry Potter','Hermione Granger','Ron Weasley','Draco Malfoy','Luna Lovegood']},
-  {type:'Characters',name:'Vampire Diaries Characters',items:['Damon Salvatore','Stefan Salvatore','Elena Gilbert','Klaus Mikaelson','Caroline Forbes']},
-  {type:'Characters',name:'Stranger Things Characters',items:['Eleven','Mike Wheeler','Dustin Henderson','Max Mayfield','Steve Harrington']},
-  {type:'Characters',name:'Bridgerton Characters',items:['Daphne Bridgerton','Simon Basset','Anthony Bridgerton','Kate Sharma','Benedict Bridgerton']},
-  {type:'Characters',name:'Encanto Characters',items:['Mirabel Madrigal','Luisa Madrigal','Isabela Madrigal','Camilo Madrigal','Bruno Madrigal']},
-  {type:'Characters',name:'Disney Princesses',items:['Cinderella','Ariel','Belle','Jasmine','Mulan']},
-  {type:'Characters',name:'Disney Villains',items:['Maleficent','Ursula','Gaston','Jafar','Hades']},
-  {type:'Characters',name:'Avatar: The Last Airbender',items:['Aang','Katara','Sokka','Zuko','Toph']},
-  {type:'Characters',name:'Friends Characters',items:['Rachel Green','Monica Geller','Phoebe Buffay','Ross Geller','Chandler Bing']},
-  {type:'Characters',name:'Twilight Characters',items:['Bella Swan','Edward Cullen','Jacob Black','Alice Cullen','Rosalie Hale']},
-  {type:'Characters',name:'Gossip Girl Characters',items:['Blair Waldorf','Serena van der Woodsen','Chuck Bass','Dan Humphrey','Nate Archibald']},
-  {type:'Books',name:'Harry Potter Books',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
-  {type:'Books',name:'Twilight Saga Books',items:['Twilight','New Moon','Eclipse','Breaking Dawn','Midnight Sun']},
-  {type:'Books',name:'A Court of Thorns & Roses',items:['A Court of Thorns and Roses','A Court of Mist and Fury','A Court of Wings and Ruin','A Court of Frost and Starlight','A Court of Silver Flames']},
-  {type:'Books',name:'Colleen Hoover Books',items:['Verity','It Ends with Us','Ugly Love','Confess','November 9']},
-  {type:'Books',name:'Classic YA Books',items:['The Outsiders','The Perks of Being a Wallflower','Looking for Alaska','The Fault in Our Stars','Thirteen Reasons Why']},
-  {type:'Books',name:'Beach Read Novels',items:['The Summer I Turned Pretty','Daisy Jones & The Six','Beach Read','The Hating Game','People We Meet on Vacation']},
-  {type:'Books',name:'Thriller Novels',items:['Gone Girl','The Girl on the Train','Big Little Lies','Behind Closed Doors','The Silent Patient']},
-  {type:'Books',name:'Self-Help Bestsellers',items:['The Secret','You Are a Badass','Girl Wash Your Face','Untamed','Atomic Habits']},
-  {type:'Food',name:'Fast Food Chains',items:["McDonald's","Chick-fil-A","Taco Bell","Wendy's","Burger King"]},
-  {type:'Food',name:'Ice Cream Flavors',items:['Chocolate','Vanilla','Strawberry','Cookies & Cream','Mint Chip']},
-  {type:'Food',name:'Halloween Candies',items:["Reese's","Kit Kat","Twix","Snickers","Candy Corn"]},
-  {type:'Food',name:'Starbucks Drinks',items:['Pumpkin Spice Latte','Iced Brown Sugar Oat Latte','Caramel Macchiato','Pink Drink','Matcha Latte']},
-  {type:'Food',name:'Boba / Bubble Tea Flavors',items:['Taro','Matcha','Brown Sugar Milk Tea','Mango','Strawberry']},
-  {type:'Food',name:'Comfort Foods',items:['Mac and Cheese','Grilled Cheese','Ramen','Chicken Soup','Mashed Potatoes']},
-  {type:'Food',name:'Desserts',items:['Chocolate Cake','Cheesecake','Brownies','Cinnamon Rolls','Tiramisu']},
-  {type:'Food',name:'Cookie Types',items:['Chocolate Chip','Sugar Cookie','Snickerdoodle','Peanut Butter','Oatmeal Raisin']},
-  {type:'Food',name:'International Cuisines',items:['Italian','Mexican','Japanese','Indian','Thai']},
-  {type:'Food',name:'Thanksgiving Dishes',items:['Turkey','Stuffing','Mashed Potatoes','Cranberry Sauce','Pumpkin Pie']},
-  {type:'Food',name:'Breakfast Foods',items:['Pancakes','Waffles','Avocado Toast','Eggs Benedict','Açaí Bowl']},
-  {type:'Food',name:'Wine Types',items:['Chardonnay','Pinot Grigio','Cabernet Sauvignon','Rosé','Moscato']},
-  {type:'Food',name:'Cocktail Classics',items:['Margarita','Cosmopolitan','Mojito','Aperol Spritz','Piña Colada']},
-  {type:'Other',name:'Streaming Services',items:['Netflix','Hulu','Disney+','Max','Prime Video']},
-  {type:'Other',name:'Social Media',items:['TikTok','Instagram','Twitter/X','Tumblr','YouTube']},
-  {type:'Other',name:'Romance Tropes',items:['Enemies to Lovers','Friends to Lovers','Fake Dating','Slow Burn','Second Chance']},
-  {type:'Other',name:'Aesthetic Vibes',items:['Cottagecore','Dark Academia','Y2K','Barbiecore','Goblincore']},
-  {type:'Other',name:'Love Languages',items:['Words of Affirmation','Quality Time','Physical Touch','Acts of Service','Gift Giving']},
-  {type:'Other',name:'Fashion Eras',items:['70s Boho','80s Power Shoulders','90s Grunge','2000s Bratz Doll','2010s Hipster']},
-  {type:'Other',name:'Superpowers',items:['Flight','Invisibility','Time Travel','Telepathy','Super Strength']},
-  {type:'Other',name:'Fictional Worlds to Live In',items:['Hogwarts','Middle-Earth','Narnia','Panem','Equestria']},
-  {type:'Other',name:'Celeb Breakups That Hurt',items:['Brad & Jennifer','Britney & Justin','Selena & Justin','Taylor & Jake','Ryan & Eva']},
-  {type:'Other',name:'Icons of the 2000s',items:['Paris Hilton','Britney Spears','Lindsay Lohan','Nicole Richie','Jessica Simpson']},
-  {type:'Other',name:'Workout Trends',items:['Zumba','Jazzercise','CrossFit','Hot Yoga','Peloton']},
-  {type:'MLP',name:'MLP Mane 6',items:['Twilight Sparkle','Rainbow Dash','Fluttershy','Rarity','Applejack']},
-  {type:'MLP',name:'MLP Alicorn Princesses',items:['Princess Celestia','Princess Luna','Princess Cadance','Princess Twilight Sparkle','Princess Flurry Heart']},
-  {type:'MLP',name:'MLP Villains',items:['Discord','Queen Chrysalis','Nightmare Moon','King Sombra','Tirek']},
-  {type:'MLP',name:'MLP Songs',items:['My Little Pony Theme','Winter Wrap Up','This Day Aria',"You'll Play Your Part",'Open Up Your Eyes']},
-  {type:'MLP',name:'MLP Seasons',items:['Season 1','Season 2','Season 3','Season 4','Season 5']},
-  {type:'Vampire Diaries',name:'TVD Seasons',items:['Season 1','Season 2','Season 3','Season 4','Season 6']},
-  {type:'Vampire Diaries',name:'TVD Characters',items:['Elena Gilbert','Damon Salvatore','Stefan Salvatore','Caroline Forbes','Klaus Mikaelson']},
-  {type:'Vampire Diaries',name:'TVD Villains',items:['Klaus','Silas','Katherine Pierce','Kai Parker','The Heretics']},
-  {type:'Vampire Diaries',name:'TVD Ships',items:['Delena','Stelena','Klaroline','Bonenzo','Steroline']},
-  {type:'Vampire Diaries',name:'Original Family Members',items:['Klaus','Elijah','Rebekah','Kol','Finn']},
-  {type:'Stranger Things',name:'Stranger Things Seasons',items:['Season 1','Season 2','Season 3','Season 4','(upcoming) Season 5']},
-  {type:'Stranger Things',name:'Stranger Things Characters',items:['Eleven','Mike Wheeler','Dustin Henderson','Max Mayfield','Steve Harrington']},
-  {type:'Stranger Things',name:'Stranger Things Villains',items:['The Mind Flayer','The Demogorgon','Billy Hargrove','Henry Creel/001/Vecna','The Demobats']},
-  {type:'Stranger Things',name:'Stranger Things Ships',items:['Mike & Eleven','Joyce & Hopper','Jonathan & Nancy','Steve & Nancy (original)','Robin & Vickie']},
-  {type:'Bridgerton',name:'Bridgerton Seasons',items:['Season 1 (Daphne & Simon)','Season 2 (Anthony & Kate)','Season 3 (Penelope & Colin)','Queen Charlotte Special','(upcoming) Season 4']},
-  {type:'Bridgerton',name:'Bridgerton Characters',items:['Daphne Bridgerton','Simon Basset','Anthony Bridgerton','Kate Sharma','Penelope Featherington']},
-  {type:'Bridgerton',name:'Bridgerton Ships',items:['Daphne & Simon (Daphmon)','Anthony & Kate (Kanthony)','Penelope & Colin','Benedict & ???','Eloise & Theo']},
-  {type:'Bridgerton',name:'Bridgerton Siblings Ranked',items:['Anthony','Daphne','Benedict','Colin','Eloise']},
-  {type:"Grey's Anatomy",name:'Grey\'s Anatomy Characters',items:['Meredith Grey','Cristina Yang','Alex Karev','Miranda Bailey','Derek Shepherd']},
-  {type:"Grey's Anatomy",name:'Grey\'s Anatomy Deaths',items:['Derek Shepherd','Mark Sloan','Lexie Grey','George O\'Malley','Denny Duquette']},
-  {type:"Grey's Anatomy",name:'Grey\'s Anatomy Couples',items:['Meredith & Derek (MerDer)','Cristina & Owen','Callie & Arizona','Alex & Izzie','Bailey & Ben']},
-  {type:'The Office',name:'The Office Characters',items:['Michael Scott','Dwight Schrute','Jim Halpert','Pam Beesly','Kevin Malone']},
-  {type:'The Office',name:'The Office Episodes',items:['Dinner Party','The Injury','Threat Level Midnight','Casino Night','Goodbye Michael']},
-  {type:'The Office',name:'The Office Seasons',items:['Season 2','Season 3','Season 4','Season 7','Season 9']},
-  {type:'The Office',name:'The Office Relationships',items:['Jim & Pam','Michael & Holly','Dwight & Angela','Kelly & Ryan','Erin & Andy']},
-  {type:'Game of Thrones',name:'Game of Thrones Houses',items:['House Stark','House Lannister','House Targaryen','House Baratheon','House Greyjoy']},
-  {type:'Game of Thrones',name:'Game of Thrones Characters',items:['Jon Snow','Daenerys Targaryen','Cersei Lannister','Tyrion Lannister','Arya Stark']},
-  {type:'Game of Thrones',name:'GOT Best Seasons',items:['Season 1','Season 3','Season 4','Season 6','Season 7']},
-  {type:'Game of Thrones',name:'GOT Iconic Moments',items:['Red Wedding','Battle of the Bastards','Dracarys scene','Hodor\'s door','The Wall falling']},
-  {type:'Reality TV',name:'The Bachelor Franchise Shows',items:['The Bachelor','The Bachelorette','Bachelor in Paradise','Bachelor Pad','The Golden Bachelor']},
-  {type:'Reality TV',name:'RuPaul\'s Drag Race Seasons',items:['Season 5','Season 6','Season 7','Season 9','Season 13']},
-  {type:'Reality TV',name:'Drag Race Fan Fav Queens',items:['Bianca Del Rio','Alaska','Katya','Trixie Mattel','Shea Couleé']},
-  {type:'Reality TV',name:'Survivor Legendary Players',items:['Sandra Diaz-Twine','Boston Rob','Parvati Shallow','Tony Vlachos','Cirie Fields']},
-  {type:'Reality TV',name:'Real Housewives Franchises',items:['New York','New Jersey','Atlanta','Beverly Hills','Potomac']},
-  {type:'Anime',name:'Shonen Anime Big Three',items:['Naruto','One Piece','Bleach','Dragon Ball Z','Fullmetal Alchemist']},
-  {type:'Anime',name:'Popular Anime (2010s)',items:['Attack on Titan','Sword Art Online','My Hero Academia','Demon Slayer','Re:Zero']},
-  {type:'Anime',name:'Beloved Anime Films',items:['Spirited Away','Your Name','Princess Mononoke','Grave of the Fireflies','A Silent Voice']},
-  {type:'Anime',name:'Anime That Made You Cry',items:['Clannad After Story','Anohana','A Silent Voice','Your Lie in April','Grave of the Fireflies']},
-  {type:'Anime',name:'Anime Villains',items:['Light Yagami (Death Note)','All For One (MHA)','Frieza (Dragon Ball Z)','Muzan (Demon Slayer)','Madara Uchiha (Naruto)']},
-  {type:'Anime',name:'Slice of Life Anime',items:['K-On!','Toradora','Your Lie in April','Fruits Basket','Non Non Biyori']},
-  {type:'Taylor Swift',name:'Taylor Swift Albums Ranked (All)',items:['Fearless','1989','Reputation','Folklore','Midnights']},
-  {type:'Taylor Swift',name:'Taylor Swift\'s Folklore Songs',items:['cardigan','exile (ft. Bon Iver)','august','betty','epiphany']},
-  {type:'Taylor Swift',name:'Taylor Swift\'s 1989 Songs',items:['Shake It Off','Blank Space','Style','Out of the Woods','Bad Blood']},
-  {type:'Taylor Swift',name:'Taylor Swift\'s Reputation Songs',items:['Look What You Made Me Do','Delicate','Getaway Car','Don\'t Blame Me','End Game']},
-  {type:'Taylor Swift',name:'Taylor Swift\'s Midnights Songs',items:['Anti-Hero','Lavender Haze','Marjorie','Midnight Rain','You\'re On Your Own Kid']},
-  {type:'Horror',name:'Best Horror Films of All Time',items:['The Shining','Halloween','The Exorcist','Psycho','Get Out']},
-  {type:'Horror',name:'Best Horror Films (2010s)',items:['Hereditary','Midsommar','It (2017)','Get Out','The Witch']},
-  {type:'Horror',name:'Horror Franchises',items:['Halloween','Friday the 13th','A Nightmare on Elm Street','Saw','Scream']},
-  {type:'Horror',name:'Iconic Horror Final Girls',items:['Laurie Strode (Halloween)','Sidney Prescott (Scream)','Nancy Thompson (Nightmare)','Ellen Ripley (Alien)','Erin (You\'re Next)']},
-  {type:'Horror',name:'Horror Villains',items:['Michael Myers','Freddy Krueger','Jason Voorhees','Ghostface','Pinhead']},
-  {type:'Food',name:'TikTok Food Trends',items:['Baked Feta Pasta','Birria Tacos','Smash Burgers','Cloud Bread','Whipped Coffee']},
-  {type:'Food',name:'Best Pizza Styles',items:['New York style','Chicago deep dish','Neapolitan','Detroit style','California style']},
-  {type:'Food',name:'Breakfast Cereals Ranked',items:['Cinnamon Toast Crunch','Honey Bunches of Oats','Frosted Flakes','Cap\'n Crunch','Lucky Charms']},
-  {type:'Food',name:'Most Iconic Fast Food Items',items:['Big Mac','Chicken McNuggets','Whataburger (for Texans)','Chick-fil-A Sandwich','Taco Bell Crunchwrap']},
-  {type:'Books',name:'BookTok Favorites',items:['The Song of Achilles','It Ends with Us','Fourth Wing','A Little Life','People We Meet on Vacation']},
-  {type:'Books',name:'Classic Romance Novels',items:['Pride and Prejudice','Jane Eyre','Wuthering Heights','Sense and Sensibility','Rebecca']},
-  {type:'Books',name:'Fantasy Series',items:['A Song of Ice and Fire','The Wheel of Time','Name of the Wind','First Law','Mistborn']},
-  {type:'Books',name:'YA Fantasy Series',items:['The Mortal Instruments','Red Queen','An Ember in the Ashes','Children of Blood and Bone','The Cruel Prince']},
-  {type:'Games',name:'Cozy Games for Autumn',items:['Stardew Valley','A Short Hike','Spiritfarer','Cozy Grove','Unpacking']},
-  {type:'Games',name:'Games With Best Stories',items:['The Last of Us','Disco Elysium','Planescape: Torment','What Remains of Edith Finch','Pentiment']},
-  {type:'Games',name:'Nintendo Switch Games',items:['Breath of the Wild','Animal Crossing: New Horizons','Splatoon 3','Mario Kart 8','Tears of the Kingdom']},
-  {type:'Games',name:'Games You Spent Way Too Long In',items:['The Sims 4','Minecraft','Skyrim','Animal Crossing','Stardew Valley']},
-  {type:'Celebrities',name:'Celebrity Best Friends (Iconic Duos)',items:['Taylor & Selena','Tina Fey & Amy Poehler','Oprah & Gayle','Kim & Khloé (the duo)','Paris & Nicole']},
-  {type:'Celebrities',name:'Celebrities Who Dated Each Other',items:['Selena & Justin','Taylor & Harry Styles','Jennifer & Ben (Bennifer 1.0)','Britney & Justin','Ariana & Pete Davidson']},
-  {type:'Celebrities',name:'2000s It Girls',items:['Paris Hilton','Lindsay Lohan','Nicole Richie','Sienna Miller','Mary-Kate & Ashley Olsen']},
-  {type:'Aesthetics',name:'TikTok Aesthetics (2020-present)',items:['Cottagecore','Dark academia','Coastal grandmother','Mob wife aesthetic','Coquette']},
-  {type:'Aesthetics',name:'Bedroom Aesthetics',items:['Fairy lights & tapestries','Dark academia study nook','Cottagecore botanical','Maximalist VSCO room','Minimalist white & neutral']},
-  {type:'Aesthetics',name:'Fictional Aesthetics (Worlds)',items:['Hogwarts library in autumn','Rivendell at dusk','The Ghibli countryside','Stars Hollow in fall','Neverland at night']},
-  {type:'Random',name:'Things That Smell Amazing',items:['Old books','Vanilla','Fresh rain on concrete','Sunscreen','New car']},
-  {type:'Random',name:'Activities for a Perfect Rainy Day',items:['Reread a favorite book','Rewatch a comfort show','Bake something cozy','Nap under heavy blankets','Build a blanket fort']},
-  {type:'Random',name:'Main Character Traits',items:['Wears headphones everywhere','Has a tragic backstory','Falls in love easily','Has one iconic outfit','Always gives good advice but ignores own']},
-  {type:'Random',name:'Best Niche Hobbies',items:['Thrift shopping','Collecting vintage anything','Pressed flower journals','Tabletop RPGs','Candle-making']},
-  {type:'Random',name:'Comfort Foods by Emotion',items:['Mac and cheese (sad)','Ice cream (heartbreak)','Soup (sick)','Pizza (celebration)','Chocolate (stressed)']},
-  {type:'Random',name:'Ways to Procrastinate',items:['Reorganize your desk instead of working','Scroll TikTok for "just 5 more minutes"','Start a new show instead of the task','Make elaborate to-do lists','Deep-clean random things']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Films Ranked',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
+  {type:'TV',subtype:'Harry Potter',name:'HP Films Part 2',items:["Half-Blood Prince","Deathly Hallows Part 1","Deathly Hallows Part 2","Fantastic Beasts 1","Fantastic Beasts 2"]},
+  {type:'TV',subtype:'Harry Potter',name:'Hogwarts Houses',items:['Gryffindor','Slytherin','Ravenclaw','Hufflepuff','Beauxbatons']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Main Characters',items:['Harry Potter','Hermione Granger','Ron Weasley','Draco Malfoy','Luna Lovegood']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Professors',items:['Dumbledore','Snape','McGonagall','Lupin','Umbridge']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Villains & Antagonists',items:['Voldemort','Dolores Umbridge','Bellatrix Lestrange','Draco Malfoy','Peter Pettigrew']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Magical Creatures',items:['Hippogriff','Basilisk','Thestral','Hungarian Horntail','Dobby the House Elf']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Spells',items:['Expecto Patronum','Avada Kedavra','Expelliarmus','Lumos','Wingardium Leviosa']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Weasley Family Members',items:['Fred Weasley','George Weasley','Ginny Weasley','Percy Weasley','Molly Weasley']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Iconic Movie Moments',items:['Diagon Alley reveal','The Sorting Hat','The Triwizard Tournament','The Battle of Hogwarts','Snape\'s memories in the Pensieve']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Quidditch Positions',items:['Seeker','Keeper','Beater','Chaser','Team Captain']},
+  {type:'TV',subtype:'Harry Potter',name:'Marauders',items:['Sirius Black','Remus Lupin','James Potter','Peter Pettigrew','Lily Evans']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Magical Objects',items:['The Invisibility Cloak','The Elder Wand','The Marauder\'s Map','The Sorting Hat','The Horcrux Locket']},
+  {type:'TV',subtype:'Harry Potter',name:'Fantastic Beasts Characters',items:['Newt Scamander','Tina Goldstein','Jacob Kowalski','Queenie Goldstein','Gellert Grindelwald']},
+  {type:'TV',subtype:'Harry Potter',name:'HP Death Eaters',items:['Bellatrix Lestrange','Lucius Malfoy','Peter Pettigrew','Fenrir Greyback','Dolores Umbridge']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Episodes Ranked',items:['A Study in Pink','The Great Game','A Scandal in Belgravia','The Hounds of Baskerville','The Reichenbach Fall']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Series Ranked',items:['Series 1','Series 2','Series 3','Series 4','The Abominable Bride Special']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Characters',items:['Sherlock Holmes','John Watson','Irene Adler','Jim Moriarty','Mycroft Holmes']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Supporting Cast',items:['Mrs. Hudson','Greg Lestrade','Molly Hooper','Mary Morstan','Anderson']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Iconic Moments',items:['I am Sherlock Holmes','The Fall from St. Bart\'s','The Empty Hearse reveal','Irene Adler\'s entrance','Moriarty on the roof']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Holmes Traits',items:['Deductive reasoning','Violin playing','Drug use history','Sociopathy claim','Memory palace']},
+  {type:'TV',subtype:'Fandom Shows',name:'Sherlock Villains',items:['Jim Moriarty','Irene Adler (sort of)','Charles Magnussen','Eurus Holmes','Mary Morstan (season 3)']},
+  {type:'TV',subtype:'Fandom Shows',name:'Hannibal Seasons',items:['Season 1 (Apéritif)','Season 2 (Kaiseki)','Season 3 Part 1 (Italy)','Season 3 Part 2 (Red Dragon)','Silence of the Lambs film']},
+  {type:'TV',subtype:'Fandom Shows',name:'Hannibal Characters',items:['Hannibal Lecter','Will Graham','Alana Bloom','Jack Crawford','Frederick Chilton']},
+  {type:'TV',subtype:'Fandom Shows',name:'Hannibal Supporting Characters',items:['Abigail Hobbs','Beverly Katz','Bedelia du Maurier','Mason Verger','Francis Dolarhyde']},
+  {type:'TV',subtype:'Fandom Shows',name:'Hannibal Iconic Episodes',items:['Apéritif (S1E1)','Mizumono (S2 finale)','Digestivo (S3)','The Wrath of the Lamb (finale)','Relevés (S1)']},
+  {type:'TV',subtype:'Fandom Shows',name:'Hannibal Killers / Antagonists',items:['Hannibal Lecter','Garret Jacob Hobbs','Francis Dolarhyde','Mason Verger','Randall Tier']},
+  {type:'TV',subtype:'Fandom Shows',name:'Hannibal Relationship Dynamics',items:['Hannibal & Will (Hannigram)','Will & Alana','Hannibal & Bedelia','Alana & Margot','Jack & Bella']},
+  {type:'TV',subtype:'Fandom Shows',name:'Good Omens Characters',items:['Aziraphale','Crowley','Adam Young','Anathema Device','Newton Pulsifer']},
+  {type:'TV',subtype:'Fandom Shows',name:'Good Omens Season 1 Episodes',items:['In the Beginning','The Book','Hard Times','Saturday Morning Funtime','The Doomsday Option']},
+  {type:'TV',subtype:'Fandom Shows',name:'Good Omens Celestial Beings',items:['Aziraphale','Gabriel','Michael','Sandalphon','Beelzebub']},
+  {type:'TV',subtype:'Fandom Shows',name:'Good Omens Iconic Moments',items:['Arrangement under the apple tree','Bentley & Queen on the motorway','The Ritz lunch','Crowley threatens heaven','Book shop destruction']},
+  {type:'TV',subtype:'Fandom Shows',name:'Good Omens Season 2 Storylines',items:['Job minisode','Edinburgh minisode','Gabriel\'s amnesia','Maggie & Nina romance','Final bookshop scene']},
+  {type:'TV',subtype:'Fandom Shows',name:'Crowley\'s Best Lines',items:['"I\'m an Angel!"','The plants speech','The Job argument','The Arrangement proposal','The Metatron confrontation']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Seasons',items:['Season 1','Season 2','Season 4','Season 5','Season 8']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Characters',items:['Dean Winchester','Sam Winchester','Castiel','Bobby Singer','Crowley']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Supporting Cast',items:['Ellen Harvelle','Jo Harvelle','Charlie Bradbury','Benny Lafitte','Kevin Tran']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Angels',items:['Castiel','Gabriel','Balthazar','Metatron','Lucifer']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Villains',items:['Yellow Eyes (Azazel)','Lilith','Lucifer','Dick Roman','The Darkness (Amara)']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Monsters of the Week',items:['Wendigo','Shapeshifter','Djinn','Rugaru','Leviathan']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Iconic Episodes',items:['Pilot','In My Time of Dying','Mystery Spot','The French Mistake','Swan Song']},
+  {type:'TV',subtype:'Fandom Shows',name:'Supernatural Road Trip Essentials',items:['Baby (the Impala)','Classic rock cassettes','Pie','Dean\'s leather jacket','The Colt']},
+  {type:'TV',subtype:'Fandom Shows',name:'Best Dean Winchester Moments',items:['Baby driving scenes','Pie eating','"Carry On Wayward Son"','Purgatory scenes','The final episode speech']},
+  {type:'Movies',subtype:'Animated',name:'Disney Renaissance Films',items:['The Little Mermaid','Beauty and the Beast','Aladdin','The Lion King','Mulan']},
+  {type:'Movies',subtype:'Animated',name:'Disney Revival Films',items:['Tangled','Brave','Frozen','Moana','Encanto']},
+  {type:'Movies',subtype:'Animated',name:'Disney Animated Films (2000s)',items:['Lilo & Stitch','Treasure Planet','Brother Bear','Home on the Range','Chicken Little']},
+  {type:'Movies',subtype:'Animated',name:'Disney Sidekicks',items:['Timon & Pumbaa','Genie','Mushu','Pascal & Maximus','Olaf']},
+  {type:'Movies',subtype:'Animated',name:'Disney Princess Romances',items:['Ariel & Eric','Belle & Beast','Jasmine & Aladdin','Cinderella & Prince Charming','Rapunzel & Flynn']},
+  {type:'Movies',subtype:'Animated',name:'Disney Villains Ranked',items:['Ursula','Maleficent','Hades','Gaston','The Evil Queen']},
+  {type:'Movies',subtype:'Animated',name:'Disney Songs (Classic)',items:['Part of Your World','Be Our Guest','A Whole New World','Hakuna Matata','Under the Sea']},
+  {type:'Movies',subtype:'Animated',name:'Disney Songs (Modern)',items:['Let It Go','How Far I\'ll Go','Into the Unknown','What Was I Missing','Surface Pressure']},
+  {type:'Movies',subtype:'Animated',name:'Disney Channel Original Movies',items:['High School Musical','Zenon: Girl of the 21st Century','Hocus Pocus','Twitches','Cheetah Girls']},
+  {type:'Movies',subtype:'Animated',name:'Disney Channel Shows (2000s)',items:['Lizzie McGuire','Even Stevens','That\'s So Raven','Kim Possible','Pepper Ann']},
+  {type:'Movies',subtype:'Animated',name:'Disney Channel Shows (2010s)',items:['Good Luck Charlie','Shake It Up','ANT Farm','Jessie','Girl Meets World']},
+  {type:'Movies',subtype:'Animated',name:'Disney Parks Rides',items:['Haunted Mansion','Space Mountain','Pirates of the Caribbean','Splash Mountain','It\'s a Small World']},
+  {type:'Movies',subtype:'Animated',name:'Disney Pixar Originals',items:['Toy Story','Finding Nemo','The Incredibles','WALL-E','Up']},
+  {type:'Movies',subtype:'Animated',name:'Disney Franchise Characters',items:['Mickey Mouse','Minnie Mouse','Donald Duck','Goofy','Pluto']},
+  {type:'Movies',subtype:'Animated',name:'Disney Live Action Remakes',items:['The Lion King (2019)','Beauty and the Beast (2017)','Cinderella (2015)','Aladdin (2019)','The Little Mermaid (2023)']},
+  {type:'Movies',subtype:'Animated',name:'Disney Princesses (All Time)',items:['Cinderella','Ariel','Belle','Jasmine','Moana']},
+  {type:'Movies',subtype:'Animated',name:'Disney Animals',items:['Simba','Bambi','Dumbo','Lady (Lady & the Tramp)','Copper (Fox & the Hound)']},
+  {type:'Movies',subtype:'Animated',name:'Disney Underrated Films',items:['Treasure Planet','Atlantis','The Emperor\'s New Groove','Hunchback of Notre Dame','Tarzan']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Avengers Films',items:['The Avengers','Age of Ultron','Infinity War','Endgame','Civil War']},
+  {type:'Movies',subtype:'Marvel & DC',name:'MCU Phase 1',items:['Iron Man','The Incredible Hulk','Iron Man 2','Thor','Captain America: The First Avenger']},
+  {type:'Movies',subtype:'Marvel & DC',name:'MCU Phase 2',items:['Iron Man 3','Thor: The Dark World','Captain America: The Winter Soldier','Guardians of the Galaxy','Avengers: Age of Ultron']},
+  {type:'Movies',subtype:'Marvel & DC',name:'MCU Phase 3',items:['Captain America: Civil War','Doctor Strange','Spider-Man: Homecoming','Thor: Ragnarok','Black Panther']},
+  {type:'Movies',subtype:'Marvel & DC',name:'MCU Phase 4 Films',items:['Black Widow','Shang-Chi','Eternals','Spider-Man: No Way Home','Doctor Strange in the Multiverse of Madness']},
+  {type:'Movies',subtype:'Marvel & DC',name:'MCU Phase 5 Films',items:['Ant-Man and the Wasp: Quantumania','Guardians Vol. 3','The Marvels','Deadpool & Wolverine','Captain America: Brave New World']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Marvel Heroes',items:['Iron Man','Captain America','Thor','Black Widow','Hulk']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Marvel Villains',items:['Thanos','Loki','Ultron','Killmonger','Hela']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Spider-Man Films',items:['Spider-Man (2002)','Spider-Man 2','The Amazing Spider-Man','Homecoming','No Way Home']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Iron Man Films',items:['Iron Man','Iron Man 2','Iron Man 3','Civil War (Tony\'s arc)','Endgame (Tony\'s arc)']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Thor Films',items:['Thor','The Dark World','Ragnarok','Infinity War (Thor)','Love and Thunder']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Marvel Female Heroes',items:['Black Widow','Scarlet Witch','Gamora','Valkyrie','Captain Marvel']},
+  {type:'Movies',subtype:'Marvel & DC',name:'Guardians of the Galaxy Characters',items:['Star-Lord','Gamora','Drax','Rocket','Groot']},
+  {type:'TV',subtype:'Animated Shows',name:'South Park Main Boys',items:['Eric Cartman','Stan Marsh','Kyle Broflovski','Kenny McCormick','Butters Stotch']},
+  {type:'TV',subtype:'Animated Shows',name:'South Park Side Characters',items:['Randy Marsh','Mr. Garrison','Chef','PC Principal','Tweek & Craig']},
+  {type:'TV',subtype:'Animated Shows',name:'Best South Park Seasons',items:['Season 5','Season 8','Season 12','Season 19','Season 23']},
+  {type:'TV',subtype:'Animated Shows',name:'Iconic South Park Episodes',items:['Scott Tenorman Must Die','Make Love Not Warcraft','Imaginationland','Trapped in the Closet','The Return of Chef']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Emo Bands Ranked',items:['My Chemical Romance','Fall Out Boy','Panic! at the Disco','Paramore','Hawthorne Heights']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'More Emo Bands',items:['Taking Back Sunday','Dashboard Confessional','Brand New','The Used','Thursday']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'MCR Albums',items:['I Brought You My Bullets','Three Cheers for Sweet Revenge','The Black Parade','Danger Days','The Black Parade (reissue)']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Fall Out Boy Albums',items:['From Under the Cork Tree','Infinity on High','Folie à Deux','Save Rock and Roll','American Beauty/American Psycho']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Panic! at the Disco Albums',items:['A Fever You Can\'t Sweat Out','Pretty. Odd.','Vices & Virtues','Too Weird to Live','Death of a Bachelor']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Paramore Albums',items:['All We Know Is Falling','Riot!','Brand New Eyes','Paramore (self-titled)','After Laughter']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Iconic Emo Songs',items:['"Welcome to the Black Parade"','"Sugar We\'re Goin Down"','"I Write Sins Not Tragedies"','"Misery Business"','"Ohio is for Lovers"']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Emo Adjacent Bands',items:['Linkin Park','Evanescence','Simple Plan','Good Charlotte','Sum 41']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Emo Era Aesthetic Elements',items:['Side-swept bangs','Studded belts','Black skinny jeans','Band tees','Heavy eyeliner']},
+  {type:'Music',subtype:'Pop Queens',name:'Pop Divas All Time',items:['Beyoncé','Mariah Carey','Whitney Houston','Madonna','Celine Dion']},
+  {type:'Music',subtype:'Pop Queens',name:'2000s Pop Queens',items:['Britney Spears','Christina Aguilera','Shakira','Avril Lavigne','Nelly Furtado']},
+  {type:'Music',subtype:'Pop Queens',name:'2010s Pop Queens',items:['Taylor Swift','Katy Perry','Lady Gaga','Rihanna','Ariana Grande']},
+  {type:'Music',subtype:'Pop Queens',name:'2020s Pop Girls',items:['Olivia Rodrigo','Dua Lipa','Sabrina Carpenter','Chappell Roan','Billie Eilish']},
+  {type:'Music',subtype:'Pop Queens',name:'Pop Boy Bands',items:['Backstreet Boys','NSYNC','One Direction','Jonas Brothers','New Kids on the Block']},
+  {type:'Music',subtype:'Pop Queens',name:'Bops That Defined Summers',items:['Call Me Maybe','Blurred Lines','Happy','Uptown Funk','Old Town Road']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Teen Comedies',items:['Ferris Bueller\'s Day Off','The Breakfast Club','Sixteen Candles','Pretty in Pink','Fast Times at Ridgemont High']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Action Films',items:['Die Hard','The Terminator','RoboCop','Lethal Weapon','Predator']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Sci-Fi Films',items:['E.T.','Back to the Future','Blade Runner','The Thing','Aliens']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Horror Films',items:['A Nightmare on Elm Street','Friday the 13th','The Shining','Poltergeist','Hellraiser']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Fantasy & Adventure',items:['The NeverEnding Story','Labyrinth','The Princess Bride','Willow','The Dark Crystal']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Comedies',items:['Ghostbusters','Beetlejuice','Trading Places','Beverly Hills Cop','Planes Trains and Automobiles']},
+  {type:'Movies',subtype:'Other Movies',name:'John Hughes Films',items:['The Breakfast Club','Ferris Bueller\'s Day Off','Sixteen Candles','Pretty in Pink','Home Alone']},
+  {type:'Movies',subtype:'Other Movies',name:'80s Blockbusters',items:['Raiders of the Lost Ark','Return of the Jedi','E.T.','Beverly Hills Cop','Top Gun']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Teen Films',items:['Mean Girls','Bring It On','13 Going on 30','A Cinderella Story','The Princess Diaries']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Blockbusters',items:['Spider-Man','Pirates of the Caribbean','Shrek','Lord of the Rings: Fellowship','Harry Potter 1']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Horror Films',items:['The Ring','Saw','The Grudge','Final Destination','Insidious']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Animated Films',items:['Shrek','Finding Nemo','The Incredibles','Ice Age','Kung Fu Panda']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Rom-Coms',items:['How to Lose a Guy in 10 Days','Hitch','50 First Dates','The Wedding Planner','Legally Blonde 2']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Chick Flicks',items:['Legally Blonde','Mamma Mia','The Devil Wears Prada','27 Dresses','Bride Wars']},
+  {type:'Movies',subtype:'Other Movies',name:'2000s Comedy Films',items:['Superbad','Knocked Up','Blades of Glory','Wedding Crashers','Step Brothers']},
+  {type:'TV',subtype:'Animated Shows',name:'Nickelodeon 2000s',items:['SpongeBob SquarePants','Fairly OddParents','Danny Phantom','Avatar: The Last Airbender','Invader Zim']},
+  {type:'TV',subtype:'Animated Shows',name:'Nickelodeon 2010s',items:['iCarly','Victorious','Big Time Rush','Bucket & Skinner','The Thundermans']},
+  {type:'TV',subtype:'Animated Shows',name:'Cartoon Network 2000s',items:['Dexter\'s Lab','The Powerpuff Girls','Ed Edd n Eddy','Courage the Cowardly Dog','Kids Next Door']},
+  {type:'TV',subtype:'Animated Shows',name:'Cartoon Network 2010s',items:['Adventure Time','Regular Show','The Amazing World of Gumball','Steven Universe','Gravity Falls']},
+  {type:'TV',subtype:'Animated Shows',name:'Disney Channel 2000s',items:['Lizzie McGuire','Even Stevens','That\'s So Raven','Kim Possible','Proud Family']},
+  {type:'TV',subtype:'Animated Shows',name:'Disney Channel 2010s',items:['Good Luck Charlie','Shake It Up','ANT Farm','Austin & Ally','Girl Meets World']},
+  {type:'TV',subtype:'Animated Shows',name:'Live Action Kids Shows',items:['iCarly','Drake & Josh','Zoey 101','Lizzie McGuire','Phil of the Future']},
+  {type:'TV',subtype:'Animated Shows',name:'Best Avatar: The Last Airbender Episodes',items:['The Storm','Zuko Alone','The Cave of Two Lovers','Ember Island Players','Sozin\'s Comet finale']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'2000s Tech We Loved',items:['iPod','Motorola RAZR','Flip phones','MySpace','AIM Instant Messenger']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'2000s Fashion Trends',items:['Von Dutch hats','Juicy Couture tracksuits','Low-rise jeans','Frosted tips','Platform flip flops']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'2000s Toys & Games',items:['Tamagotchi','Beyblades','Bratz Dolls','Yu-Gi-Oh cards','GameBoy Advance']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'2000s Reality TV',items:['American Idol','The Simple Life','Newlyweds: Nick & Jessica','The Osbournes','America\'s Next Top Model']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'Things From 2000-2010 We Miss',items:['Blockbuster Video','Saturday morning cartoons','AOL Instant Messenger','Going to the mall','Buying ringtones']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'2000s School Lunchbox Staples',items:['Lunchables','Capri Sun','Gushers','Dunkaroos','Fruit Roll-Ups']},
+  {type:'Fun & Random',subtype:'Nostalgia',name:'2000s Video Games',items:['Guitar Hero','Halo 2','The Sims 2','Kingdom Hearts','Grand Theft Auto: San Andreas']},
+  {type:'Movies',subtype:'Other Movies',name:'Hunger Games Films',items:['The Hunger Games','Catching Fire','Mockingjay Part 1','Mockingjay Part 2','Ballad of Songbirds & Snakes']},
+  {type:'Movies',subtype:'Other Movies',name:'Harry Potter Films',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
+  {type:'Movies',subtype:'Other Movies',name:'Scream Films',items:['Scream','Scream 2','Scream 3','Scream 4','Scream 5']},
+  {type:'Movies',subtype:'Other Movies',name:'Halloween Films',items:['Halloween (1978)','Halloween II','Halloween H20','Halloween (2018)','Halloween Ends']},
+  {type:'Movies',subtype:'Other Movies',name:'Girl Movies',items:['Mean Girls','Clueless','Heathers','Easy A','Legally Blonde']},
+  {type:'Movies',subtype:'Other Movies',name:'Twilight Films',items:['Twilight','New Moon','Eclipse','Breaking Dawn Part 1','Breaking Dawn Part 2']},
+  {type:'Movies',subtype:'Other Movies',name:'YA Dystopia Films',items:['The Maze Runner','The Scorch Trials','The Death Cure','Divergent','Insurgent']},
+  {type:'Movies',subtype:'Other Movies',name:'Disney Animated (Modern)',items:['Frozen','Frozen II','Tangled','Moana','Raya and the Last Dragon']},
+  {type:'Movies',subtype:'Other Movies',name:'Disney Animated (Classic)',items:['The Little Mermaid','Beauty and the Beast','Aladdin','Cinderella','Snow White']},
+  {type:'Movies',subtype:'Other Movies',name:'Pixar Films',items:['The Incredibles','Up','Inside Out','Coco','Soul']},
+  {type:'Movies',subtype:'Other Movies',name:'Pixar Sequels',items:['Toy Story 2','Toy Story 3','Finding Dory','Incredibles 2','Inside Out 2']},
+  {type:'Movies',subtype:'Other Movies',name:'Marvel Avengers Films',items:['The Avengers','Age of Ultron','Infinity War','Endgame','Civil War']},
+  {type:'Movies',subtype:'Other Movies',name:'Spider-Man Films',items:['Spider-Man (2002)','Into the Spider-Verse','Homecoming','No Way Home','Across the Spider-Verse']},
+  {type:'Movies',subtype:'Other Movies',name:'DC Films',items:['The Dark Knight','Wonder Woman','Aquaman','Shazam!','The Suicide Squad']},
+  {type:'Movies',subtype:'Other Movies',name:'Batman Films',items:['Batman (1989)','Batman Returns','The Dark Knight','Batman v Superman','The Batman (2022)']},
+  {type:'Movies',subtype:'Other Movies',name:'Rom-Coms',items:['10 Things I Hate About You','Bridget Jones Diary','How to Lose a Guy in 10 Days','Crazy Rich Asians',"To All the Boys I've Loved Before"]},
+  {type:'Movies',subtype:'Other Movies',name:'90s Animated Films',items:['The Lion King','Mulan','Hercules','Tarzan','The Hunchback of Notre Dame']},
+  {type:'Movies',subtype:'Other Movies',name:'Horror Franchises',items:['A Nightmare on Elm Street','Halloween','Friday the 13th','Scream','The Texas Chain Saw Massacre']},
+  {type:'Movies',subtype:'Other Movies',name:'Psychological Thrillers',items:['Get Out','Hereditary','Midsommar','The Witch','Us']},
+  {type:'Movies',subtype:'Other Movies',name:'Fantasy Adventure Films',items:['The Princess Bride','Labyrinth','The NeverEnding Story','Willow','Stardust']},
+  {type:'Movies',subtype:'Other Movies',name:'Romantic Movies (2000s)',items:['The Notebook','A Walk to Remember','P.S. I Love You','Dear John','The Vow']},
+  {type:'Movies',subtype:'Other Movies',name:'Chick Flicks (2000s)',items:['Mamma Mia','27 Dresses','The Devil Wears Prada','Bride Wars','Sex and the City: The Movie']},
+  {type:'Movies',subtype:'Other Movies',name:'Action Blockbusters',items:['Gladiator','The Dark Knight','Inception','Mad Max: Fury Road','Top Gun: Maverick']},
+  {type:'Movies',subtype:'Other Movies',name:'Animated Dreamworks Films',items:['Shrek','Kung Fu Panda','Madagascar','How to Train Your Dragon','The Prince of Egypt']},
+  {type:'Movies',subtype:'Other Movies',name:'Epic Fantasy',items:['Lord of the Rings: Fellowship','Lord of the Rings: Two Towers','Lord of the Rings: Return of the King','Narnia','Eragon']},
+  {type:'TV',subtype:'Other TV',name:'Crime Procedurals',items:['Criminal Minds','Bones','NCIS','Law & Order SVU','Mindhunter']},
+  {type:'TV',subtype:'Other TV',name:'Supernatural Teen Dramas',items:['Supernatural','The Vampire Diaries','Teen Wolf','The Originals','Buffy the Vampire Slayer']},
+  {type:'TV',subtype:'Other TV',name:'British Dramas',items:['Sherlock','Doctor Who','Black Mirror','Broadchurch','Luther']},
+  {type:'TV',subtype:'Other TV',name:'Cult Sci-Fi & Mystery',items:['Stranger Things','The Umbrella Academy','Dark','Yellowjackets','Lost']},
+  {type:'TV',subtype:'Other TV',name:'Teen Dramas',items:['Glee','Riverdale','Pretty Little Liars','Gossip Girl','The OC']},
+  {type:'TV',subtype:'Other TV',name:'Reality Competition Shows',items:["RuPaul's Drag Race",'Survivor','The Amazing Race','Big Brother','The Voice']},
+  {type:'TV',subtype:'Other TV',name:'Animated Adult Shows',items:["Bob's Burgers",'Archer','BoJack Horseman','Futurama','Rick and Morty']},
+  {type:'TV',subtype:'Other TV',name:'Sitcoms',items:['The Office','Parks and Recreation','Brooklyn Nine-Nine','New Girl',"Schitt's Creek"]},
+  {type:'TV',subtype:'Other TV',name:'Fantasy & Sci-Fi Dramas',items:['Game of Thrones','The Witcher','Wheel of Time','Shadow and Bone','House of the Dragon']},
+  {type:'TV',subtype:'Other TV',name:'Netflix Originals',items:['Squid Game','Bridgerton','Outer Banks','Emily in Paris','Wednesday']},
+  {type:'TV',subtype:'Other TV',name:'Cartoon Network Classics',items:['The Powerpuff Girls',"Dexter's Laboratory",'Ed Edd n Eddy','Courage the Cowardly Dog','Johnny Bravo']},
+  {type:'TV',subtype:'Other TV',name:'Nickelodeon Classics',items:['SpongeBob SquarePants','Rugrats','Hey Arnold!','Invader Zim','The Fairly OddParents']},
+  {type:'TV',subtype:'Other TV',name:'Anime Series',items:['Attack on Titan','Demon Slayer','Fullmetal Alchemist: Brotherhood','My Hero Academia','Death Note']},
+  {type:'TV',subtype:'Other TV',name:'Shojo Anime',items:['Sailor Moon','Fruits Basket','Ouran High School Host Club','Cardcaptor Sakura','Kimi ni Todoke']},
+  {type:'TV',subtype:'Other TV',name:'Medical Dramas',items:["Grey's Anatomy",'House MD','ER','Scrubs','The Good Doctor']},
+  {type:'TV',subtype:'Other TV',name:'2010s Dramas',items:['Breaking Bad','Downton Abbey','Scandal','Homeland','The Americans']},
+  {type:'TV',subtype:'Other TV',name:'HBO Dramas',items:['The Sopranos','Sex and the City','Six Feet Under','The Wire','Big Love']},
+  {type:'TV',subtype:'Other TV',name:'Binge-Worthy Dramas',items:['This Is Us','Big Little Lies','Sharp Objects','Ozark','Mare of Easttown']},
+  {type:'TV',subtype:'Other TV',name:'Reality TV Classics',items:['American Idol','The Bachelor','America\'s Next Top Model','Project Runway','Dancing with the Stars']},
+  {type:'TV',subtype:'Other TV',name:'Game Shows',items:['Wheel of Fortune','Jeopardy!','Deal or No Deal','Who Wants to Be a Millionaire','The Price Is Right']},
+  {type:'Music',subtype:'Other Music',name:'Taylor Swift Albums',items:['Fearless','1989','Reputation','Folklore','Midnights']},
+  {type:'Music',subtype:'Other Music',name:'Beyoncé Albums',items:['Lemonade','Dangerously in Love','4','Beyoncé (Self-Titled)','Renaissance']},
+  {type:'Music',subtype:'Other Music',name:'Olivia Rodrigo Songs',items:['drivers license','good 4 u','brutal','happier','vampire']},
+  {type:'Music',subtype:'Other Music',name:'Billie Eilish Albums',items:['When We All Fall Asleep...','Happier Than Ever','Hit Me Hard and Soft',"Don't Smile at Me EP",'Guitar Songs EP']},
+  {type:'Music',subtype:'Other Music',name:'Ariana Grande Albums',items:['Thank U Next','Sweetener','Positions','Yours Truly','My Everything']},
+  {type:'Music',subtype:'Other Music',name:'Pop Punk Bands',items:['Paramore','My Chemical Romance','Fall Out Boy','Panic! at the Disco','Green Day']},
+  {type:'Music',subtype:'Other Music',name:'K-Pop Groups',items:['BTS','BLACKPINK','TWICE','Stray Kids','aespa']},
+  {type:'Music',subtype:'Other Music',name:'90s Pop Stars',items:['Britney Spears','Christina Aguilera','Backstreet Boys','NSYNC','Spice Girls']},
+  {type:'Music',subtype:'Other Music',name:'Iconic Music Videos',items:['Thriller','Single Ladies','Bad Romance','Wrecking Ball','This Is America']},
+  {type:'Music',subtype:'Other Music',name:'Alternative Artists',items:['Lorde','Lana Del Rey','Florence + The Machine','Halsey','Mitski']},
+  {type:'Music',subtype:'Other Music',name:'Sabrina Carpenter Songs',items:['Espresso','Please Please Please','Feather','Nonsense','Skin']},
+  {type:'Music',subtype:'Other Music',name:'Chappell Roan Songs',items:['Good Luck Babe!','Red Wine Supernova','HOT TO GO!','Casual','Pink Pony Club']},
+  {type:'Music',subtype:'Other Music',name:'Iconic Girl Bands',items:['Spice Girls',"Destiny's Child",'Little Mix','Fifth Harmony','TLC']},
+  {type:'Music',subtype:'Other Music',name:'Boy Bands',items:['Backstreet Boys','NSYNC','New Kids on the Block','One Direction','Jonas Brothers']},
+  {type:'Music',subtype:'Other Music',name:'Adele Songs',items:['Rolling in the Deep','Someone Like You','Hello','Skyfall','Easy On Me']},
+  {type:'Music',subtype:'Other Music',name:'Katy Perry Songs',items:['Roar','Firework','Dark Horse','California Gurls','Teenage Dream']},
+  {type:'Music',subtype:'Other Music',name:'Karaoke Night Classics',items:['Total Eclipse of the Heart','Don\'t Stop Believin\'','I Will Survive','Bohemian Rhapsody','Sweet Caroline']},
+  {type:'Games',subtype:'Video Games',name:'Cozy & Sandbox Games',items:['Minecraft','Stardew Valley','Terraria','Animal Crossing','The Sims 4']},
+  {type:'Games',subtype:'Video Games',name:'Multiplayer Party Games',items:['Among Us','Fall Guys','Fortnite','Roblox','Valorant']},
+  {type:'Games',subtype:'Video Games',name:'Indie Story Games',items:['Undertale','Deltarune','Omori','Celeste','Hollow Knight']},
+  {type:'Games',subtype:'Video Games',name:'Pokemon Games',items:['Pokemon Red','Pokemon Gold','Pokemon Emerald','Pokemon Platinum','Pokemon Sword']},
+  {type:'Games',subtype:'Video Games',name:'Mario Games',items:['Mario Kart 8','Super Smash Bros Ultimate','Mario Odyssey','Mario Party','Mario Kart Wii']},
+  {type:'Games',subtype:'Video Games',name:'Legend of Zelda Games',items:['Ocarina of Time','Breath of the Wild',"Majora's Mask",'Tears of the Kingdom','Wind Waker']},
+  {type:'Games',subtype:'Video Games',name:'Pokemon Generations',items:['Gen 1 (Kanto)','Gen 2 (Johto)','Gen 3 (Hoenn)','Gen 4 (Sinnoh)','Gen 5 (Unova)']},
+  {type:'TV',subtype:'Characters',name:'Hunger Games Characters',items:['Katniss Everdeen','Peeta Mellark','Gale Hawthorne','Lucy Gray Baird','Coriolanus Snow']},
+  {type:'TV',subtype:'Characters',name:'Harry Potter Characters',items:['Harry Potter','Hermione Granger','Ron Weasley','Draco Malfoy','Luna Lovegood']},
+  {type:'TV',subtype:'Characters',name:'Vampire Diaries Characters',items:['Damon Salvatore','Stefan Salvatore','Elena Gilbert','Klaus Mikaelson','Caroline Forbes']},
+  {type:'TV',subtype:'Characters',name:'Stranger Things Characters',items:['Eleven','Mike Wheeler','Dustin Henderson','Max Mayfield','Steve Harrington']},
+  {type:'TV',subtype:'Characters',name:'Bridgerton Characters',items:['Daphne Bridgerton','Simon Basset','Anthony Bridgerton','Kate Sharma','Benedict Bridgerton']},
+  {type:'TV',subtype:'Characters',name:'Encanto Characters',items:['Mirabel Madrigal','Luisa Madrigal','Isabela Madrigal','Camilo Madrigal','Bruno Madrigal']},
+  {type:'TV',subtype:'Characters',name:'Disney Princesses',items:['Cinderella','Ariel','Belle','Jasmine','Mulan']},
+  {type:'TV',subtype:'Characters',name:'Disney Villains',items:['Maleficent','Ursula','Gaston','Jafar','Hades']},
+  {type:'TV',subtype:'Characters',name:'Avatar: The Last Airbender',items:['Aang','Katara','Sokka','Zuko','Toph']},
+  {type:'TV',subtype:'Characters',name:'Friends Characters',items:['Rachel Green','Monica Geller','Phoebe Buffay','Ross Geller','Chandler Bing']},
+  {type:'TV',subtype:'Characters',name:'Twilight Characters',items:['Bella Swan','Edward Cullen','Jacob Black','Alice Cullen','Rosalie Hale']},
+  {type:'TV',subtype:'Characters',name:'Gossip Girl Characters',items:['Blair Waldorf','Serena van der Woodsen','Chuck Bass','Dan Humphrey','Nate Archibald']},
+  {type:'Books',subtype:'Other Books',name:'Harry Potter Books',items:["Sorcerer's Stone","Chamber of Secrets","Prisoner of Azkaban","Goblet of Fire","Order of the Phoenix"]},
+  {type:'Books',subtype:'Other Books',name:'Twilight Saga Books',items:['Twilight','New Moon','Eclipse','Breaking Dawn','Midnight Sun']},
+  {type:'Books',subtype:'Other Books',name:'A Court of Thorns & Roses',items:['A Court of Thorns and Roses','A Court of Mist and Fury','A Court of Wings and Ruin','A Court of Frost and Starlight','A Court of Silver Flames']},
+  {type:'Books',subtype:'Other Books',name:'Colleen Hoover Books',items:['Verity','It Ends with Us','Ugly Love','Confess','November 9']},
+  {type:'Books',subtype:'Other Books',name:'Classic YA Books',items:['The Outsiders','The Perks of Being a Wallflower','Looking for Alaska','The Fault in Our Stars','Thirteen Reasons Why']},
+  {type:'Books',subtype:'Other Books',name:'Beach Read Novels',items:['The Summer I Turned Pretty','Daisy Jones & The Six','Beach Read','The Hating Game','People We Meet on Vacation']},
+  {type:'Books',subtype:'Other Books',name:'Thriller Novels',items:['Gone Girl','The Girl on the Train','Big Little Lies','Behind Closed Doors','The Silent Patient']},
+  {type:'Books',subtype:'Other Books',name:'Self-Help Bestsellers',items:['The Secret','You Are a Badass','Girl Wash Your Face','Untamed','Atomic Habits']},
+  {type:'Food',subtype:'Meals',name:'Fast Food Chains',items:["McDonald's","Chick-fil-A","Taco Bell","Wendy's","Burger King"]},
+  {type:'Food',subtype:'Meals',name:'Ice Cream Flavors',items:['Chocolate','Vanilla','Strawberry','Cookies & Cream','Mint Chip']},
+  {type:'Food',subtype:'Meals',name:'Halloween Candies',items:["Reese's","Kit Kat","Twix","Snickers","Candy Corn"]},
+  {type:'Food',subtype:'Meals',name:'Starbucks Drinks',items:['Pumpkin Spice Latte','Iced Brown Sugar Oat Latte','Caramel Macchiato','Pink Drink','Matcha Latte']},
+  {type:'Food',subtype:'Meals',name:'Boba / Bubble Tea Flavors',items:['Taro','Matcha','Brown Sugar Milk Tea','Mango','Strawberry']},
+  {type:'Food',subtype:'Meals',name:'Comfort Foods',items:['Mac and Cheese','Grilled Cheese','Ramen','Chicken Soup','Mashed Potatoes']},
+  {type:'Food',subtype:'Meals',name:'Desserts',items:['Chocolate Cake','Cheesecake','Brownies','Cinnamon Rolls','Tiramisu']},
+  {type:'Food',subtype:'Meals',name:'Cookie Types',items:['Chocolate Chip','Sugar Cookie','Snickerdoodle','Peanut Butter','Oatmeal Raisin']},
+  {type:'Food',subtype:'Meals',name:'International Cuisines',items:['Italian','Mexican','Japanese','Indian','Thai']},
+  {type:'Food',subtype:'Meals',name:'Thanksgiving Dishes',items:['Turkey','Stuffing','Mashed Potatoes','Cranberry Sauce','Pumpkin Pie']},
+  {type:'Food',subtype:'Meals',name:'Breakfast Foods',items:['Pancakes','Waffles','Avocado Toast','Eggs Benedict','Açaí Bowl']},
+  {type:'Food',subtype:'Meals',name:'Wine Types',items:['Chardonnay','Pinot Grigio','Cabernet Sauvignon','Rosé','Moscato']},
+  {type:'Food',subtype:'Meals',name:'Cocktail Classics',items:['Margarita','Cosmopolitan','Mojito','Aperol Spritz','Piña Colada']},
+  {type:'Fun & Random',subtype:'Random',name:'Streaming Services',items:['Netflix','Hulu','Disney+','Max','Prime Video']},
+  {type:'Fun & Random',subtype:'Random',name:'Social Media',items:['TikTok','Instagram','Twitter/X','Tumblr','YouTube']},
+  {type:'Fun & Random',subtype:'Random',name:'Romance Tropes',items:['Enemies to Lovers','Friends to Lovers','Fake Dating','Slow Burn','Second Chance']},
+  {type:'Fun & Random',subtype:'Random',name:'Aesthetic Vibes',items:['Cottagecore','Dark Academia','Y2K','Barbiecore','Goblincore']},
+  {type:'Fun & Random',subtype:'Random',name:'Love Languages',items:['Words of Affirmation','Quality Time','Physical Touch','Acts of Service','Gift Giving']},
+  {type:'Fun & Random',subtype:'Random',name:'Fashion Eras',items:['70s Boho','80s Power Shoulders','90s Grunge','2000s Bratz Doll','2010s Hipster']},
+  {type:'Fun & Random',subtype:'Random',name:'Superpowers',items:['Flight','Invisibility','Time Travel','Telepathy','Super Strength']},
+  {type:'Fun & Random',subtype:'Random',name:'Fictional Worlds to Live In',items:['Hogwarts','Middle-Earth','Narnia','Panem','Equestria']},
+  {type:'Fun & Random',subtype:'Random',name:'Celeb Breakups That Hurt',items:['Brad & Jennifer','Britney & Justin','Selena & Justin','Taylor & Jake','Ryan & Eva']},
+  {type:'Fun & Random',subtype:'Random',name:'Icons of the 2000s',items:['Paris Hilton','Britney Spears','Lindsay Lohan','Nicole Richie','Jessica Simpson']},
+  {type:'Fun & Random',subtype:'Random',name:'Workout Trends',items:['Zumba','Jazzercise','CrossFit','Hot Yoga','Peloton']},
+  {type:'TV',subtype:'Animated Shows',name:'MLP Mane 6',items:['Twilight Sparkle','Rainbow Dash','Fluttershy','Rarity','Applejack']},
+  {type:'TV',subtype:'Animated Shows',name:'MLP Alicorn Princesses',items:['Princess Celestia','Princess Luna','Princess Cadance','Princess Twilight Sparkle','Princess Flurry Heart']},
+  {type:'TV',subtype:'Animated Shows',name:'MLP Villains',items:['Discord','Queen Chrysalis','Nightmare Moon','King Sombra','Tirek']},
+  {type:'TV',subtype:'Animated Shows',name:'MLP Songs',items:['My Little Pony Theme','Winter Wrap Up','This Day Aria',"You'll Play Your Part",'Open Up Your Eyes']},
+  {type:'TV',subtype:'Animated Shows',name:'MLP Seasons',items:['Season 1','Season 2','Season 3','Season 4','Season 5']},
+  {type:'TV',subtype:'Teen & Drama',name:'TVD Seasons',items:['Season 1','Season 2','Season 3','Season 4','Season 6']},
+  {type:'TV',subtype:'Teen & Drama',name:'TVD Characters',items:['Elena Gilbert','Damon Salvatore','Stefan Salvatore','Caroline Forbes','Klaus Mikaelson']},
+  {type:'TV',subtype:'Teen & Drama',name:'TVD Villains',items:['Klaus','Silas','Katherine Pierce','Kai Parker','The Heretics']},
+  {type:'TV',subtype:'Teen & Drama',name:'TVD Ships',items:['Delena','Stelena','Klaroline','Bonenzo','Steroline']},
+  {type:'TV',subtype:'Teen & Drama',name:'Original Family Members',items:['Klaus','Elijah','Rebekah','Kol','Finn']},
+  {type:'TV',subtype:'Teen & Drama',name:'Stranger Things Seasons',items:['Season 1','Season 2','Season 3','Season 4','(upcoming) Season 5']},
+  {type:'TV',subtype:'Teen & Drama',name:'Stranger Things Characters',items:['Eleven','Mike Wheeler','Dustin Henderson','Max Mayfield','Steve Harrington']},
+  {type:'TV',subtype:'Teen & Drama',name:'Stranger Things Villains',items:['The Mind Flayer','The Demogorgon','Billy Hargrove','Henry Creel/001/Vecna','The Demobats']},
+  {type:'TV',subtype:'Teen & Drama',name:'Stranger Things Ships',items:['Mike & Eleven','Joyce & Hopper','Jonathan & Nancy','Steve & Nancy (original)','Robin & Vickie']},
+  {type:'TV',subtype:'Teen & Drama',name:'Bridgerton Seasons',items:['Season 1 (Daphne & Simon)','Season 2 (Anthony & Kate)','Season 3 (Penelope & Colin)','Queen Charlotte Special','(upcoming) Season 4']},
+  {type:'TV',subtype:'Teen & Drama',name:'Bridgerton Characters',items:['Daphne Bridgerton','Simon Basset','Anthony Bridgerton','Kate Sharma','Penelope Featherington']},
+  {type:'TV',subtype:'Teen & Drama',name:'Bridgerton Ships',items:['Daphne & Simon (Daphmon)','Anthony & Kate (Kanthony)','Penelope & Colin','Benedict & ???','Eloise & Theo']},
+  {type:'TV',subtype:'Teen & Drama',name:'Bridgerton Siblings Ranked',items:['Anthony','Daphne','Benedict','Colin','Eloise']},
+  {type:'TV',subtype:'Sitcoms',name:'The Office Characters',items:['Michael Scott','Dwight Schrute','Jim Halpert','Pam Beesly','Kevin Malone']},
+  {type:'TV',subtype:'Sitcoms',name:'The Office Episodes',items:['Dinner Party','The Injury','Threat Level Midnight','Casino Night','Goodbye Michael']},
+  {type:'TV',subtype:'Sitcoms',name:'The Office Seasons',items:['Season 2','Season 3','Season 4','Season 7','Season 9']},
+  {type:'TV',subtype:'Sitcoms',name:'The Office Relationships',items:['Jim & Pam','Michael & Holly','Dwight & Angela','Kelly & Ryan','Erin & Andy']},
+  {type:'TV',subtype:'Sci-Fi & Fantasy TV',name:'Game of Thrones Houses',items:['House Stark','House Lannister','House Targaryen','House Baratheon','House Greyjoy']},
+  {type:'TV',subtype:'Sci-Fi & Fantasy TV',name:'Game of Thrones Characters',items:['Jon Snow','Daenerys Targaryen','Cersei Lannister','Tyrion Lannister','Arya Stark']},
+  {type:'TV',subtype:'Sci-Fi & Fantasy TV',name:'GOT Best Seasons',items:['Season 1','Season 3','Season 4','Season 6','Season 7']},
+  {type:'TV',subtype:'Sci-Fi & Fantasy TV',name:'GOT Iconic Moments',items:['Red Wedding','Battle of the Bastards','Dracarys scene','Hodor\'s door','The Wall falling']},
+  {type:'TV',subtype:'Reality TV',name:'The Bachelor Franchise Shows',items:['The Bachelor','The Bachelorette','Bachelor in Paradise','Bachelor Pad','The Golden Bachelor']},
+  {type:'TV',subtype:'Reality TV',name:'RuPaul\'s Drag Race Seasons',items:['Season 5','Season 6','Season 7','Season 9','Season 13']},
+  {type:'TV',subtype:'Reality TV',name:'Drag Race Fan Fav Queens',items:['Bianca Del Rio','Alaska','Katya','Trixie Mattel','Shea Couleé']},
+  {type:'TV',subtype:'Reality TV',name:'Survivor Legendary Players',items:['Sandra Diaz-Twine','Boston Rob','Parvati Shallow','Tony Vlachos','Cirie Fields']},
+  {type:'TV',subtype:'Reality TV',name:'Real Housewives Franchises',items:['New York','New Jersey','Atlanta','Beverly Hills','Potomac']},
+  {type:'TV',subtype:'Anime',name:'Shonen Anime Big Three',items:['Naruto','One Piece','Bleach','Dragon Ball Z','Fullmetal Alchemist']},
+  {type:'TV',subtype:'Anime',name:'Popular Anime (2010s)',items:['Attack on Titan','Sword Art Online','My Hero Academia','Demon Slayer','Re:Zero']},
+  {type:'TV',subtype:'Anime',name:'Beloved Anime Films',items:['Spirited Away','Your Name','Princess Mononoke','Grave of the Fireflies','A Silent Voice']},
+  {type:'TV',subtype:'Anime',name:'Anime That Made You Cry',items:['Clannad After Story','Anohana','A Silent Voice','Your Lie in April','Grave of the Fireflies']},
+  {type:'TV',subtype:'Anime',name:'Anime Villains',items:['Light Yagami (Death Note)','All For One (MHA)','Frieza (Dragon Ball Z)','Muzan (Demon Slayer)','Madara Uchiha (Naruto)']},
+  {type:'TV',subtype:'Anime',name:'Slice of Life Anime',items:['K-On!','Toradora','Your Lie in April','Fruits Basket','Non Non Biyori']},
+  {type:'Music',subtype:'Taylor Swift',name:'Taylor Swift Albums Ranked (All)',items:['Fearless','1989','Reputation','Folklore','Midnights']},
+  {type:'Music',subtype:'Taylor Swift',name:'Taylor Swift\'s Folklore Songs',items:['cardigan','exile (ft. Bon Iver)','august','betty','epiphany']},
+  {type:'Music',subtype:'Taylor Swift',name:'Taylor Swift\'s 1989 Songs',items:['Shake It Off','Blank Space','Style','Out of the Woods','Bad Blood']},
+  {type:'Music',subtype:'Taylor Swift',name:'Taylor Swift\'s Reputation Songs',items:['Look What You Made Me Do','Delicate','Getaway Car','Don\'t Blame Me','End Game']},
+  {type:'Music',subtype:'Taylor Swift',name:'Taylor Swift\'s Midnights Songs',items:['Anti-Hero','Lavender Haze','Marjorie','Midnight Rain','You\'re On Your Own Kid']},
+  {type:'Movies',subtype:'Horror',name:'Best Horror Films of All Time',items:['The Shining','Halloween','The Exorcist','Psycho','Get Out']},
+  {type:'Movies',subtype:'Horror',name:'Best Horror Films (2010s)',items:['Hereditary','Midsommar','It (2017)','Get Out','The Witch']},
+  {type:'Movies',subtype:'Horror',name:'Horror Franchises',items:['Halloween','Friday the 13th','A Nightmare on Elm Street','Saw','Scream']},
+  {type:'Movies',subtype:'Horror',name:'Iconic Horror Final Girls',items:['Laurie Strode (Halloween)','Sidney Prescott (Scream)','Nancy Thompson (Nightmare)','Ellen Ripley (Alien)','Erin (You\'re Next)']},
+  {type:'Movies',subtype:'Horror',name:'Horror Villains',items:['Michael Myers','Freddy Krueger','Jason Voorhees','Ghostface','Pinhead']},
+  {type:'Food',subtype:'Meals',name:'TikTok Food Trends',items:['Baked Feta Pasta','Birria Tacos','Smash Burgers','Cloud Bread','Whipped Coffee']},
+  {type:'Food',subtype:'Meals',name:'Best Pizza Styles',items:['New York style','Chicago deep dish','Neapolitan','Detroit style','California style']},
+  {type:'Food',subtype:'Meals',name:'Breakfast Cereals Ranked',items:['Cinnamon Toast Crunch','Honey Bunches of Oats','Frosted Flakes','Cap\'n Crunch','Lucky Charms']},
+  {type:'Food',subtype:'Meals',name:'Most Iconic Fast Food Items',items:['Big Mac','Chicken McNuggets','Whataburger (for Texans)','Chick-fil-A Sandwich','Taco Bell Crunchwrap']},
+  {type:'Books',subtype:'Other Books',name:'BookTok Favorites',items:['The Song of Achilles','It Ends with Us','Fourth Wing','A Little Life','People We Meet on Vacation']},
+  {type:'Books',subtype:'Other Books',name:'Classic Romance Novels',items:['Pride and Prejudice','Jane Eyre','Wuthering Heights','Sense and Sensibility','Rebecca']},
+  {type:'Books',subtype:'Other Books',name:'Fantasy Series',items:['A Song of Ice and Fire','The Wheel of Time','Name of the Wind','First Law','Mistborn']},
+  {type:'Books',subtype:'Other Books',name:'YA Fantasy Series',items:['The Mortal Instruments','Red Queen','An Ember in the Ashes','Children of Blood and Bone','The Cruel Prince']},
+  {type:'Games',subtype:'Video Games',name:'Cozy Games for Autumn',items:['Stardew Valley','A Short Hike','Spiritfarer','Cozy Grove','Unpacking']},
+  {type:'Games',subtype:'Video Games',name:'Games With Best Stories',items:['The Last of Us','Disco Elysium','Planescape: Torment','What Remains of Edith Finch','Pentiment']},
+  {type:'Games',subtype:'Video Games',name:'Nintendo Switch Games',items:['Breath of the Wild','Animal Crossing: New Horizons','Splatoon 3','Mario Kart 8','Tears of the Kingdom']},
+  {type:'Games',subtype:'Video Games',name:'Games You Spent Way Too Long In',items:['The Sims 4','Minecraft','Skyrim','Animal Crossing','Stardew Valley']},
+  {type:'Fun & Random',subtype:'Celebrities',name:'Celebrity Best Friends (Iconic Duos)',items:['Taylor & Selena','Tina Fey & Amy Poehler','Oprah & Gayle','Kim & Khloé (the duo)','Paris & Nicole']},
+  {type:'Fun & Random',subtype:'Celebrities',name:'Celebrities Who Dated Each Other',items:['Selena & Justin','Taylor & Harry Styles','Jennifer & Ben (Bennifer 1.0)','Britney & Justin','Ariana & Pete Davidson']},
+  {type:'Fun & Random',subtype:'Celebrities',name:'2000s It Girls',items:['Paris Hilton','Lindsay Lohan','Nicole Richie','Sienna Miller','Mary-Kate & Ashley Olsen']},
+  {type:'Fun & Random',subtype:'Aesthetics',name:'TikTok Aesthetics (2020-present)',items:['Cottagecore','Dark academia','Coastal grandmother','Mob wife aesthetic','Coquette']},
+  {type:'Fun & Random',subtype:'Aesthetics',name:'Bedroom Aesthetics',items:['Fairy lights & tapestries','Dark academia study nook','Cottagecore botanical','Maximalist VSCO room','Minimalist white & neutral']},
+  {type:'Fun & Random',subtype:'Aesthetics',name:'Fictional Aesthetics (Worlds)',items:['Hogwarts library in autumn','Rivendell at dusk','The Ghibli countryside','Stars Hollow in fall','Neverland at night']},
+  {type:'Fun & Random',subtype:'Random',name:'Things That Smell Amazing',items:['Old books','Vanilla','Fresh rain on concrete','Sunscreen','New car']},
+  {type:'Fun & Random',subtype:'Random',name:'Activities for a Perfect Rainy Day',items:['Reread a favorite book','Rewatch a comfort show','Bake something cozy','Nap under heavy blankets','Build a blanket fort']},
+  {type:'Fun & Random',subtype:'Random',name:'Main Character Traits',items:['Wears headphones everywhere','Has a tragic backstory','Falls in love easily','Has one iconic outfit','Always gives good advice but ignores own']},
+  {type:'Fun & Random',subtype:'Random',name:'Best Niche Hobbies',items:['Thrift shopping','Collecting vintage anything','Pressed flower journals','Tabletop RPGs','Candle-making']},
+  {type:'Fun & Random',subtype:'Random',name:'Comfort Foods by Emotion',items:['Mac and cheese (sad)','Ice cream (heartbreak)','Soup (sick)','Pizza (celebration)','Chocolate (stressed)']},
+  {type:'Fun & Random',subtype:'Random',name:'Ways to Procrastinate',items:['Reorganize your desk instead of working','Scroll TikTok for "just 5 more minutes"','Start a new show instead of the task','Make elaborate to-do lists','Deep-clean random things']},
+  {type:'Music',subtype:'Twenty One Pilots',name:'TOP Songs (Essentials)',items:['Car Radio','Stressed Out','Tear in My Heart','Heathens','Jumpsuit']},
+  {type:'Music',subtype:'Twenty One Pilots',name:'TOP Deep Cuts',items:['Migraine','Ode to Sleep','Friend, Please','Pet Cheetah','Chlorine']},
+  {type:'Music',subtype:'Twenty One Pilots',name:'TOP Bangers (More)',items:['My Blood','Nico and the Niners','Shy Away','Choker','Level of Concern']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'MCR Songs Ranked',items:['Welcome to the Black Parade','Helena','I\'m Not Okay (I Promise)','Na Na Na','Teenagers']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'MCR Deep Cuts',items:['The Ghost of You','Cancer','This Is How I Disappear','The Sharpest Lives','House of Wolves']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'MCR More Hits',items:['I Don\'t Love You','Dead!','Sleep','I\'m Not Okay','Famous Last Words']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'FOB Songs Ranked',items:['Sugar We\'re Goin Down','Thnks fr th Mmrs','Dance Dance','Centuries','The Phoenix']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'More FOB Hits',items:['Uma Thurman','My Songs Know What You Did In The Dark','Immortals','I Don\'t Care','Young Volcanoes']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'FOB Deep Cuts',items:['Novocaine','Build God Then We\'ll Talk','The Only Difference Between Martyrdom and Suicide Is Press Coverage','Saturday','Dance Dance']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Panic! Songs Ranked',items:['I Write Sins Not Tragedies','This Is Gospel','High Hopes','Victorious','Hey Look Ma I Made It']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Panic! Deep Cuts',items:['Northern Downpour','She Had the World','Build God Then We\'ll Talk','Don\'t Threaten Me With a Good Time','Nine in the Afternoon']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Paramore Songs Ranked',items:['crushcrushcrush','Misery Business','All I Wanted','Decode','Hard Times']},
+  {type:'Music',subtype:'Emo & Pop Punk',name:'Pierce The Veil Songs',items:['King For A Day','A Match Into Water','Bulls In The Bronx','Caraphernelia','I Don\'t Care If You\'re Contagious']},
+  {type:'Music',subtype:'Pop Queens',name:'Chappell Roan Songs Ranked',items:['Pink Pony Club','Good Luck Babe!','Red Wine Supernova','HOT TO GO!','Casual']},
+  {type:'Music',subtype:'Pop Queens',name:'More Chappell Roan',items:['Coffee','Femininomenon','The Giver','Casual','After Midnight']},
+  {type:'Music',subtype:'Indie & Alt',name:'Mitski Songs Ranked',items:['Washing Machine Heart','Your Best American Girl','I Bet on Losing Dogs','Brand New City','First Love/Late Spring']},
+  {type:'Music',subtype:'Indie & Alt',name:'More Mitski Songs',items:['I Don\'t Smoke','Francis Forever','Last Words of a Shooting Star','Bug Like an Angel','Nobody']},
+  {type:'Music',subtype:'Indie & Alt',name:'Cavetown Songs Ranked',items:['Devil Town','Lemon Boy','Boys Will Be Bugs','Sharpener','Green']},
+  {type:'Music',subtype:'Indie & Alt',name:'More Cavetown Songs',items:['Talk to Me','Sweet Tooth','888','Banana Bread','Pyjama Pants']},
+  {type:'Music',subtype:'Indie & Alt',name:'Cavetown Sad Hits',items:['Empty Bed','I Miss My Mum','Fool','In My Room','Fool']},
+  {type:'Music',subtype:'Iconic Artists',name:'Bo Burnham Songs Ranked',items:['Welcome to The Internet','That Funny Feeling','Look Who\'s Inside Again','1985','Microwave Popcorn']},
+  {type:'Music',subtype:'Iconic Artists',name:'More Bo Burnham Songs',items:['Hell of a Ride','Words Words Words','Repeat Stuff','Can\'t Handle This','Are You Happy']},
+  {type:'Music',subtype:'Indie & Alt',name:'Mother Mother Songs',items:['Verbatim','Hayloft','Hayloft II','Burning Pile','The Sticks']},
+  {type:'Music',subtype:'Pop Queens',name:'Kesha Songs Ranked',items:['TiK ToK','Blow','Cannibal','Die Young','Blah Blah Blah']},
+  {type:'Music',subtype:'Pop Queens',name:'More Kesha Songs',items:['JOYRIDE','Take It Off','Grow A Pear','Timber','Woman']},
+  {type:'Music',subtype:'Pop Queens',name:'Lady Gaga Songs Ranked',items:['Poker Face','Bad Romance','Born This Way','Judas','Applause']},
+  {type:'Music',subtype:'Pop Queens',name:'More Lady Gaga',items:['LoveGame','Million Reasons','G.U.Y.','Edge of Glory','Telephone']},
+  {type:'Music',subtype:'Pop Queens',name:'Katy Perry Songs Ranked',items:['Firework','Roar','I Kissed A Girl','California Gurls','Dark Horse']},
+  {type:'Music',subtype:'Pop Queens',name:'More Katy Perry Songs',items:['Hot N Cold','Last Friday Night','E.T.','Teenage Dream','Part Of Me']},
+  {type:'Music',subtype:'Pop Queens',name:'Ariana Grande Songs',items:['God is a Woman','Bang Bang','Problem','Side To Side','Dangerous Woman']},
+  {type:'Music',subtype:'K-Pop',name:'BTS Songs Ranked',items:['Dynamite','Permission to Dance','Boy with Luv','Life Goes On','I NEED U']},
+  {type:'Music',subtype:'K-Pop',name:'More BTS Songs',items:['FAKE LOVE','Stay Gold','Film out','Euphoria','RUN']},
+  {type:'Music',subtype:'K-Pop',name:'Stray Kids Songs Ranked',items:['Thunderous','CHEESE','Red Lights','Levanter','Christmas EveL']},
+  {type:'Music',subtype:'Indie & Alt',name:'Ricky Montgomery Songs',items:['Mr. Loverman','Line Without a Hook','Snow','This December','Montgomery Ricky']},
+  {type:'TV',subtype:'Animated Shows',name:'Steven Universe Songs Ranked',items:['It\'s Over Isn\'t It','Love Like You','Drift Away','Familiar','Strong in the Real Way']},
+  {type:'TV',subtype:'Animated Shows',name:'Hazbin Hotel Songs Ranked',items:['Poison','Stayed Gone','Hell\'s Greatest Dad','Loser Baby','Ready for This']},
+  {type:'TV',subtype:'Animated Shows',name:'More Hazbin Hotel Songs',items:['Gravity','Clean It Up!','VOX POPULI','Love In A Bottle','Brighter']},
+  {type:'Music',subtype:'Iconic Artists',name:'Lemon Demon Songs Ranked',items:['Cabinet Man','Touch-Tone Telephone','Eighth Wonder','The Ultimate Showdown of Ultimate Destiny','Old Train']},
+  {type:'Music',subtype:'Iconic Artists',name:'Will Wood Songs Ranked',items:['I / Me / Myself','Euthanasia','The Main Character','Against the Kitchen Floor','Laplace\'s Angel']},
+  {type:'Music',subtype:'Iconic Artists',name:'Owl City Songs Ranked',items:['Fireflies','Good Time','When Can I See You Again?','The Tornado','Vanilla Twilight']},
+  {type:'Music',subtype:'Iconic Artists',name:'AJR Songs Ranked',items:['Bang!','World\'s Smallest Violin','Dear Winter 2.0','Weak','Come Hang Out']},
+  {type:'Music',subtype:'Iconic Artists',name:'NSP Songs Ranked',items:['Dragon Slayer','Danny Don\'t You Know','Cool Patrol','Welcome to My Parents\' House','6969']},
+  {type:'Music',subtype:'Indie & Alt',name:'Indie Sad Boy Essentials',items:['Devil Town','Mr. Loverman','Line Without a Hook','Snow','Twin Size Mattress']},
+  {type:'Music',subtype:'Indie & Alt',name:'Indie Sad Boy Deep Cuts',items:['First Day of My Life','Small Hands','Washing Machine Heart','This December','Bloom']},
+  {type:'Music',subtype:'Indie & Alt',name:'Indie Comfort Songs',items:['Somewhere Only We Know','How to Save a Life','The Night We Met','Graceland Too','Honey and Milk']},
+  {type:'Music',subtype:'Indie & Alt',name:'Ethel Cain Songs Ranked',items:['Strangers','American Teenager','Western Nights','Gibson Girl','Ptolemaea']},
+  {type:'Music',subtype:'Indie & Alt',name:'Lizzy McAlpine Songs',items:['ceilings','doomsday','Apple Pie','An Overture','Erase Me']},
+  {type:'Music',subtype:'Indie & Alt',name:'dodie Songs Ranked',items:['She','Absolutely Smitten','Monster','In The Middle','6/10']},
+  {type:'Music',subtype:'Indie & Alt',name:'Noah Kahan Songs',items:['Dial Drunk','Orange Juice','Stick Season','Homesick','Everywhere Everything']},
+  {type:'Music',subtype:'Indie & Alt',name:'Flower Face Songs',items:['Honey and Milk','Spiracle','Funeral','Astronaut','Serotonin']},
+  {type:'Music',subtype:'Pop Queens',name:'Billie Eilish Songs Ranked',items:['What Was I Made For?','LUNCH','WILDFLOWER','No Time To Die','Happier Than Ever']},
+  {type:'Music',subtype:'Iconic Artists',name:'Thomas Sanders Songs',items:['On the Borderline','Landslide','Rhythm Redux','Into the Unknown','Won\'t Say I\'m in Love (Mashup)']},
+  {type:'Music',subtype:'Iconic Artists',name:'Queen Songs Ranked',items:['Bohemian Rhapsody','Don\'t Stop Me Now','We Are The Champions','Somebody To Love','We Will Rock You']},
+  {type:'TV',subtype:'Animated Shows',name:'Adventure Time Songs',items:['Everything Stays','Good Little Girl','Island Song (Come Along with Me)','What Am I to You?','I\'m Just Your Problem']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Party Banger Anthems',items:['Party Rock Anthem','Shut Up and Dance','Uptown Funk','Timber','Yeah!']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Chaotic Silly Playlist',items:['Barbie Girl','The Fox (What Does the Fox Say?)','Gangnam Style','Caramelldancing 2018','Cotton Eye Joe']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Nostalgic 2000s Bops',items:['1985','Fireflies','Gives You Hell','Teenage Dirtbag','Stacy\'s Mom']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Emo Era Essentials',items:['Sugar We\'re Goin Down','I Write Sins Not Tragedies','Welcome to the Black Parade','Misery Business','The Ghost of You']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Soft Crying Playlist',items:['The Night We Met','First Day of My Life','Somewhere Only We Know','Bloom','This December']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Driving With the Windows Down',items:['Mr. Brightside','Shake It Off','Shut Up and Dance','Call Me Maybe','Pumped Up Kicks']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Karaoke Night Picks',items:['Don\'t Stop Believin\'','Bohemian Rhapsody','Total Eclipse of the Heart','Sweet Caroline','September']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Songs That Hit Different at 2am',items:['Car Radio','Washing Machine Heart','Cancer','Northern Downpour','First Love/Late Spring']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Main Character Walk Playlist',items:['The Phoenix','Bang!','My Songs Know What You Did In The Dark','Victorious','Running Up That Hill']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Songs for a Road Trip',items:['Good Time','Fireflies','On Top of the World','Dog Days Are Over','Home']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Songs Everyone Knows All the Words To',items:['All Star','Mr. Brightside','Bohemian Rhapsody','Never Gonna Give You Up','Sweet Home Alabama']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Songs That Go Hard Unexpectedly',items:['Take Me to Church','Running Up That Hill','Pumped Up Kicks','Heat Waves','Achilles Come Down']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Sad Girl Autumn Playlist',items:['Graceland Too','doomsday','Strangers','First Love/Late Spring','November']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Gay Panic Playlist',items:['MONTERO (Call Me By Your Name)','Pink Pony Club','I Like Boys','Sissy That Walk','HOT TO GO!']},
+  {type:'Music',subtype:'Playlist Vibes',name:'Feel-Good Pop Hits',items:['Happy','Best Day Of My Life','Shake It Off','Good Time','Roar']},
+  {type:'Music',subtype:'Pop Queens',name:'Indie / Alternative Artists (2010s)',items:['Mitski','Cavetown','Phoebe Bridgers','Hozier','dodie']},
+  {type:'Music',subtype:'Pop Queens',name:'Pop Punk Revival Artists',items:['Paramore','Waterparks','Meet Me at the Altar','Stand Atlantic','Neck Deep']},
+  {type:'Music',subtype:'Pop Queens',name:'Cottagecore / Folk Artists',items:['Phoebe Bridgers','Adrianne Lenker','Gregory Alan Isakov','Gregory and the Hawk','Sleeping at Last']},
+  {type:'Music',subtype:'Pop Queens',name:'Internet Era Artists',items:['Cavetown','Will Wood','Lemon Demon','Ricky Montgomery','dodie']},
+  {type:'Music',subtype:'Pop Queens',name:'Chaotic Comfort Artists',items:['Bo Burnham','Ninja Sex Party','Tom Cardy','The Stupendium','Rhett and Link']},
+  {type:'Music',subtype:'Pop Queens',name:'Country Girls (Classic)',items:['Carrie Underwood','Miranda Lambert','Dolly Parton','The Band Perry','Little Big Town']},
+  {type:'Music',subtype:'Pop Queens',name:'2010s Pop Queens',items:['Katy Perry','Lady Gaga','Ariana Grande','Rihanna','Kesha']},
+  {type:'Music',subtype:'Pop Queens',name:'Drag Race Bops Artists',items:['RuPaul','Todrick Hall','Lady Gaga','Kesha','Nicki Minaj']},
+  {type:'Music',subtype:'Pop Queens',name:'K-Pop Girl Groups',items:['BLACKPINK','TWICE','aespa','KATSEYE','Red Velvet']},
+  {type:'Music',subtype:'Pop Queens',name:'Artists Your Parents Don\'t Get',items:['100 Gecs','Charli xcx','Bladee','Ethel Cain','Yves Tumor']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Kesha Songs Ever',items:['TiK ToK','Blow','Die Young','Cannibal','Woman']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Queen Songs Ever',items:['Bohemian Rhapsody','Don\'t Stop Me Now','Somebody To Love','We Will Rock You','Killer Queen']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best MCR Songs Ever',items:['Welcome to the Black Parade','Helena','The Ghost of You','Cancer','I\'m Not Okay (I Promise)']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Panic! Songs Ever',items:['I Write Sins Not Tragedies','Nine in the Afternoon','Northern Downpour','This Is Gospel','Death of a Bachelor']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Arctic Monkeys Songs',items:['Do I Wanna Know?','505','I Wanna Be Yours','Why\'d You Only Call Me When You\'re High?','R U Mine?']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Twenty One Pilots Songs',items:['Car Radio','Stressed Out','Tear in My Heart','Jumpsuit','Heathens']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Chappell Roan Songs',items:['Pink Pony Club','Good Luck Babe!','Red Wine Supernova','HOT TO GO!','Femininomenon']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Mitski Songs',items:['Your Best American Girl','I Bet on Losing Dogs','Washing Machine Heart','Francis Forever','Nobody']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Cavetown Songs',items:['Lemon Boy','Devil Town','Boys Will Be Bugs','Sharpener','Green']},
+  {type:'Music',subtype:'Song Showdowns',name:'Best Lady Gaga Songs',items:['Bad Romance','Poker Face','Born This Way','Applause','Judas']}
 ];
 
-var TYPE_EMOJI={
-  Movies:'🎬',TV:'📺',Games:'🎮',Characters:'✨',Music:'🎵',Books:'📚',Food:'🍕',MLP:'🦄',Other:'🌟',Bonus:'🌸',
-  'Harry Potter':'⚡',Sherlock:'🔍',Hannibal:'🍽️','Good Omens':'😇',Supernatural:'👻',
-  Disney:'🏰',Marvel:'🦸','South Park':'🏔️','Emo Music':'🖤','Pop Music':'💿',
-  '80s Movies':'📼','2000s Movies':'💽','Kids Shows':'📟','2000s Nostalgia':'🕹️',
-  'Vampire Diaries':'🧛','Stranger Things':'🔦',Bridgerton:'🌹',"Grey's Anatomy":'🏥',
-  'The Office':'📎','Game of Thrones':'🐉','Reality TV':'💅',Anime:'⛩️',
-  'Taylor Swift':'🎸',Horror:'🔪',Celebrities:'⭐',Aesthetics:'🎨',Random:'🎲'
-};
+// ─── Top-level structure ─────────────────────────────────────────
+var TOP_TYPES=[
+  {name:'All',emoji:'✨'},
+  {name:'Music',emoji:'🎵'},
+  {name:'Movies',emoji:'🎬'},
+  {name:'TV',emoji:'📺'},
+  {name:'Books',emoji:'📚'},
+  {name:'Food',emoji:'🍕'},
+  {name:'Games',emoji:'🎮'},
+  {name:'Fun & Random',emoji:'🎲'},
+];
+// Subtypes per top type (derived at runtime)
+function getSubtypes(topType){
+  if(topType==='All') return [];
+  var seen={};
+  CATEGORIES.forEach(function(c){if(c.type===topType&&c.subtype&&!seen[c.subtype])seen[c.subtype]=true;});
+  return Object.keys(seen);
+}
+
 var RANK_COLORS=['#ff1493','#ff4da6','#ff69b4','#e0709a','#b06080'];
 var AVATARS=['🦊','🐯','🐻','🦁','🐸','🦄','🐺','🦝','🐧','🦋','🌸','🦩'];
 var TROPHIES=['🥇','🥈','🥉'];
 var BASE_URL='https://acostenbader4-del.github.io/orderupalie/';
 
-var playerId=(function(){
-  try{var s=localStorage.getItem('orderup_pid');if(s)return s;}catch(e){}
-  var id='p_'+Math.random().toString(36).slice(2,9);
-  try{localStorage.setItem('orderup_pid',id);}catch(e){}
-  return id;
-})();
+var playerId=(function(){try{var s=localStorage.getItem('orderup_pid');if(s)return s;}catch(e){}var id='p_'+Math.random().toString(36).slice(2,9);try{localStorage.setItem('orderup_pid',id);}catch(e){}return id;})();
 var roomId=null,isHost=false;
 var playerName='',playerSubmitted=false,playerTotalScore=0;
 var currentRound=0,currentCategoryIndex=null,usedCatIndexes=[],selectedCatIndex=null;
-var activeTypeFilter='All';
+var activeTopFilter='All',activeSubFilter='All';
 var customCategories=[];
-
-// ── ROTATING MODE STATE ──────────────────────────────────────────
-var isRotatingMode=false;
-var rotationOrder=[];
-var currentHostIndex=0;
-var amCurrentRoundHost=false;
-var pendingRoundData=null;
+var isRotatingMode=false,rotationOrder=[],currentHostIndex=0,amCurrentRoundHost=false,pendingRoundData=null;
 
 function rc(i){return RANK_COLORS[Math.min(i,RANK_COLORS.length-1)];}
 
+// ─── Firebase setup ──────────────────────────────────────────────
 function goHostClassic(){
   isHost=true;isRotatingMode=false;
   roomId=Math.random().toString(36).slice(2,8).toUpperCase();
-  db.ref('rooms/'+roomId).set({
-    status:'lobby',currentRound:0,hostOrder:null,revealed:false,
-    categoryIndex:null,usedCats:[],finalResults:false,
-    rotatingMode:false,rotationOrder:null,currentHostIndex:0,roomHostId:playerId
-  }).then(setupHostLobby).catch(function(e){showToast('Firebase error: '+e.message,true);});
+  db.ref('rooms/'+roomId).set({status:'lobby',currentRound:0,hostOrder:null,revealed:false,categoryIndex:null,usedCats:[],finalResults:false,rotatingMode:false,rotationOrder:null,currentHostIndex:0,roomHostId:playerId}).then(setupHostLobby).catch(function(e){showToast('Firebase error: '+e.message,true);});
 }
 function goHostRotating(){
-  // In rotating mode the room creator is also a player — go through name screen first
   isHost=true;isRotatingMode=true;
   roomId=Math.random().toString(36).slice(2,8).toUpperCase();
-  db.ref('rooms/'+roomId).set({
-    status:'lobby',currentRound:0,hostOrder:null,revealed:false,
-    categoryIndex:null,usedCats:[],finalResults:false,
-    rotatingMode:true,rotationOrder:null,currentHostIndex:0,roomHostId:playerId
-  }).then(function(){
-    // Go to name screen so room creator registers as a player too
-    showPage('name-screen');
-    setTimeout(function(){document.getElementById('player-name-input').focus();},50);
-  }).catch(function(e){showToast('Firebase error: '+e.message,true);});
+  db.ref('rooms/'+roomId).set({status:'lobby',currentRound:0,hostOrder:null,revealed:false,categoryIndex:null,usedCats:[],finalResults:false,rotatingMode:true,rotationOrder:null,currentHostIndex:0,roomHostId:playerId}).then(function(){showPage('name-screen');setTimeout(function(){document.getElementById('player-name-input').focus();},50);}).catch(function(e){showToast('Firebase error: '+e.message,true);});
 }
-
 function buildRotationOrderFromPlayers(players,roomHostPlayerId){
   var entries=Object.entries(players);
   var hostEntry=entries.find(function(e){return e[0]===roomHostPlayerId;});
@@ -882,190 +917,102 @@ function buildRotationOrderFromPlayers(players,roomHostPlayerId){
   others.forEach(function(e){ordered.push({id:e[0],name:e[1].name||e[0]});});
   return ordered;
 }
-
-function getCurrentRoundHostId(rotOrder,hostIdx){
-  if(!rotOrder||!rotOrder.length)return null;
-  return rotOrder[hostIdx%rotOrder.length].id;
-}
-
 function renderRotationOrder(containerId,rotOrder,hostIdx){
-  var el=document.getElementById(containerId);if(!el)return;
-  el.innerHTML='';
+  var el=document.getElementById(containerId);if(!el)return;el.innerHTML='';
   rotOrder.forEach(function(p,i){
-    var actualIdx=hostIdx%rotOrder.length;
-    var div=document.createElement('div');
-    var isDone=i<actualIdx;
-    var isCurrent=i===actualIdx;
-    var isUpNext=i===(actualIdx+1)%rotOrder.length&&rotOrder.length>1;
+    var actualIdx=hostIdx%rotOrder.length;var div=document.createElement('div');
+    var isDone=i<actualIdx,isCurrent=i===actualIdx,isUpNext=i===(actualIdx+1)%rotOrder.length&&rotOrder.length>1;
     div.className='rotation-item'+(isCurrent?' current-host':isDone?' done-host':'');
     var statusText=isCurrent?'<span class="rot-status hosting">🎙 Hosting Now</span>':isDone?'<span class="rot-status done">✓ Done</span>':isUpNext?'<span class="rot-status up-next">Up Next</span>':'';
     var isMe=p.id===playerId;
-    div.innerHTML='<span class="rot-num">'+(i+1)+'</span>'
-      +'<span class="rot-name">'+(isMe?'<b style="color:var(--pink)">'+p.name+' (you)</b>':p.name)+'</span>'
-      +statusText;
+    div.innerHTML='<span class="rot-num">'+(i+1)+'</span><span class="rot-name">'+(isMe?'<b style="color:var(--pink)">'+p.name+' (you)</b>':p.name)+'</span>'+statusText;
     el.appendChild(div);
   });
 }
 
-function buildTypeTabs(){
-  var types=['All'].concat(Object.keys(TYPE_EMOJI));
-  var container=document.getElementById('type-tabs');
-  container.innerHTML='';
-  types.forEach(function(t){
+// ─── Two-level Filter UI ─────────────────────────────────────────
+function buildFilterTabs(){
+  // Top tabs
+  var topContainer=document.getElementById('top-tabs');topContainer.innerHTML='';
+  TOP_TYPES.forEach(function(t){
     var div=document.createElement('div');
-    div.className='type-tab'+(t===activeTypeFilter?' active':'');
-    div.textContent=(t==='All'?'✨ All':(TYPE_EMOJI[t]||'🌸')+' '+t);
+    div.className='type-tab'+(t.name===activeTopFilter?' active':'');
+    div.textContent=t.emoji+' '+t.name;
     div.onclick=function(){
-      activeTypeFilter=t;
-      document.querySelectorAll('.type-tab').forEach(function(el){el.classList.remove('active');});
+      activeTopFilter=t.name;activeSubFilter='All';
+      document.querySelectorAll('#top-tabs .type-tab').forEach(function(el){el.classList.remove('active');});
       div.classList.add('active');
-      filterCategories();
+      buildSubTabs();filterCategories();
     };
-    container.appendChild(div);
+    topContainer.appendChild(div);
+  });
+  buildSubTabs();
+}
+function buildSubTabs(){
+  var subContainer=document.getElementById('sub-tabs');subContainer.innerHTML='';
+  if(activeTopFilter==='All') return;
+  var subs=getSubtypes(activeTopFilter);
+  if(!subs.length) return;
+  // "All" sub
+  var allDiv=document.createElement('div');
+  allDiv.className='sub-tab'+(activeSubFilter==='All'?' active':'');
+  allDiv.textContent='All';
+  allDiv.onclick=function(){activeSubFilter='All';document.querySelectorAll('#sub-tabs .sub-tab').forEach(function(el){el.classList.remove('active');});allDiv.classList.add('active');filterCategories();};
+  subContainer.appendChild(allDiv);
+  subs.forEach(function(s){
+    var div=document.createElement('div');
+    div.className='sub-tab'+(s===activeSubFilter?' active':'');
+    div.textContent=s;
+    div.onclick=function(){activeSubFilter=s;document.querySelectorAll('#sub-tabs .sub-tab').forEach(function(el){el.classList.remove('active');});div.classList.add('active');filterCategories();};
+    subContainer.appendChild(div);
   });
 }
 
 function pickRandomCategory(){
-  var available=[];
-  CATEGORIES.forEach(function(cat,idx){
-    if(usedCatIndexes.indexOf(idx)===-1) available.push(idx);
-  });
+  var available=[];CATEGORIES.forEach(function(cat,idx){if(usedCatIndexes.indexOf(idx)===-1)available.push(idx);});
   if(!available.length){showToast('All categories used!',true);return;}
-  var btn=document.getElementById('random-btn');
-  btn.classList.add('spinning');
-  setTimeout(function(){btn.classList.remove('spinning');},600);
+  var btn=document.getElementById('random-btn');btn.classList.add('spinning');setTimeout(function(){btn.classList.remove('spinning');},600);
   var picked=available[Math.floor(Math.random()*available.length)];
-  selectedCatIndex=picked;
-  activeTypeFilter='All';
-  buildTypeTabs();
-  document.getElementById('cat-search-input').value='';
-  buildCategoryGrid('');
-  setTimeout(function(){
-    var sel=document.querySelector('.cat-card.selected');
-    if(sel){sel.scrollIntoView({behavior:'smooth',block:'center'});sel.classList.add('flash');}
-  },80);
+  selectedCatIndex=picked;activeTopFilter='All';activeSubFilter='All';
+  buildFilterTabs();document.getElementById('cat-search-input').value='';buildCategoryGrid('');
+  setTimeout(function(){var sel=document.querySelector('.cat-card.selected');if(sel){sel.scrollIntoView({behavior:'smooth',block:'center'});sel.classList.add('flash');}},80);
   document.getElementById('start-round-btn').disabled=false;
   showToast('🎲 Picked: '+CATEGORIES[picked].name+'!');
 }
 
-function initBoard(key,items){
-  boards[key]={slots:new Array(items.length).fill(null),selected:null,items:items.slice()};
-  renderBoard(key);
-}
-
+function initBoard(key,items){boards[key]={slots:new Array(items.length).fill(null),selected:null,items:items.slice()};renderBoard(key);}
 function renderBoard(key){
-  var b=boards[key];
-  var slotsEl=document.getElementById(key+'-slots');
-  var poolEl=document.getElementById(key+'-pool');
-  var poolWrap=document.getElementById(key+'-pool-wrap');
-  var n=b.items.length;
-  var placed=b.slots.filter(Boolean);
-  var inPool=b.items.filter(function(x){return placed.indexOf(x)===-1;});
+  var b=boards[key];var slotsEl=document.getElementById(key+'-slots');var poolEl=document.getElementById(key+'-pool');var poolWrap=document.getElementById(key+'-pool-wrap');
+  var n=b.items.length;var placed=b.slots.filter(Boolean);var inPool=b.items.filter(function(x){return placed.indexOf(x)===-1;});
   slotsEl.innerHTML='';
-  for(var i=0;i<n;i++){
-    (function(idx){
-      var val=b.slots[idx];
-      var div=document.createElement('div');
-      var c=rc(idx);
-      div.className='rank-slot'+(val?' filled':'')+(b.selected!==null?' slot-ready':'');
-      div.innerHTML='<span class="slot-num" style="color:'+c+'">'+(idx+1)+'</span>'
-        +(val
-          ?'<span class="slot-name">'+val+'</span><span class="slot-remove">✕</span>'
-          :'<span class="slot-empty">'+(b.selected?'← place here':'empty')+'</span>');
-      if(val){
-        div.querySelector('.slot-remove').addEventListener('click',function(e){
-          e.stopPropagation();b.slots[idx]=null;renderBoard(key);
-        });
-      }
-      div.addEventListener('click',function(){
-        if(b.selected!==null){b.slots[idx]=b.selected;b.selected=null;renderBoard(key);}
-      });
-      slotsEl.appendChild(div);
-    })(i);
-  }
-  poolEl.innerHTML='';
-  inPool.forEach(function(item){
-    var div=document.createElement('div');
-    div.className='pool-item'+(b.selected===item?' sel':'');
-    div.textContent=item;
-    div.addEventListener('click',function(){
-      b.selected=(b.selected===item)?null:item;renderBoard(key);
-    });
-    poolEl.appendChild(div);
-  });
+  for(var i=0;i<n;i++){(function(idx){var val=b.slots[idx];var div=document.createElement('div');var c=rc(idx);div.className='rank-slot'+(val?' filled':'')+(b.selected!==null?' slot-ready':'');div.innerHTML='<span class="slot-num" style="color:'+c+'">'+(idx+1)+'</span>'+(val?'<span class="slot-name">'+val+'</span><span class="slot-remove">✕</span>':'<span class="slot-empty">'+(b.selected?'← place here':'empty')+'</span>');if(val){div.querySelector('.slot-remove').addEventListener('click',function(e){e.stopPropagation();b.slots[idx]=null;renderBoard(key);});}div.addEventListener('click',function(){if(b.selected!==null){b.slots[idx]=b.selected;b.selected=null;renderBoard(key);}});slotsEl.appendChild(div);})(i);}
+  poolEl.innerHTML='';inPool.forEach(function(item){var div=document.createElement('div');div.className='pool-item'+(b.selected===item?' sel':'');div.textContent=item;div.addEventListener('click',function(){b.selected=(b.selected===item)?null:item;renderBoard(key);});poolEl.appendChild(div);});
   poolWrap.style.display=inPool.length===0?'none':'';
 }
-
 var boards={host:{slots:[],selected:null,items:[]},player:{slots:[],selected:null,items:[]}};
 function getBoardOrder(key){return boards[key].slots.slice();}
 function isBoardFull(key){return boards[key].slots.every(function(s){return s!==null;});}
 
-function showPage(id){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.add('hidden');});
-  document.getElementById(id).classList.remove('hidden');
-  window.scrollTo(0,0);
-}
-function showToast(msg,isErr){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.style.background=isErr?'#c0392b':'#ff69b4';
-  t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);
-}
-function buildStaticList(ulId,items){
-  var ul=document.getElementById(ulId);ul.innerHTML='';
-  items.forEach(function(item,i){
-    var li=document.createElement('li');var c=rc(i);
-    li.innerHTML='<div class="stripe" style="background:'+c+'"></div>'
-      +'<span class="rnum" style="color:'+c+'">'+(i+1)+'</span>'
-      +'<span class="iname">'+item+'</span>';
-    ul.appendChild(li);
-  });
-}
-function buildResultList(ulId,playerOrder,hostOrder){
-  var ul=document.getElementById(ulId);ul.innerHTML='';
-  playerOrder.forEach(function(item,i){
-    var li=document.createElement('li');
-    var correct=item===hostOrder[i];
-    li.classList.add(correct?'correct':'wrong');
-    var c=rc(i),hostPos=hostOrder.indexOf(item)+1;
-    li.innerHTML='<div class="stripe" style="background:'+c+'"></div>'
-      +'<span class="rnum" style="color:'+c+'">'+(i+1)+'</span>'
-      +'<span class="iname">'+item+'</span>'
-      +(correct?'':'<span class="res-host-pos">Host: #'+hostPos+'</span>')
-      +'<span class="res-check">'+(correct?'✅':'❌')+'</span>';
-    ul.appendChild(li);
-  });
-}
+function showPage(id){document.querySelectorAll('.page').forEach(function(p){p.classList.add('hidden');});document.getElementById(id).classList.remove('hidden');window.scrollTo(0,0);}
+function showToast(msg,isErr){var t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#c0392b':'#ff69b4';t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
+function buildStaticList(ulId,items){var ul=document.getElementById(ulId);ul.innerHTML='';items.forEach(function(item,i){var li=document.createElement('li');var c=rc(i);li.innerHTML='<div class="stripe" style="background:'+c+'"></div><span class="rnum" style="color:'+c+'">'+(i+1)+'</span><span class="iname">'+item+'</span>';ul.appendChild(li);});}
+function buildResultList(ulId,playerOrder,hostOrder){var ul=document.getElementById(ulId);ul.innerHTML='';playerOrder.forEach(function(item,i){var li=document.createElement('li');var correct=item===hostOrder[i];li.classList.add(correct?'correct':'wrong');var c=rc(i),hostPos=hostOrder.indexOf(item)+1;li.innerHTML='<div class="stripe" style="background:'+c+'"></div><span class="rnum" style="color:'+c+'">'+(i+1)+'</span><span class="iname">'+item+'</span>'+(correct?'':'<span class="res-host-pos">Host: #'+hostPos+'</span>')+'<span class="res-check">'+(correct?'✅':'❌')+'</span>';ul.appendChild(li);});}
 function buildLeaderboard(cId,scored,maxScore,showRound){
   var lb=document.getElementById(cId);lb.innerHTML='';
   scored.forEach(function(p,i){
-    var pct=maxScore>0?(showRound?(p.score||0)/5:p.total/maxScore)*100:0;
-    var isMe=p.id===playerId;
+    var pct=maxScore>0?(showRound?(p.score||0)/5:p.total/maxScore)*100:0;var isMe=p.id===playerId;
     var div=document.createElement('div');div.className='lb-item';div.style.animationDelay=(i*.1)+'s';
     if(i===0)div.style.borderColor='#ffd700';else if(i===1)div.style.borderColor='#c0c0c0';else if(i===2)div.style.borderColor='#cd7f32';
     if(isMe)div.style.borderColor='var(--pink)';
-    var scoreDisplay=showRound
-      ? (p.isRoundHost ? '<div class="lb-score" style="font-size:13px;color:var(--muted)">hosted</div><div class="lb-sub">total: '+p.total+'</div>'
-                       : '<div class="lb-score">'+(p.score != null ? p.score : 0)+'/5</div><div class="lb-sub">total: '+p.total+'</div>')
-      : '<div class="lb-score">'+p.total+'</div>';
-    div.innerHTML='<div class="lb-pos">'+(i<3?TROPHIES[i]:i+1)+'</div>'
-      +'<div style="flex:1"><div class="lb-name">'+p.name+(isMe?' <span style="color:var(--pink);font-size:10px;">(you)</span>':'')+'</div>'
-      +'<div class="bar-bg"><div class="bar" style="width:0" data-pct="'+pct+'"></div></div></div>'
-      +'<div style="text-align:right;">'+scoreDisplay+'</div>';
+    var scoreDisplay=showRound?(p.isRoundHost?'<div class="lb-score" style="font-size:13px;color:var(--muted)">hosted</div><div class="lb-sub">total: '+p.total+'</div>':'<div class="lb-score">'+(p.score!=null?p.score:0)+'/5</div><div class="lb-sub">total: '+p.total+'</div>'):'<div class="lb-score">'+p.total+'</div>';
+    div.innerHTML='<div class="lb-pos">'+(i<3?TROPHIES[i]:i+1)+'</div><div style="flex:1"><div class="lb-name">'+p.name+(isMe?' <span style="color:var(--pink);font-size:10px;">(you)</span>':'')+'</div><div class="bar-bg"><div class="bar" style="width:0" data-pct="'+pct+'"></div></div></div><div style="text-align:right;">'+scoreDisplay+'</div>';
     lb.appendChild(div);
   });
   setTimeout(function(){document.querySelectorAll('.bar').forEach(function(b){b.style.width=b.dataset.pct+'%';});},300);
 }
 
-function toggleJoinBox(){
-  var box=document.getElementById('join-box');box.classList.toggle('hidden');
-  if(!box.classList.contains('hidden'))setTimeout(function(){document.getElementById('join-code').focus();},50);
-}
-function joinAndGo(){
-  var code=document.getElementById('join-code').value.replace(/\s/g,'').toUpperCase();
-  if(!code){showToast('Enter a room code!',true);return;}
-  roomId=code;showPage('name-screen');
-  setTimeout(function(){document.getElementById('player-name-input').focus();},50);
-}
+function toggleJoinBox(){var box=document.getElementById('join-box');box.classList.toggle('hidden');if(!box.classList.contains('hidden'))setTimeout(function(){document.getElementById('join-code').focus();},50);}
+function joinAndGo(){var code=document.getElementById('join-code').value.replace(/\s/g,'').toUpperCase();if(!code){showToast('Enter a room code!',true);return;}roomId=code;showPage('name-screen');setTimeout(function(){document.getElementById('player-name-input').focus();},50);}
 
 function setupHostLobby(){
   showPage('host-lobby');
@@ -1074,558 +1021,213 @@ function setupHostLobby(){
   document.getElementById('join-url-text').textContent=joinUrl;
   document.getElementById('qr-inner').innerHTML='';
   new QRCode(document.getElementById('qr-inner'),{text:joinUrl,width:170,height:170,colorDark:'#000',colorLight:'#fff'});
-
-  if(isRotatingMode){
-    document.getElementById('rotating-mode-banner').classList.remove('hidden');
-    document.getElementById('rotating-order-lobby').classList.remove('hidden');
-    document.getElementById('host-lobby-badge').className='badge rotating-badge';
-    document.getElementById('host-lobby-badge').textContent='🔄 ROTATING HOST';
-  }
-
+  if(isRotatingMode){document.getElementById('rotating-mode-banner').classList.remove('hidden');document.getElementById('rotating-order-lobby').classList.remove('hidden');document.getElementById('host-lobby-badge').className='badge rotating-badge';document.getElementById('host-lobby-badge').textContent='🔄 ROTATING HOST';}
   db.ref('rooms/'+roomId+'/players').on('value',function(snap){
     var players=snap.val()||{},entries=Object.entries(players);
     document.getElementById('pcnt').textContent=entries.length+' player'+(entries.length!==1?'s':'');
     var list=document.getElementById('player-list');
     if(!entries.length){list.innerHTML='<div class="no-players">Waiting for players…</div>';return;}
     list.innerHTML='';
-    entries.forEach(function(e,i){
-      var div=document.createElement('div');div.className='player-item';
-      div.innerHTML='<div class="p-avatar">'+AVATARS[i%AVATARS.length]+'</div>'
-        +'<span class="p-name">'+(e[1].name||e[0])+'</span>'
-        +'<span class="p-score">'+(e[1].totalScore||0)+' pts</span>'
-        +'<div class="pulse-dot"></div>';
-      list.appendChild(div);
-    });
+    entries.forEach(function(e,i){var div=document.createElement('div');div.className='player-item';div.innerHTML='<div class="p-avatar">'+AVATARS[i%AVATARS.length]+'</div><span class="p-name">'+(e[1].name||e[0])+'</span><span class="p-score">'+(e[1].totalScore||0)+' pts</span><div class="pulse-dot"></div>';list.appendChild(div);});
     document.getElementById('rounds-summary').textContent=currentRound>0?'Completed '+currentRound+' round'+(currentRound!==1?'s':'')+' so far':'';
-
-    if(isRotatingMode){
-      var rotOrder=buildRotationOrderFromPlayers(players,playerId);
-      renderRotationOrder('lobby-rotation-list',rotOrder,0);
-    }
+    if(isRotatingMode){var rotOrder=buildRotationOrderFromPlayers(players,playerId);renderRotationOrder('lobby-rotation-list',rotOrder,0);}
   });
 }
 function goPickCategory(){
   db.ref('rooms/'+roomId+'/usedCats').once('value').then(function(snap){
-    usedCatIndexes=snap.val()||[];selectedCatIndex=null;
-    activeTypeFilter='All';
+    usedCatIndexes=snap.val()||[];selectedCatIndex=null;activeTopFilter='All';activeSubFilter='All';
     document.getElementById('start-round-btn').disabled=true;
     document.getElementById('cat-search-input').value='';
     document.getElementById('pick-round-label').textContent='Round '+(currentRound+1);
-    buildTypeTabs();
-    buildCategoryGrid('');
-    showPage('host-pick-screen');
+    buildFilterTabs();buildCategoryGrid('');showPage('host-pick-screen');
   });
 }
 function buildCategoryGrid(filter){
-  var grid=document.getElementById('cat-grid');grid.innerHTML='';var f=filter.toLowerCase();
-  var shown=0;
+  var grid=document.getElementById('cat-grid');grid.innerHTML='';var f=filter.toLowerCase();var shown=0;
   CATEGORIES.forEach(function(cat,idx){
-    if(activeTypeFilter!=='All'&&cat.type!==activeTypeFilter)return;
-    var searchStr=(cat.type+' '+cat.name+' '+cat.items.join(' ')).toLowerCase();
-    if(f&&searchStr.indexOf(f)===-1)return;
+    if(activeTopFilter!=='All'&&cat.type!==activeTopFilter) return;
+    if(activeTopFilter!=='All'&&activeSubFilter!=='All'&&cat.subtype!==activeSubFilter) return;
+    var searchStr=(cat.type+' '+(cat.subtype||'')+' '+cat.name+' '+cat.items.join(' ')).toLowerCase();
+    if(f&&searchStr.indexOf(f)===-1) return;
     shown++;
     var used=usedCatIndexes.indexOf(idx)!==-1;
-    var div=document.createElement('div');
     var isCustom=cat.isCustom||false;
-    div.className='cat-card'+(used?' used':'')+(selectedCatIndex===idx?' selected':'')+(isCustom?' custom-cat-card':'');
-    div.innerHTML='<div class="cat-type">'+(TYPE_EMOJI[cat.type]||'🌸')+' '+cat.type+(isCustom?' <span style="font-size:9px;background:rgba(168,85,247,0.2);border-radius:4px;padding:1px 5px;margin-left:3px;">CUSTOM</span>':'')+'</div>'
-      +'<div class="cat-name">'+cat.name+'</div>'
-      +'<div class="cat-items">'+cat.items.join(' · ')+'</div>';
-    if(!used)div.onclick=function(){
-      selectedCatIndex=idx;
-      document.querySelectorAll('.cat-card').forEach(function(c){c.classList.remove('selected');});
-      div.classList.add('selected');document.getElementById('start-round-btn').disabled=false;
-    };
+    var div=document.createElement('div');
+    div.className='cat-card'+(used?' used':'')+(selectedCatIndex===idx?' selected':'');
+    var subtypeLabel=cat.subtype?cat.subtype:'';
+    div.innerHTML='<div class="cat-type">'+subtypeLabel+(isCustom?' <span style="font-size:9px;background:rgba(168,85,247,0.2);border-radius:4px;padding:1px 5px;margin-left:3px;">CUSTOM</span>':'')+'</div><div class="cat-name">'+cat.name+'</div><div class="cat-items">'+cat.items.join(' · ')+'</div>';
+    if(!used)div.onclick=function(){selectedCatIndex=idx;document.querySelectorAll('.cat-card').forEach(function(c){c.classList.remove('selected');});div.classList.add('selected');document.getElementById('start-round-btn').disabled=false;};
     grid.appendChild(div);
   });
   var avail=CATEGORIES.filter(function(_,i){return usedCatIndexes.indexOf(i)===-1;}).length;
   document.getElementById('cat-count-display').textContent=shown+' shown · '+avail+' available';
 }
 function filterCategories(){buildCategoryGrid(document.getElementById('cat-search-input').value);}
+
 function startRound(){
   if(selectedCatIndex===null)return;
   currentCategoryIndex=selectedCatIndex;currentRound++;
   var newUsed=usedCatIndexes.concat([selectedCatIndex]);
-  var cat=CATEGORIES[currentCategoryIndex];
-  var isCustom=cat.isCustom||false;
+  var cat=CATEGORIES[currentCategoryIndex];var isCustom=cat.isCustom||false;
   db.ref('rooms/'+roomId+'/players').once('value').then(function(snap){
     var players=snap.val()||{},updates={};
     Object.keys(players).forEach(function(pid){updates['rooms/'+roomId+'/players/'+pid+'/order']=null;});
-    updates['rooms/'+roomId+'/status']='playing';
-    updates['rooms/'+roomId+'/currentRound']=currentRound;
-    updates['rooms/'+roomId+'/categoryIndex']=currentCategoryIndex;
-    updates['rooms/'+roomId+'/customCat']=isCustom?{type:cat.type,name:cat.name,items:cat.items}:null;
-    updates['rooms/'+roomId+'/hostOrder']=null;
-    updates['rooms/'+roomId+'/revealed']=false;
-    updates['rooms/'+roomId+'/finalResults']=false;
-    updates['rooms/'+roomId+'/usedCats']=newUsed;
-
-    if(isRotatingMode){
-      if(currentRound===1){
-        rotationOrder=buildRotationOrderFromPlayers(players,playerId);
-        currentHostIndex=0;
-      }
-      updates['rooms/'+roomId+'/rotationOrder']=rotationOrder;
-      updates['rooms/'+roomId+'/currentHostIndex']=currentHostIndex;
-      updates['rooms/'+roomId+'/currentRoundHostId']=rotationOrder[currentHostIndex%rotationOrder.length].id;
-    }
-
-    db.ref().update(updates).then(function(){
-      showHostGameScreen(cat);
-    }).catch(function(e){showToast('Error: '+e.message,true);});
+    updates['rooms/'+roomId+'/status']='playing';updates['rooms/'+roomId+'/currentRound']=currentRound;updates['rooms/'+roomId+'/categoryIndex']=currentCategoryIndex;updates['rooms/'+roomId+'/customCat']=isCustom?{type:cat.type,subtype:cat.subtype||'',name:cat.name,items:cat.items}:null;updates['rooms/'+roomId+'/hostOrder']=null;updates['rooms/'+roomId+'/revealed']=false;updates['rooms/'+roomId+'/finalResults']=false;updates['rooms/'+roomId+'/usedCats']=newUsed;
+    if(isRotatingMode){if(currentRound===1){rotationOrder=buildRotationOrderFromPlayers(players,playerId);currentHostIndex=0;}updates['rooms/'+roomId+'/rotationOrder']=rotationOrder;updates['rooms/'+roomId+'/currentHostIndex']=currentHostIndex;updates['rooms/'+roomId+'/currentRoundHostId']=rotationOrder[currentHostIndex%rotationOrder.length].id;}
+    db.ref().update(updates).then(function(){showHostGameScreen(cat);}).catch(function(e){showToast('Error: '+e.message,true);});
   });
 }
-
 function showHostGameScreen(cat){
-  amCurrentRoundHost=true;
-  showPage('host-game-screen');
+  amCurrentRoundHost=true;showPage('host-game-screen');
   document.getElementById('host-round-badge').textContent='Round '+currentRound;
-  document.getElementById('host-cat-label').textContent=(TYPE_EMOJI[cat.type]||'🌸')+' '+cat.name;
-  document.getElementById('lock-btn').disabled=false;
-  document.getElementById('lock-msg').textContent='';
-  document.getElementById('reveal-wrap').classList.add('hidden');
-  if(isRotatingMode){
-    document.getElementById('rotating-host-info').classList.remove('hidden');
-    document.getElementById('host-game-badge').className='badge rotating-badge';
-    document.getElementById('host-game-badge').textContent='🔄 HOST (YOUR TURN)';
-  } else {
-    document.getElementById('rotating-host-info').classList.add('hidden');
-    document.getElementById('host-game-badge').className='badge';
-    document.getElementById('host-game-badge').textContent='HOST';
-  }
+  document.getElementById('host-cat-label').textContent=(cat.subtype?cat.subtype+' — ':'')+cat.name;
+  document.getElementById('lock-btn').disabled=false;document.getElementById('lock-msg').textContent='';document.getElementById('reveal-wrap').classList.add('hidden');
+  if(isRotatingMode){document.getElementById('rotating-host-info').classList.remove('hidden');document.getElementById('host-game-badge').className='badge rotating-badge';document.getElementById('host-game-badge').textContent='🔄 HOST (YOUR TURN)';}else{document.getElementById('rotating-host-info').classList.add('hidden');document.getElementById('host-game-badge').className='badge';document.getElementById('host-game-badge').textContent='HOST';}
   initBoard('host',cat.items.slice());
 }
-
-function goToHostGame(){
-  if(!pendingRoundData)return;
-  var cat=CATEGORIES[pendingRoundData.categoryIndex]||pendingRoundData.customCat;
-  showHostGameScreen(cat);
-  pendingRoundData=null;
-}
+function goToHostGame(){if(!pendingRoundData)return;var cat=CATEGORIES[pendingRoundData.categoryIndex]||pendingRoundData.customCat;showHostGameScreen(cat);pendingRoundData=null;}
 function lockHostOrder(){
   if(!isBoardFull('host')){showToast('Place all 5 items in the slots first! 👆',true);return;}
   var order=getBoardOrder('host');
   db.ref('rooms/'+roomId+'/hostOrder').set(order).then(function(){
-    document.getElementById('lock-btn').disabled=true;
-    document.getElementById('lock-msg').textContent='✅ Locked! Waiting for players to submit…';
-    document.getElementById('reveal-wrap').classList.remove('hidden');
-    showToast('Order locked! 🔒');
-    db.ref('rooms/'+roomId+'/players').on('value',function(snap){
-      var players=snap.val()||{},entries=Object.entries(players);
-      var prog=document.getElementById('players-progress-host');prog.innerHTML='';
-      entries.forEach(function(e){
-        var div=document.createElement('div');div.className='pp-item';
-        var sub=e[1].order&&e[1].order.length>0;
-        div.innerHTML='<span>'+AVATARS[0]+'</span><span>'+(e[1].name||e[0])+'</span>'
-          +(sub?'<span class="pp-submitted">✅ Submitted</span>':'<span class="pp-waiting">⏳ Ranking…</span>');
-        prog.appendChild(div);
-      });
-    });
+    document.getElementById('lock-btn').disabled=true;document.getElementById('lock-msg').textContent='✅ Locked! Waiting for players to submit…';document.getElementById('reveal-wrap').classList.remove('hidden');showToast('Order locked! 🔒');
+    db.ref('rooms/'+roomId+'/players').on('value',function(snap){var players=snap.val()||{},entries=Object.entries(players);var prog=document.getElementById('players-progress-host');prog.innerHTML='';entries.forEach(function(e){var div=document.createElement('div');div.className='pp-item';var sub=e[1].order&&e[1].order.length>0;div.innerHTML='<span>'+AVATARS[0]+'</span><span>'+(e[1].name||e[0])+'</span>'+(sub?'<span class="pp-submitted">✅ Submitted</span>':'<span class="pp-waiting">⏳ Ranking…</span>');prog.appendChild(div);});});
   }).catch(function(e){showToast('Error: '+e.message,true);});
 }
-function revealRound(){
-  db.ref('rooms/'+roomId).update({revealed:true,status:'roundEnd'}).then(showRoundResults);
-}
+function revealRound(){db.ref('rooms/'+roomId).update({revealed:true,status:'roundEnd'}).then(showRoundResults);}
 
 function confirmName(){
-  var n=document.getElementById('player-name-input').value.trim();
-  if(!n){showToast('Enter a nickname!',true);return;}
-  playerName=n;
+  var n=document.getElementById('player-name-input').value.trim();if(!n){showToast('Enter a nickname!',true);return;}playerName=n;
   db.ref('rooms/'+roomId+'/players/'+playerId).once('value').then(function(snap){
     var existing=snap.val();
-    if(existing&&existing.name){
-      playerTotalScore=existing.totalScore||0;
-      playerName=n;
-      return db.ref('rooms/'+roomId+'/players/'+playerId).update({name:playerName});
-    } else {
-      return db.ref('rooms/'+roomId+'/players/'+playerId).set({name:playerName,order:null,totalScore:0});
-    }
+    if(existing&&existing.name){playerTotalScore=existing.totalScore||0;return db.ref('rooms/'+roomId+'/players/'+playerId).update({name:playerName});}
+    else{return db.ref('rooms/'+roomId+'/players/'+playerId).set({name:playerName,order:null,totalScore:0});}
   }).then(function(){
-    // Classic host: skip waiting screen, go straight to lobby
-    if(isHost && !isRotatingMode){
-      setupHostLobby();
-      return;
-    }
-    // Rotating host: go to lobby AND set up player listeners (they play too)
-    if(isHost && isRotatingMode){
-      setupHostLobby();
-      setupPlayerListeners();
-      return;
-    }
-    // Regular joining player
+    if(isHost&&!isRotatingMode){setupHostLobby();return;}
+    if(isHost&&isRotatingMode){setupHostLobby();setupPlayerListeners();return;}
     document.getElementById('wait-code').textContent=roomId;
     db.ref('rooms/'+roomId).once('value').then(function(snap){
-      var data=snap.val()||{};
-      currentRound=data.currentRound||0;
-      isRotatingMode=data.rotatingMode||false;
-      rotationOrder=data.rotationOrder||[];
-      currentHostIndex=data.currentHostIndex||0;
+      var data=snap.val()||{};currentRound=data.currentRound||0;isRotatingMode=data.rotatingMode||false;rotationOrder=data.rotationOrder||[];currentHostIndex=data.currentHostIndex||0;
       document.getElementById('wait-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';
-      if(data.status==='roundEnd'){
-        setupPlayerListeners();showRoundResults();
-      } else if(data.status==='playing'){
-        setupPlayerListeners();
-        currentCategoryIndex=data.categoryIndex;
-        handleIncomingRoundData(data);
-      } else {
-        showPage('waiting-screen');setupPlayerListeners();
-      }
+      if(data.status==='roundEnd'){setupPlayerListeners();showRoundResults();}
+      else if(data.status==='playing'){setupPlayerListeners();currentCategoryIndex=data.categoryIndex;handleIncomingRoundData(data);}
+      else{showPage('waiting-screen');setupPlayerListeners();}
     });
-  }).catch(function(e){showToast('Could not join: '+e.message+' — fix Firebase rules!',true);});
+  }).catch(function(e){showToast('Could not join: '+e.message,true);});
 }
 function setupPlayerListeners(){
-  var _statusFirstFire=true;
+  var _f=true;
   db.ref('rooms/'+roomId+'/status').on('value',function(snap){
-    // Skip the immediate initial fire — we already handled current state before attaching
-    if(_statusFirstFire){_statusFirstFire=false;return;}
-    var status=snap.val();
-    if(status==='playing'){
-      // Classic host never needs this — they started the round themselves
-      if(isHost&&!isRotatingMode) return;
-      playerSubmitted=false;
-      db.ref('rooms/'+roomId).once('value').then(function(rs){
-        var data=rs.val();if(!data)return;
-        currentRound=data.currentRound||1;
-        currentCategoryIndex=data.categoryIndex;
-        isRotatingMode=data.rotatingMode||false;
-        rotationOrder=data.rotationOrder||[];
-        currentHostIndex=data.currentHostIndex||0;
-        handleIncomingRoundData(data);
-      });
-    }
-    if(status==='roundEnd'){
-      var cur=document.querySelector('.page:not(.hidden)');
-      if(!cur||cur.id!=='round-results-screen')showRoundResults();
-    }
-    if(status==='lobby'){
-      db.ref('rooms/'+roomId).once('value').then(function(rs){
-        handleLobbyStatus(rs.val()||{});
-      });
-    }
+    if(_f){_f=false;return;}var status=snap.val();
+    if(status==='playing'){if(isHost&&!isRotatingMode)return;playerSubmitted=false;db.ref('rooms/'+roomId).once('value').then(function(rs){var data=rs.val();if(!data)return;currentRound=data.currentRound||1;currentCategoryIndex=data.categoryIndex;isRotatingMode=data.rotatingMode||false;rotationOrder=data.rotationOrder||[];currentHostIndex=data.currentHostIndex||0;handleIncomingRoundData(data);});}
+    if(status==='roundEnd'){var cur=document.querySelector('.page:not(.hidden)');if(!cur||cur.id!=='round-results-screen')showRoundResults();}
+    if(status==='lobby'){db.ref('rooms/'+roomId).once('value').then(function(rs){handleLobbyStatus(rs.val()||{});});}
   });
   db.ref('rooms/'+roomId+'/revealed').on('value',function(snap){if(snap.val()===true)showRoundResults();});
   db.ref('rooms/'+roomId+'/finalResults').on('value',function(snap){if(snap.val()===true)showFinalResults();});
 }
-
 function handleIncomingRoundData(data){
-  if(!isRotatingMode){
-    // Classic mode: host never gets this path; players always rank
-    showPlayerGame(data);
-    return;
-  }
-
-  var roundHostId=data.currentRoundHostId||null;
-  amCurrentRoundHost=(roundHostId===playerId);
-
+  if(!isRotatingMode){showPlayerGame(data);return;}
+  var roundHostId=data.currentRoundHostId||null;amCurrentRoundHost=(roundHostId===playerId);
   if(amCurrentRoundHost){
-    // If we're already on the host game screen (room creator just called startRound),
-    // don't show the splash again — we're already hosting
-    var activePage=document.querySelector('.page:not(.hidden)');
-    if(activePage&&activePage.id==='host-game-screen') return;
-
-    var cat=CATEGORIES[data.categoryIndex]||data.customCat;
-    if(data.customCat&&!CATEGORIES[data.categoryIndex])CATEGORIES[data.categoryIndex]=data.customCat;
-    pendingRoundData=data;
-    currentCategoryIndex=data.categoryIndex;
-    currentRound=data.currentRound||currentRound;
-    document.getElementById('your-turn-round').textContent='Round '+currentRound+' — '+((TYPE_EMOJI[cat&&cat.type]||'🌸')+' '+(cat&&cat.name||''));
-    showPage('your-turn-screen');
-  } else {
-    showWatchHostScreen(data);
-  }
+    var activePage=document.querySelector('.page:not(.hidden)');if(activePage&&activePage.id==='host-game-screen')return;
+    var cat=CATEGORIES[data.categoryIndex]||data.customCat;if(data.customCat&&!CATEGORIES[data.categoryIndex])CATEGORIES[data.categoryIndex]=data.customCat;
+    pendingRoundData=data;currentCategoryIndex=data.categoryIndex;currentRound=data.currentRound||currentRound;
+    document.getElementById('your-turn-round').textContent='Round '+currentRound+' — '+(cat&&cat.name||'');showPage('your-turn-screen');
+  }else{showWatchHostScreen(data);}
 }
-
 function showWatchHostScreen(data){
-  var rotOrder=data.rotationOrder||rotationOrder||[];
-  var hostIdx=data.currentHostIndex||currentHostIndex||0;
-  var hostEntry=rotOrder.length?rotOrder[hostIdx%rotOrder.length]:null;
-  var hostName=hostEntry?hostEntry.name:'the host';
-
-  document.getElementById('watch-host-name').textContent=hostName;
-  document.getElementById('watch-host-title').textContent=hostName+'\'s Turn to Host!';
-  document.getElementById('watch-host-sub').textContent='Waiting for '+hostName+' to lock in their ranking…';
-  document.getElementById('watch-round-info').textContent='Round '+(data.currentRound||currentRound);
-  document.getElementById('watch-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';
-
-  if(rotOrder.length){
-    document.getElementById('rotating-order-display').innerHTML='<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Host Rotation</div>';
-    renderRotationOrder('rotating-order-display',rotOrder,hostIdx);
-  }
+  var rotOrder=data.rotationOrder||rotationOrder||[];var hostIdx=data.currentHostIndex||currentHostIndex||0;var hostEntry=rotOrder.length?rotOrder[hostIdx%rotOrder.length]:null;var hostName=hostEntry?hostEntry.name:'the host';
+  document.getElementById('watch-host-name').textContent=hostName;document.getElementById('watch-host-title').textContent=hostName+'\'s Turn to Host!';document.getElementById('watch-host-sub').textContent='Waiting for '+hostName+' to lock in their ranking…';document.getElementById('watch-round-info').textContent='Round '+(data.currentRound||currentRound);document.getElementById('watch-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';
+  if(rotOrder.length){document.getElementById('rotating-order-display').innerHTML='<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Host Rotation</div>';renderRotationOrder('rotating-order-display',rotOrder,hostIdx);}
   showPage('watch-host-screen');
-
-  // Only switch to player game once host LOCKS (hostOrder set after round starts)
-  // Guard: if hostOrder already set when we attach, it's stale — ignore until new value
-  var _watchFirstFire=true;
-  db.ref('rooms/'+roomId+'/hostOrder').on('value',function(snap){
-    if(_watchFirstFire){_watchFirstFire=false;return;}
-    if(snap.val()&&snap.val().length){
-      db.ref('rooms/'+roomId+'/hostOrder').off('value');
-      db.ref('rooms/'+roomId).once('value').then(function(rs){
-        showPlayerGame(rs.val()||data);
-      });
-    }
-  });
+  var _wf=true;db.ref('rooms/'+roomId+'/hostOrder').on('value',function(snap){if(_wf){_wf=false;return;}if(snap.val()&&snap.val().length){db.ref('rooms/'+roomId+'/hostOrder').off('value');db.ref('rooms/'+roomId).once('value').then(function(rs){showPlayerGame(rs.val()||data);});}});
 }
 function showPlayerGame(data){
-  var cat=CATEGORIES[data.categoryIndex]||data.customCat;
-  if(!cat)return;
-  if(data.customCat&&!CATEGORIES[data.categoryIndex]){
-    CATEGORIES[data.categoryIndex]=data.customCat;
-  }
-  document.getElementById('player-round-badge').textContent='Round '+(data.currentRound||1);
-  document.getElementById('player-pts-badge').textContent=playerTotalScore>0?playerTotalScore+' pts':'';
-  document.getElementById('player-cat-label').textContent=(TYPE_EMOJI[cat.type]||'🌸')+' '+cat.name;
-  showPage('player-game-screen');
-  var shuffled=cat.items.slice().sort(function(){return Math.random()-.5;});
-  initBoard('player',shuffled);
-  document.getElementById('submit-btn').classList.remove('hidden');
-  document.getElementById('sub-banner').classList.add('hidden');
+  var cat=CATEGORIES[data.categoryIndex]||data.customCat;if(!cat)return;if(data.customCat&&!CATEGORIES[data.categoryIndex])CATEGORIES[data.categoryIndex]=data.customCat;
+  document.getElementById('player-round-badge').textContent='Round '+(data.currentRound||1);document.getElementById('player-pts-badge').textContent=playerTotalScore>0?playerTotalScore+' pts':'';document.getElementById('player-cat-label').textContent=(cat.subtype?cat.subtype+' — ':'')+cat.name;
+  showPage('player-game-screen');var shuffled=cat.items.slice().sort(function(){return Math.random()-.5;});initBoard('player',shuffled);
+  document.getElementById('submit-btn').classList.remove('hidden');document.getElementById('sub-banner').classList.add('hidden');
 }
 function submitOrder(){
-  if(playerSubmitted){showToast('Already submitted!');return;}
-  if(!isBoardFull('player')){showToast('Place all 5 items in the slots first! 👆',true);return;}
+  if(playerSubmitted){showToast('Already submitted!');return;}if(!isBoardFull('player')){showToast('Place all 5 items in the slots first! 👆',true);return;}
   var order=getBoardOrder('player');
-  db.ref('rooms/'+roomId+'/players/'+playerId+'/order').set(order).then(function(){
-    playerSubmitted=true;
-    document.getElementById('submit-btn').classList.add('hidden');
-    document.getElementById('sub-banner').classList.remove('hidden');
-    showToast('Submitted! 🌸');
-  }).catch(function(e){showToast('Submit failed: '+e.message,true);});
+  db.ref('rooms/'+roomId+'/players/'+playerId+'/order').set(order).then(function(){playerSubmitted=true;document.getElementById('submit-btn').classList.add('hidden');document.getElementById('sub-banner').classList.remove('hidden');showToast('Submitted! 🌸');}).catch(function(e){showToast('Submit failed: '+e.message,true);});
 }
-
 function showRoundResults(){
   db.ref('rooms/'+roomId).once('value').then(function(snap){
     var data=snap.val();if(!data||!data.hostOrder)return;
     var hostOrder=data.hostOrder,players=data.players||{},cat=CATEGORIES[data.categoryIndex]||data.customCat||{};
-    currentRound=data.currentRound||currentRound;
-    isRotatingMode=data.rotatingMode||false;
-    rotationOrder=data.rotationOrder||rotationOrder||[];
-    currentHostIndex=data.currentHostIndex||0;
-
+    currentRound=data.currentRound||currentRound;isRotatingMode=data.rotatingMode||false;rotationOrder=data.rotationOrder||rotationOrder||[];currentHostIndex=data.currentHostIndex||0;
     var roundHostId=data.currentRoundHostId||null;
-
     var scored=Object.entries(players).map(function(e){
       var id=e[0],p=e[1],score=0;
-      if(isRotatingMode&&id===roundHostId){
-        return{id:id,name:p.name||id,score:null,total:(p.totalScore||0),isRoundHost:true};
-      }
+      if(isRotatingMode&&id===roundHostId)return{id:id,name:p.name||id,score:null,total:(p.totalScore||0),isRoundHost:true};
       if(p.order)p.order.forEach(function(item,i){if(item===hostOrder[i])score++;});
       return{id:id,name:p.name||id,score:score,total:(p.totalScore||0)+score};
-    }).sort(function(a,b){
-      if(a.isRoundHost)return 1;if(b.isRoundHost)return -1;
-      return (b.score||0)-(a.score||0);
-    });
-
-    var updates={};
-    scored.forEach(function(p){
-      if(!p.isRoundHost)updates['rooms/'+roomId+'/players/'+p.id+'/totalScore']=p.total;
-    });
+    }).sort(function(a,b){if(a.isRoundHost)return 1;if(b.isRoundHost)return -1;return (b.score||0)-(a.score||0);});
+    var updates={};scored.forEach(function(p){if(!p.isRoundHost)updates['rooms/'+roomId+'/players/'+p.id+'/totalScore']=p.total;});
     db.ref().update(updates);
-    var myEntry=scored.find(function(s){return s.id===playerId;});
-    if(myEntry&&!myEntry.isRoundHost)playerTotalScore=myEntry.total;
-
-    showPage('round-results-screen');
-    document.getElementById('rr-title').textContent='Round '+currentRound+' Results';
-    document.getElementById('rr-cat-label').textContent=(TYPE_EMOJI[cat.type]||'🌸')+' '+(cat.name||'');
-    buildStaticList('rr-host-list',hostOrder);
-
-    var myP=players[playerId];
-    var iAmRoundHost=(roundHostId===playerId);
-    if(myP&&myP.order&&!iAmRoundHost){
-      document.getElementById('player-own-results').classList.remove('hidden');
-      // ── FIX: use null-safe check so score never displays as "null/5" ──
-      var myScore = (myEntry && myEntry.score != null) ? myEntry.score : 0;
-      document.getElementById('rr-your-score').textContent = myScore + '/5';
-      buildResultList('player-result-list',myP.order,hostOrder);
-    } else {
-      document.getElementById('player-own-results').classList.add('hidden');
-    }
-
-    if(isRotatingMode&&rotationOrder.length){
-      var nextIdx=(currentHostIndex+1)%rotationOrder.length;
-      var nextHost=rotationOrder[nextIdx];
-      var rotDiv=document.createElement('div');
-      rotDiv.style.cssText='width:100%;max-width:480px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:10px 0;';
-      rotDiv.innerHTML='<div style="font-family:\'Playfair Display\',serif;font-size:14px;color:var(--pink-light);margin-bottom:8px;">🔄 Up Next: <b style="color:var(--pink)">'+nextHost.name+'</b> hosts Round '+(currentRound+1)+'!</div>';
-      var rotOrderEl=document.createElement('div');rotOrderEl.id='rr-rotation-order';rotOrderEl.className='rotation-order';
-      rotDiv.appendChild(rotOrderEl);
-      var existingRot=document.getElementById('rr-rotation-wrap');
-      if(existingRot)existingRot.remove();
-      rotDiv.id='rr-rotation-wrap';
-      document.getElementById('rr-lb-list').after(rotDiv);
-      renderRotationOrder('rr-rotation-order',rotationOrder,currentHostIndex);
-    }
-
+    var myEntry=scored.find(function(s){return s.id===playerId;});if(myEntry&&!myEntry.isRoundHost)playerTotalScore=myEntry.total;
+    showPage('round-results-screen');document.getElementById('rr-title').textContent='Round '+currentRound+' Results';document.getElementById('rr-cat-label').textContent=(cat.subtype?cat.subtype+' — ':'')+( cat.name||'');buildStaticList('rr-host-list',hostOrder);
+    var myP=players[playerId];var iAmRoundHost=(roundHostId===playerId);
+    if(myP&&myP.order&&!iAmRoundHost){document.getElementById('player-own-results').classList.remove('hidden');var myScore=(myEntry&&myEntry.score!=null)?myEntry.score:0;document.getElementById('rr-your-score').textContent=myScore+'/5';buildResultList('player-result-list',myP.order,hostOrder);}
+    else{document.getElementById('player-own-results').classList.add('hidden');}
+    if(isRotatingMode&&rotationOrder.length){var nextIdx=(currentHostIndex+1)%rotationOrder.length;var nextHost=rotationOrder[nextIdx];var rotDiv=document.createElement('div');rotDiv.style.cssText='width:100%;max-width:480px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:10px 0;';rotDiv.innerHTML='<div style="font-family:\'Playfair Display\',serif;font-size:14px;color:var(--pink-light);margin-bottom:8px;">🔄 Up Next: <b style="color:var(--pink)">'+nextHost.name+'</b> hosts Round '+(currentRound+1)+'!</div>';var rotOrderEl=document.createElement('div');rotOrderEl.id='rr-rotation-order';rotOrderEl.className='rotation-order';rotDiv.appendChild(rotOrderEl);var existingRot=document.getElementById('rr-rotation-wrap');if(existingRot)existingRot.remove();rotDiv.id='rr-rotation-wrap';document.getElementById('rr-lb-list').after(rotDiv);renderRotationOrder('rr-rotation-order',rotationOrder,currentHostIndex);}
     buildLeaderboard('rr-lb-list',scored,5,true);
-
     var btns=document.getElementById('rr-buttons');btns.innerHTML='';
-
     if(isRotatingMode){
-      var nextHostIdx=(currentHostIndex+1)%rotationOrder.length;
-      var nextHostId=rotationOrder.length?rotationOrder[nextHostIdx].id:null;
-      var iAmNextHost=(nextHostId===playerId);
-
-      if(iAmRoundHost){
-        var nb=document.createElement('button');nb.className='btn btn-primary';
-        nb.textContent='Next Round → ('+rotationOrder[nextHostIdx].name+' hosts)';
-        nb.onclick=function(){
-          currentHostIndex=nextHostIdx;
-          db.ref('rooms/'+roomId).update({
-            status:'lobby',
-            hostOrder:null,
-            revealed:false,
-            categoryIndex:null,
-            currentHostIndex:nextHostIdx,
-            currentRoundHostId:null
-          }).then(function(){
-            if(iAmNextHost){
-              goPickCategory();
-            } else {
-              showPage('waiting-screen');
-              document.getElementById('wait-info').textContent='Waiting for '+rotationOrder[nextHostIdx].name+' to pick a category…';
-            }
-          });
-        };
-        btns.appendChild(nb);
-        var eb=document.createElement('button');eb.className='btn btn-outline';eb.textContent='End Game & Final Results';
-        eb.onclick=function(){db.ref('rooms/'+roomId+'/finalResults').set(true).then(showFinalResults);};
-        btns.appendChild(eb);
-      } else if(iAmNextHost){
-        var goBtn=document.createElement('button');goBtn.className='btn btn-primary';
-        goBtn.textContent='🎙 I\'m Up Next — Pick Category!';
-        goBtn.onclick=function(){
-          currentHostIndex=nextHostIdx;
-          goPickCategory();
-        };
-        btns.appendChild(goBtn);
-        var p2=document.createElement('p');p2.style.cssText='color:var(--muted);font-size:11px;margin-top:6px;';
-        p2.textContent='(Wait for the current host to click "Next Round" first)';
-        btns.appendChild(p2);
-      } else {
-        var p=document.createElement('p');p.style.cssText='color:var(--muted);font-size:12px;';
-        p.textContent='⏳ Waiting for host to start next round…';btns.appendChild(p);
-      }
-    } else {
-      if(isHost){
-        var nb=document.createElement('button');nb.className='btn btn-primary';nb.textContent='Next Round →';nb.onclick=goPickCategory;btns.appendChild(nb);
-        var eb=document.createElement('button');eb.className='btn btn-outline';eb.textContent='End Game & See Final Results';
-        eb.onclick=function(){db.ref('rooms/'+roomId+'/finalResults').set(true).then(showFinalResults);};btns.appendChild(eb);
-      }else{
-        var p=document.createElement('p');p.style.cssText='color:var(--muted);font-size:12px;';p.textContent='⏳ Waiting for host to start next round…';btns.appendChild(p);
-      }
+      var nextHostIdx=(currentHostIndex+1)%rotationOrder.length;var nextHostId=rotationOrder.length?rotationOrder[nextHostIdx].id:null;var iAmNextHost=(nextHostId===playerId);
+      if(iAmRoundHost){var nb=document.createElement('button');nb.className='btn btn-primary';nb.textContent='Next Round → ('+rotationOrder[nextHostIdx].name+' hosts)';nb.onclick=function(){currentHostIndex=nextHostIdx;db.ref('rooms/'+roomId).update({status:'lobby',hostOrder:null,revealed:false,categoryIndex:null,currentHostIndex:nextHostIdx,currentRoundHostId:null}).then(function(){if(iAmNextHost){goPickCategory();}else{showPage('waiting-screen');document.getElementById('wait-info').textContent='Waiting for '+rotationOrder[nextHostIdx].name+' to pick a category…';}});};btns.appendChild(nb);var eb=document.createElement('button');eb.className='btn btn-outline';eb.textContent='End Game & Final Results';eb.onclick=function(){db.ref('rooms/'+roomId+'/finalResults').set(true).then(showFinalResults);};btns.appendChild(eb);}
+      else if(iAmNextHost){var goBtn=document.createElement('button');goBtn.className='btn btn-primary';goBtn.textContent='🎙 I\'m Up Next — Pick Category!';goBtn.onclick=function(){currentHostIndex=nextHostIdx;goPickCategory();};btns.appendChild(goBtn);}
+      else{var p=document.createElement('p');p.style.cssText='color:var(--muted);font-size:12px;';p.textContent='⏳ Waiting for host to start next round…';btns.appendChild(p);}
+    }else{
+      if(isHost){var nb=document.createElement('button');nb.className='btn btn-primary';nb.textContent='Next Round →';nb.onclick=goPickCategory;btns.appendChild(nb);var eb=document.createElement('button');eb.className='btn btn-outline';eb.textContent='End Game & See Final Results';eb.onclick=function(){db.ref('rooms/'+roomId+'/finalResults').set(true).then(showFinalResults);};btns.appendChild(eb);}
+      else{var p=document.createElement('p');p.style.cssText='color:var(--muted);font-size:12px;';p.textContent='⏳ Waiting for host to start next round…';btns.appendChild(p);}
     }
   });
 }
-
 function showFinalResults(){
   db.ref('rooms/'+roomId+'/players').once('value').then(function(snap){
-    var players=snap.val()||{};
-    var scored=Object.entries(players).map(function(e){return{id:e[0],name:e[1].name||e[0],total:e[1].totalScore||0};}).sort(function(a,b){return b.total-a.total;});
+    var players=snap.val()||{};var scored=Object.entries(players).map(function(e){return{id:e[0],name:e[1].name||e[0],total:e[1].totalScore||0};}).sort(function(a,b){return b.total-a.total;});
     showPage('final-results-screen');
-    if(scored.length>0){
-      document.getElementById('winner-name').textContent=scored[0].name;
-      document.getElementById('winner-pts').textContent=scored[0].total+' total points across '+currentRound+' round'+(currentRound!==1?'s':'');
-    }
+    if(scored.length>0){document.getElementById('winner-name').textContent=scored[0].name;document.getElementById('winner-pts').textContent=scored[0].total+' total points across '+currentRound+' round'+(currentRound!==1?'s':'');}
     buildLeaderboard('final-lb-list',scored,scored.length>0?scored[0].total:1,false);
   });
 }
-
 function skipRound(){
   if(!confirm('Skip this round? Players will go back to waiting and you\'ll pick a new category.'))return;
   currentRound=Math.max(0,currentRound-1);
-  db.ref('rooms/'+roomId).update({
-    status:'lobby',
-    hostOrder:null,
-    revealed:false,
-    categoryIndex:null
-  }).then(function(){
-    db.ref('rooms/'+roomId+'/usedCats').once('value').then(function(snap){
-      var used=snap.val()||[];
-      var filtered=used.filter(function(i){return i!==currentCategoryIndex;});
-      db.ref('rooms/'+roomId+'/usedCats').set(filtered).then(function(){
-        showToast('Round skipped! Pick a new category 🎲');
-        goPickCategory();
-      });
-    });
+  db.ref('rooms/'+roomId).update({status:'lobby',hostOrder:null,revealed:false,categoryIndex:null}).then(function(){
+    db.ref('rooms/'+roomId+'/usedCats').once('value').then(function(snap){var used=snap.val()||[];var filtered=used.filter(function(i){return i!==currentCategoryIndex;});db.ref('rooms/'+roomId+'/usedCats').set(filtered).then(function(){showToast('Round skipped! Pick a new category 🎲');goPickCategory();});});
   });
 }
-
 function handleLobbyStatus(data){
-  // Never redirect someone who's already on the host lobby — they'll navigate themselves
-  var activePage=document.querySelector('.page:not(.hidden)');
-  if(activePage&&activePage.id==='host-lobby') return;
-  if(!isRotatingMode){
-    showPage('waiting-screen');
-    document.getElementById('wait-info').textContent='Waiting for next round…';
-    document.getElementById('wait-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';
-    return;
-  }
-  rotationOrder=data.rotationOrder||rotationOrder||[];
-  currentHostIndex=data.currentHostIndex||0;
+  var activePage=document.querySelector('.page:not(.hidden)');if(activePage&&activePage.id==='host-lobby')return;
+  if(!isRotatingMode){showPage('waiting-screen');document.getElementById('wait-info').textContent='Waiting for next round…';document.getElementById('wait-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';return;}
+  rotationOrder=data.rotationOrder||rotationOrder||[];currentHostIndex=data.currentHostIndex||0;
   var nextHostId=rotationOrder.length?rotationOrder[currentHostIndex%rotationOrder.length].id:null;
-  if(nextHostId===playerId){
-    goPickCategory();
-  } else {
-    showPage('waiting-screen');
-    var nextHostName=rotationOrder.length?rotationOrder[currentHostIndex%rotationOrder.length].name:'the host';
-    document.getElementById('wait-info').textContent='Waiting for '+nextHostName+' to pick a category…';
-    document.getElementById('wait-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';
-  }
+  if(nextHostId===playerId){goPickCategory();}else{showPage('waiting-screen');var nextHostName=rotationOrder.length?rotationOrder[currentHostIndex%rotationOrder.length].name:'the host';document.getElementById('wait-info').textContent='Waiting for '+nextHostName+' to pick a category…';document.getElementById('wait-pts').textContent=playerTotalScore>0?'⭐ Your total: '+playerTotalScore+' pts':'';}
 }
 
-function openCustomModal(){
-  document.getElementById('custom-cat-name').value='';
-  document.querySelectorAll('.custom-item-input').forEach(function(inp){inp.value='';});
-  document.getElementById('custom-cat-modal').classList.remove('hidden');
-  setTimeout(function(){document.getElementById('custom-cat-name').focus();},100);
-}
-function closeCustomModal(){
-  document.getElementById('custom-cat-modal').classList.add('hidden');
-}
+// ─── Custom Category Modal ───────────────────────────────────────
+function openCustomModal(){document.getElementById('custom-cat-name').value='';document.querySelectorAll('.custom-item-input').forEach(function(inp){inp.value='';});document.getElementById('custom-cat-modal').classList.remove('hidden');setTimeout(function(){document.getElementById('custom-cat-name').focus();},100);}
+function closeCustomModal(){document.getElementById('custom-cat-modal').classList.add('hidden');}
 function saveCustomCategory(){
-  var name=document.getElementById('custom-cat-name').value.trim();
-  if(!name){showToast('Give your category a name!',true);return;}
-  var items=[];
-  document.querySelectorAll('.custom-item-input').forEach(function(inp){
-    var v=inp.value.trim();if(v)items.push(v);
-  });
+  var name=document.getElementById('custom-cat-name').value.trim();if(!name){showToast('Give your category a name!',true);return;}
+  var items=[];document.querySelectorAll('.custom-item-input').forEach(function(inp){var v=inp.value.trim();if(v)items.push(v);});
   if(items.length<5){showToast('Fill in all 5 items!',true);return;}
-  var newCat={type:'Custom',name:name,items:items.slice(0,5),isCustom:true};
-  CATEGORIES.push(newCat);
-  customCategories.push(newCat);
-  selectedCatIndex=CATEGORIES.length-1;
-  TYPE_EMOJI['Custom']='✏️';
-  closeCustomModal();
-  activeTypeFilter='All';
-  buildTypeTabs();
-  buildCategoryGrid('');
-  setTimeout(function(){
-    var sel=document.querySelector('.cat-card.selected');
-    if(sel){sel.scrollIntoView({behavior:'smooth',block:'center'});sel.classList.add('flash');}
-  },80);
-  document.getElementById('start-round-btn').disabled=false;
-  showToast('✏️ Custom category "'+name+'" added!');
+  var newCat={type:'Fun & Random',subtype:'Custom',name:name,items:items.slice(0,5),isCustom:true};
+  CATEGORIES.push(newCat);customCategories.push(newCat);selectedCatIndex=CATEGORIES.length-1;
+  closeCustomModal();activeTopFilter='All';activeSubFilter='All';buildFilterTabs();buildCategoryGrid('');
+  setTimeout(function(){var sel=document.querySelector('.cat-card.selected');if(sel){sel.scrollIntoView({behavior:'smooth',block:'center'});sel.classList.add('flash');}},80);
+  document.getElementById('start-round-btn').disabled=false;showToast('✏️ Custom category "'+name+'" added!');
 }
-document.getElementById('custom-cat-modal').addEventListener('click',function(e){
-  if(e.target===this)closeCustomModal();
-});
-document.getElementById('custom-cat-modal').addEventListener('keydown',function(e){
-  if(e.key==='Escape')closeCustomModal();
-  if(e.key==='Enter'){
-    var inputs=Array.from(document.querySelectorAll('.custom-item-input'));
-    var all=inputs.every(function(i){return i.value.trim();});
-    if(all&&document.getElementById('custom-cat-name').value.trim())saveCustomCategory();
-  }
-});
+document.getElementById('custom-cat-modal').addEventListener('click',function(e){if(e.target===this)closeCustomModal();});
+document.getElementById('custom-cat-modal').addEventListener('keydown',function(e){if(e.key==='Escape')closeCustomModal();if(e.key==='Enter'){var inputs=Array.from(document.querySelectorAll('.custom-item-input'));var all=inputs.every(function(i){return i.value.trim();});if(all&&document.getElementById('custom-cat-name').value.trim())saveCustomCategory();}});
 
 var urlCode=new URLSearchParams(location.search).get('join');
-if(urlCode){
-  roomId=urlCode.toUpperCase();
-  document.getElementById('join-code').value=roomId;
-  document.getElementById('join-box').classList.remove('hidden');
-  showPage('name-screen');
-  setTimeout(function(){document.getElementById('player-name-input').focus();},50);
-}
+if(urlCode){roomId=urlCode.toUpperCase();document.getElementById('join-code').value=roomId;document.getElementById('join-box').classList.remove('hidden');showPage('name-screen');setTimeout(function(){document.getElementById('player-name-input').focus();},50);}
 </script>
 </body>
 </html>
